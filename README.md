@@ -7,6 +7,7 @@ python setup.py install
 This package has the following external dependencies:
 
 simtk.unit
+
 simtk.openmm
 
-For full documentation please see 'User_Guide.pdf'.
+For full documentation please see 'manual.pdf'.
