@@ -1,15 +1,15 @@
-# This repository contains Python functions for coarse-grained and all-atom modeling of heteropolymer folding.
+## This repository contains Python functions for coarse-grained and all-atom modeling of heteropolymer folding.
 
-# To use the tools in this repository, install using standard Python conventions:
+### To use the tools in this repository, install using standard Python conventions:
 
 python setup.py install
 
-# Dependencies:
+### Dependencies:
 
 simtk.unit
 simtk.openmm
 
-# Getting started:
+### Getting started:
 
 Test your installation by opening a new Python console and typing the following:
 
