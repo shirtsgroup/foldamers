@@ -1,0 +1,6 @@
+README.md
+setup.py
+src/foldamers.egg-info/PKG-INFO
+src/foldamers.egg-info/SOURCES.txt
+src/foldamers.egg-info/dependency_links.txt
+src/foldamers.egg-info/top_level.txt
