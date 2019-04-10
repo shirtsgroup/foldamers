@@ -1,4 +1,4 @@
-## This repository contains Python functions for coarse-grained and all-atom modeling of heteropolymer folding.
+## This repository contains simulation tools for coarse-grained modeling of polymer folding.
 
 ### To use the tools in this repository, install using standard Python conventions:
 
