@@ -11,6 +11,7 @@
 
 
 from simtk import unit
+from src.util import util as util
 
 class cgmodel(object):
         """
@@ -115,9 +116,7 @@ class cgmodel(object):
 
           self._num_beads = polymer_length * ( backbone_length + sidechain_length )
 
-          self._topology = build_topology( box_size,mass, self._num_beads )
-
-          self._positions = util.random_positions( polymer_length, bacbone_length, sidechain_length, bond_length, sigma ) 
+          self._positions = util.random_positions( polymer_length, backbone_length, sidechain_length, bond_length, sigma ) 
 
           """
           Initialize attributes of our coarse grained model.
