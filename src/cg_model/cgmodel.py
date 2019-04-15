@@ -1,14 +1,10 @@
 #!/usr/local/bin/env python
 
-#foldamers/foldamers.py
-#====
-
 #Tools for building coarse grained models 
 
 # ==============================================================================
 # GLOBAL IMPORTS
 # ==============================================================================
-
 
 from simtk import unit
 import sys, os

@@ -157,23 +157,30 @@ def first_bead(positions):
 
         return(first_bead)
 
-def get_move(direction,step):
+def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=True):
         """
-        Given the cartesian coordinates for a particle ('move'),
-        a 'step' (distance), and a 'direction' ( Index denoting
-        x,y,z Cartesian direction), update the coordinates for
-        the particle.
+        Given a 'move_direction', a current distance, and a
+        target 'bond_length' ( Index denoting x,y,z Cartesian 
+        direction), update the coordinates for the particle.
 
         Parameters
         ----------
 
-        direction: Cartesian directions in which we have attempted 
-        a particle placement, where: x=0,y=1,z=2. 
+        trial_coordinates: positions for a particle
+        ( np.array( float * unit.angstrom ( length = 3 ) ) )
+
+        move_direction: Cartesian direction in which we will
+        attempt a particle placement, where: x=0, y=1, z=2. 
         ( integer )
 
-        step: Number to add/subtract to the cartesian coordinates
-        for direction 'direction' in 'move'
+        distance: Current distance from parent particle
         ( float * simtk.unit.distance )
+
+        bond_length: Target bond_length for particle placement.
+        ( float * simtk.unit.distance )
+
+        finish_bond: Logical variable determining how we will
+        update the coordinates for this particle.
 
         Returns
         -------
@@ -183,13 +190,16 @@ def get_move(direction,step):
 
         """
 
-        move = unit.Quantity(np.zeros([3]),step.unit)
+        move = unit.Quantity(np.zeros([3]),trial_coordinates.unit)
 
-        if direction != 2:
-          new_jump = random_sign(random.uniform(0.0,step._value))
+        
 
-        if direction == 2:
-          new_jump = random_sign(step._value)
+        if not finish_bond:
+          step_range = 
+          step = random_sign(random.uniform(0.0,._value))
+
+        if finish_bond:
+          step = random_sign(._value)
 
         values = [value for value in move._value]
         values[direction] = new_jump
@@ -254,21 +264,21 @@ def attempt_move(parent_coordinates,bond_length):
            print("Error: new particles are not being assigned correctly.")
            exit()
 
-         step_arg = unit.Quantity(dist._value,units)
-         step = unit.Quantity(unit_sqrt(step_arg),dist.unit)
-
-         move = get_move(move_direction,step)
+         move = get_move(move_direction,dist,bond_length)
          move_direction_list.append(move_direction)
 
+         print(trial_coordinates)
+         print(move)
          trial_coordinates = update_trial_coordinates(move,trial_coordinates)
+         print(trial_coordinates)
 
          dist = distance(ref,trial_coordinates)
 
-         if round(dist._value,4) < round(bond_length._value,4):
+        if round(dist._value,4) < round(bond_length._value,4):
 
            print("Error: particles are being placed at a distance different from the bond length")
            print("Bond length is: "+str(bond_length))
-           print("The particle distance is: "+str(distance(trial_coordinates,ref)))
+           print("The particle distance is: "+str(dist))
            print(ref)
            print(trial_coordinates)
            exit()
