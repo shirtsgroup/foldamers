@@ -20,12 +20,6 @@ sys.path.insert(1, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/cg_model
 sys.path.insert(2, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/thermo'))
 sys.path.insert(3, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/utilities'))
 
-#import cgmodel
-#import param_sampling
-#import thermo.heat_capacity
-#import utilities.io
-#import utilities.util
-
 # -- Project information -----------------------------------------------------
 
 project = 'foldamers'
