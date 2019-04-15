@@ -12,11 +12,10 @@ source files.)
 .. toctree::
    :maxdepth: 2
 
-   openmm.rst
-   cgmodel.rst
-   io.rst
+   cg_model.rst
+   parameter_analysis.rst
+   thermo.rst
    util.rst
-   pyrosetta.rst
 
 Indices and tables
 ==================

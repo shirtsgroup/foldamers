@@ -11,9 +11,11 @@
 
 
 from simtk import unit
-from src.util import util as util
+import sys, os
+sys.path.insert(0, os.path.abspath('/home/gmeek/Foldamers/foldamers/src'))
+from utilities import util as util
 
-class cgmodel(object):
+class CGModel(object):
         """
         Construct a coarse grained model.
 
@@ -116,7 +118,7 @@ class cgmodel(object):
 
           self._num_beads = polymer_length * ( backbone_length + sidechain_length )
 
-          self._positions = util.random_positions( polymer_length, backbone_length, sidechain_length, bond_length, sigma ) 
+          self._positions = util.random_positions( polymer_length, backbone_length, sidechain_length, sidechain_positions, bond_length, sigma ) 
 
           """
           Initialize attributes of our coarse grained model.

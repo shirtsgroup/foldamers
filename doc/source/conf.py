@@ -15,7 +15,16 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('/home/gmeek/Foldamers/foldamers/src'))
+sys.path.insert(1, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/cg_model'))
+#sys.path.insert(2, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/parameter_analysis'))
+sys.path.insert(2, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/thermo'))
+sys.path.insert(3, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/utilities'))
 
+#import cgmodel
+#import param_sampling
+#import thermo.heat_capacity
+#import utilities.io
+#import utilities.util
 
 # -- Project information -----------------------------------------------------
 
@@ -127,6 +136,8 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
+
+    'extraclassoptions': 'openany,oneside'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
