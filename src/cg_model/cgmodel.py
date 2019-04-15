@@ -89,90 +89,34 @@ class CGModel(object):
         # Built in class attributes
         _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','mass','sigma','epsilon','bond_length','bs_bond_length','bb_bond_length','ss_bond_length','charge','num_beads','positions','topology')
 
-        def __init__(self, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], mass = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_length = 1.0 * unit.angstrom, bb_bond_length = 1.0 * unit.angstrom, bs_bond_length = 1.0 * unit.angstrom, ss_bond_length = 1.0 * unit.angstrom, charge = 0.0 * unit.elementary_charge):
+        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], mass = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_length = 1.0 * unit.angstrom, bb_bond_length = 1.0 * unit.angstrom, bs_bond_length = 1.0 * unit.angstrom, ss_bond_length = 1.0 * unit.angstrom, charge = 0.0 * unit.elementary_charge):
 
           """
           Initialize variables that were passed as input
           """
 
-          self._polymer_length = polymer_length
-          self._backbone_length = backbone_length
-          self._sidechain_length = sidechain_length
-          self._sidechain_positions = sidechain_positions
-          self._mass = mass
-          self._sigma = sigma
-          self._epsilon = epsilon
-          self._bond_length = bond_length
-          self._bb_bond_length = bb_bond_length
-          self._bs_bond_length = bs_bond_length
-          self._ss_bond_length = ss_bond_length
-          self._charge = charge         
+          self.polymer_length = polymer_length
+          self.backbone_length = backbone_length
+          self.sidechain_length = sidechain_length
+          self.sidechain_positions = sidechain_positions
+          self.mass = mass
+          self.sigma = sigma
+          self.epsilon = epsilon
+          self.bond_length = bond_length
+          self.bb_bond_length = bb_bond_length
+          self.bs_bond_length = bs_bond_length
+          self.ss_bond_length = ss_bond_length
+          self.charge = charge         
 
           """
           Initialize new (coarse grained) particle types:
           """
 
-          self._num_beads = polymer_length * ( backbone_length + sidechain_length )
+          self.num_particles = polymer_length * ( backbone_length + sidechain_length )
 
-          self._positions = util.random_positions( polymer_length, backbone_length, sidechain_length, sidechain_positions, bond_length, sigma ) 
+          self.positions = util.random_positions( polymer_length, backbone_length, sidechain_length, sidechain_positions, bond_length, sigma ) 
 
           """
           Initialize attributes of our coarse grained model.
           """
-
-        @property
-        def polymer_length(self):
-          return self._polymer_length
-
-        @property
-        def backbone_length(self):
-          return self._backbone_length
-
-        @property
-        def sidechain_length(self):
-          return self._sidechain_length
-
-        @property
-        def sidechain_positions(self):
-          return self._sidechain_positions
-
-        @property
-        def mass(self):
-          return self._mass
-
-        @property
-        def sigma(self):
-          return self._sigma
-
-        @property
-        def epsilon(self):
-          return self._epsilon
-
-        @property
-        def bond_length(self):
-          return self._bond_length
-
-        @property
-        def bb_bond_length(self):
-          return self._bb_bond_length
-
-        @property
-        def bs_bond_length(self):
-          return self._bs_bond_length
-
-        @property
-        def ss_bond_length(self):
-          return self._ss_bond_length
-
-        @property
-        def charge(self):
-          return self._charge
-
-        @property
-        def num_beads(self):
-          return self._num_beads
-
-        @property
-        def topology(self):
-          return self._topology
 
