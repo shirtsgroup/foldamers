@@ -1,5 +1,3 @@
-## No default python environment
-
 # This script generates random coordinates for a CG polymer
 
 # =============================================================================================
@@ -58,6 +56,53 @@ def unit_sqrt(simtk_quantity):
 
         return(answer)
 
+def first_bead(positions):
+        """
+        Determine if we have any particles in 'positions'
+
+        Parameters
+        ----------
+
+        positions: Positions for all beads in the coarse-grained model.
+        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
+
+        Returns
+        -------
+
+        first_bead: Logical variable stating if this is the first particle.
+
+        """
+
+        first_bead = True
+
+        if positions != None:
+
+           first_bead = False
+
+        return(first_bead)
+
+def single_bead(positions):
+        """
+        Determine if we have one particle in positions
+
+        Parameters
+        ----------
+
+        positions: Positions for all beads in the coarse-grained model.
+        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
+
+        Returns
+        -------
+
+        single_bead: Logical variable stating if this is the first particle.
+
+        """
+        single_bead = False
+        if str(positions.shape) == '(3,)':
+          single_bead = True
+
+        return(single_bead)
+
 def append_position(positions,new_coordinates):
         """
         Updates a set of input coordinates with 'new_coordinate' in the
@@ -85,90 +130,26 @@ def append_position(positions,new_coordinates):
 
         """
 
-        units = trial_coordinates.unit
+        units = new_coordinates.unit
         if positions == None:
 
-          new_positions = unit.Quantity(np.zeros([3]),units)
+          new_positions = new_coordinates
 
         else:
 
-          if positions.shape == '(3,)':
+          new_positions = unit.Quantity(np.zeros((2,3)),units)
+          if single_bead(positions):
+            new_positions = unit.Quantity(np.zeros((2,3)),units)
+            new_positions[0] = positions
+            new_positions[1] = new_coordinates
 
-            new_positions = unit.Quantity(np.array([2,3],units)
-            new_positions._value = positions._value
-            new_positions[1]._value = new_coordinates._value
-
-          else:
-
-            new_positions = unit.Quantity(np.array([len(positions),3],units)
-
-            for position_index in range(len(0,len(positions))): 
-              new_positions[position_index] = positions[position_index]
-            new_positions[len(positions)] = new_coordinates
+          if not single_bead(positions):
+            new_positions = unit.Quantity(np.zeros((len(positions)+1,3)),units)
+            for particle in range(len(positions)):
+              new_positions[particle] = positions[particle]
+            new_positions[len(new_positions)-1] = new_coordinates
 
         return(new_positions)
-
-def update_trial_coordinates(move,trial_coordinates=None):
-        """
-        Updates 'trial_coordinates by adding the coordinates in 'move'.
-
-        Parameters
-        ----------
-
-        move: Cartesian coordinates for a new particle placement
-        ( np.array( float * unit ( length = 3 ) ) )
-
-        trial_coordinates: Existing cartesian coordinates for the particle
-        we are updating.
-        ( np.array( float * unit ( length = 3 ) ) )
-        Optional, default = None
-
-        Returns
-        -------
-
-        new_coordinates: Updated coordinates for the particle.
-
-        """
-        units = move.unit
-
-        if trial_coordinates == None:
-
-          trial_coordinates = unit.Quantity(np.zeros([3]), units)
-
-        else:
-
-          values = []
-          for direction in range(0,3):
-            cart_sum = trial_coordinates[direction].__add__(move[direction])
-            values.append(cart_sum._value)
-
-          new_coordinates = unit.Quantity(values, units)
-        return(new_coordinates)
-
-def first_bead(positions):
-        """
-        Determine if we have any particles in 'positions'
-
-        Parameters
-        ----------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
-
-        Returns
-        -------
-
-        first_bead: Logical variable stating if this is the first particle.
-
-        """
-
-        first_bead = True
-
-        if positions != None:
-
-           first_bead = False
-
-        return(first_bead)
 
 def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=False):
         """
@@ -208,7 +189,7 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
           exit()
 
         # Define a blank set of cartesian coordinates
-        move = unit.Quantity(np.zeros([3]),trial_coordinates.unit)
+        move = unit.Quantity(np.zeros(3),trial_coordinates.unit)
 
         # Determine the 'max_step_size' as the square root of the difference
         # between 'bond_length' and 'distance'
@@ -283,14 +264,8 @@ def attempt_move(parent_coordinates,bond_length):
 
         else:
           # Assign the parent coordinates as the initial coordinates for a trial particle
-          if parent_coordinates.shape == '(3,)':
-            trial_coordinates = parent_coordinates
 
-          else:
-            print(parent_coordinates)
-            print(parent_coordinates.shape)
-            trial_coordinates = parent_coordinates[len(parent_coordinates)-1]
-
+          trial_coordinates = parent_coordinates
           ref = trial_coordinates
 
           for direction in range(0,3):
@@ -357,11 +332,13 @@ def non_bonded_distances(new_coordinates,existing_coordinates):
 
         else:
 
-          for particle in range(0,len(existing_coordinates)):
+          if single_bead(existing_coordinates):
+              distances.append(distance(new_coordinates,existing_coordinates))
 
-            test_position = unit.Quantity(existing_coordinates._value[particle],existing_coordinates.unit)
+          else:
 
-            distances.append(distance(new_coordinates,test_position))
+            for particle in range(0,len(existing_coordinates)):
+              distances.append(distance(new_coordinates,existing_coordinates[particle]))
 
         return(distances)
 
@@ -426,19 +403,25 @@ def assign_position(positions,bond_length,parent_index=-1):
 
         if positions == None:
           units = bond_length.unit
-          positions = unit.Quantity(np.zeros([3]), units)
+          positions = unit.Quantity(np.zeros(3), units)
           return(positions)
     
         else:
-          units = positions.unit
-          if positions.shape == '(3,)':
+
+          units = positions.unit            
+          if parent_index == -1:
+            if not single_bead(positions):
+               parent_index = len(positions) - 1
+
+          if single_bead(positions):
+
             parent_coordinates = positions
 
           else:
-            print("Before assigning a new position, the positions are: "+str(positions))
-            parent_coordinates = positions[len(positions)-1]
 
-        new_coordinates = unit.Quantity(np.zeros([3]), units)
+            parent_coordinates = positions[parent_index]
+
+        new_coordinates = unit.Quantity(np.zeros(3), units)
         success = False
         attempts = 0
 
@@ -461,6 +444,42 @@ def assign_position(positions,bond_length,parent_index=-1):
         positions = append_position(positions,new_coordinates)
 
         return(positions)
+
+def update_trial_coordinates(move,trial_coordinates=None):
+        """
+        Updates 'trial_coordinates by adding the coordinates in 'move'.
+
+        Parameters
+        ----------
+
+        move: Cartesian coordinates for a new particle placement
+        ( np.array( float * unit ( length = 3 ) ) )
+
+        trial_coordinates: Existing cartesian coordinates for the particle
+        we are updating.
+        ( np.array( float * unit ( length = 3 ) ) )
+        Optional, default = None
+
+        Returns
+        -------
+
+        new_coordinates: Updated coordinates for the particle.
+
+        """
+        units = move.unit
+
+        if trial_coordinates == None:
+
+          trial_coordinates = assign_position(positions=None,bond_length=0.0 * units)
+
+        values = []
+        new_coordinates = assign_position(positions=None,bond_length=0.0 * units)
+
+        for direction in range(0,3):
+
+           new_coordinates[direction] = trial_coordinates[direction].__add__(move[direction])
+
+        return(new_coordinates)
 
 def assign_sidechain_beads( positions, sidechain_length, bond_length ):
         """
@@ -489,7 +508,7 @@ def assign_sidechain_beads( positions, sidechain_length, bond_length ):
 
         for sidechain in range(0,sidechain_length):
 
-          positions = assign_position(positions,bond_length,parent_index=len(positions))
+          positions = assign_position(positions,bond_length)
 
         return(positions)
 
@@ -532,15 +551,7 @@ def assign_backbone_beads( positions, monomer_start, backbone_length, sidechain_
 
         for backbone_bead_index in range(0,backbone_length):
 
-          if backbone_bead_index == 0:
-
-            if positions == None:
-
-              positions = assign_position(positions,bond_length)
-
-            else:
-
-              positions = assign_position(positions,bond_length,parent_index=monomer_start)
+          positions = assign_position(positions,bond_length,parent_index=monomer_start)
 
           # Assign side-chain beads
 
