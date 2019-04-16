@@ -105,9 +105,9 @@ class Model(object):
             for particle in chain.iter_particles():
                 yield particle
 
-    def iter_positions(self, include_alt_loc=False):
+    def iter_positions(self):
         for chain in self:
-            for loc in chain.iter_positions(include_alt_loc):
+            for loc in chain.iter_positions():
                 yield loc
 
 class Chain(object):
@@ -148,9 +148,9 @@ class Chain(object):
             for particle in res:
                 yield particle;
 
-    def iter_positions(self, include_alt_loc=False):
+    def iter_positions(self):
         for res in self:
-            for loc in res.iter_positions(include_alt_loc):
+            for loc in res.iter_positions():
                 yield loc
 
     def __len__(self):
@@ -166,21 +166,12 @@ class Monomer(object):
         self.particles_by_name = {}
 
     def _add_particle(self, particle):
-        """
-        """
-        self.locations = Monomer.Location(alt_loc, particle.monomer_name_with_spaces)
-        assert particle.monomer_number == self.number
-        assert particle.insertion_code == self.insertion_code
-        # actually use new particle
+        self.locations = particle.locations
         self.particles_by_name[particle.name] = particle
-        self.particles_by_name[particle.name_with_spaces] = particle
         self.particles.append(particle)
 
-    def get_name(self, alt_loc=None):
-        if alt_loc == None:
-            alt_loc = self.primary_location_id
-        loc = self.locations[alt_loc]
-        return loc.name
+    def get_name(self):
+        return self._name
     name = property(get_name, doc='monomer name')
 
     def get_particle(self, particle_name):
@@ -190,37 +181,16 @@ class Monomer(object):
         for particle in self.iter_particles():
             yield particle
 
-    def iter_particles(self, alt_loc=None):
-        if alt_loc == None:
-            locs = [self.primary_location_id]
-        elif alt_loc == "":
-            locs = [self.primary_location_id]
-        elif alt_loc == "*":
-            locs = None
-        else:
-            locs = list(alt_loc)
-        # If an particle has any location in alt_loc, emit the particle
+    def iter_particles(self):
         for particle in self.particles:
-            use_particle = False # start pessimistic
-            for loc2 in particle.locations.keys():
-                # print "#%s#%s" % (loc2,locs)
-                if locs == None: # means all locations
-                    use_particle = True
-                elif loc2 in locs:
-                    use_particle = True
-            if use_particle:
-                yield particle
+           yield particle
 
-    def iter_positions(self, include_alt_loc=False):
+    def iter_positions(self):
         """
         Returns one position per particle, even if an individual particle has multiple positions.
 
         """
         for particle in self:
-            if include_alt_loc:
-                for loc in particle.iter_positions():
-                    yield loc
-            else:
                 yield particle.position
 
     def __len__(self):
@@ -233,8 +203,8 @@ class Particle(object):
     def __init__(self, particle_name, particle_number, monomer_name, monomer_number, position, element_symbol, chain_id):
         """Create a new particle
         """
-        self.particle_name = particle_name
-        self.particle_number = particle_number
+        self.name = particle_name
+        self.number = particle_number
         self.monomer_name = monomer_name
         self.monomer_number = monomer_number
         self.chain_id = chain_id
@@ -281,6 +251,7 @@ class Particle(object):
 
     def get_position(self):
         return self.location.position
+
     def set_position(self, coords):
         self.location.position = coords
 
@@ -318,30 +289,15 @@ def build_topology(positions):
         # Build the topology
 
         particleByNumber = {}
-        for chain in pdb.iter_chains():
-            c = top.addChain(chain.chain_id)
+        for chain in model.iter_chains():
+            c = topology.addChain(chain.chain_id)
             for monomer in chain.iter_monomers():
                 resName = monomer.get_name()
-                if resName in PDBFile._monomerNameReplacements:
-                    resName = PDBFile._monomerNameReplacements[resName]
-                r = top.addMonomer(resName, c, str(monomer.number), monomer.insertion_code)
-                if resName in PDBFile._particleNameReplacements:
-                    particleReplacements = PDBFile._particleNameReplacements[resName]
-                else:
-                    particleReplacements = {}
                 for particle in monomer.iter_particles():
-                    particleName = particle.get_name()
-                    if particleName in particleReplacements:
-                        particleName = particleReplacements[particleName]
+                    particleName = particle.name
                     particleName = particleName.strip()
                     element = particle.element
-                    newParticle = top.addParticle(particleName, element, r, str(particle.serial_number))
-
-        chain = topology.addChain()
-        for monomer in range(polymer_length):
-            monomer = topology.addMonomer('CG', chain)
-            topology.addParticle('X', 'backbone', monomer)
-            topology.addParticle('Q', 'sidechain', monomer)
+                    newParticle = topology.addAtom(particleName, element, monomer, str(particle.number))
         return(topology)
 
 def build_system():
