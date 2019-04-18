@@ -13,6 +13,7 @@ from simtk import unit
 from simtk.openmm.vec3 import Vec3
 # foldamers utilities
 from foldamers import CGModel
+import cg_openmm
 
 box_size = 10.00 * unit.nanometer # box width
 cutoff = box_size / 2.0 * 0.99
@@ -38,7 +39,7 @@ def add_new_elements():
         return
 
 class Model(object):
-    # Build a model from which to construct the topology
+    # Build a model object
 
     def __init__(self,positions):
         self.positions = positions
@@ -307,32 +308,23 @@ def build_system():
         for monomer in range(polymer_length):
           for backbone_bead in range(backbone_length):
             system.addParticle(mass)
-            if bead_index != 0:
-              bead_index = bead_index + 1
+            bead_index = bead_index + 1
+            if bead_index != 1:
+              system.addBond(bead_index,bead_index-1)
               system.addConstraint(bead_index,bead_index-sidechain_length-1,sigma)
             if backbone_bead in sidechain_positions:
               for sidechain in range(sidechain_length):
                 system.addParticle(mass)
                 bead_index = bead_index + 1
+                system.addBond(bead_index,bead_index-1)
                 system.addConstraint(bead_index,bead_index-1,sigma)
         return(system)
 
 cgmodel = CGModel()
 system = build_system()
-topology = build_topology(cgmodel.positions)
-minimization_time = simulation_time_step * 1000
-integrator = LangevinIntegrator(500.0  * unit.kelvin, minimization_time, simulation_time_step) # Define Langevin integrator
-simulation = Simulation(topology, system, integrator) # Define a simulation 'context'
-simulation.context.setPositions(positions) # Assign particle positions for this context
-simulation.context.setVelocitiesToTemperature(500.0*unit.kelvin)
-simulation.reporters.append(PDBReporter(str(output_directory+"/minimize_coordinates_test.pdb"),1)) # Write simulation PDB coordinates  
-simulation.reporters.append(StateDataReporter(str(output_directory+"/minimize_test.dat"),1, \
-    step=True, totalEnergy=True, potentialEnergy=True, kineticEnergy=True, temperature=True))
-simulation.minimizeEnergy() # Set the simulation type to energy minimization
-simulation.step(1000)
-positions = simulation.context.getState(getPositions=True).getPositions()
-potential_energies = round(simulation.context.getState(getEnergy=True).getPotentialEnergy()._value,2)
-nonbonded_energies = "{:.2E}".format(calculate_nonbonded_energy(model_settings,particle_properties,positions)._value)
-print(potential_energies)
-print(nonbonded_energies)
+pdb_file = "test.pdb"
+write_pdbfile(cgmodel,filename)
+quit()
+#topology = build_topology(cgmodel.positions)
+simulation = build_mm_simulation(topology,system)
 exit()

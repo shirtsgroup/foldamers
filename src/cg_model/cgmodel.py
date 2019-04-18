@@ -8,8 +8,7 @@
 
 from simtk import unit
 import sys, os
-sys.path.insert(0, os.path.abspath('/home/gmeek/Foldamers/foldamers/src'))
-from utilities import util as util
+from ..utilities import util
 
 class CGModel(object):
         """

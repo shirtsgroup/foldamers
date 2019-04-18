@@ -4,7 +4,7 @@ import io
 import os
 import sys
 from shutil import rmtree
-
+import setuptools
 from setuptools import setup, Command
 
 # Package meta-data.
@@ -26,7 +26,7 @@ EXTRAS = {
     # 'fancy feature': ['django'],
 }
 
-#here = os.path.abspath(os.path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
@@ -94,16 +94,15 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=['foldamers'],
-    package_dir={'foldamers': 'src'},
+    packages=setuptools.find_packages(),
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
-#    license='MIT',
+    license='MIT',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-#        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
@@ -115,3 +114,5 @@ setup(
         'upload': UploadCommand,
     },
 )
+
+sys.path.append(here.split('/foldamers'))

@@ -30,12 +30,12 @@ def write_pdbfile(CGModel,filename):
         for monomer_index in range(CGModel.polymer_length):
           for backbone_bead in range(CGModel.backbone_length):
 
-            pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  X   CG  A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
+            pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1 M"+str("{:>2}".format(monomer_index+1))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
             bead_index = bead_index + 1
 
             if backbone_bead in CGModel.backbone_positions:
               for sidechain_bead in range(0,sidechain_length):
-                pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  Q   CG  A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
+                pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2 M"+str("{:>2}".format(monomer_index+1))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
                 bead_index = bead_index + 1
         pdb_object.write(str("END"))
         pdb_object.close()
