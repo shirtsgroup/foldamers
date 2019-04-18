@@ -35,14 +35,8 @@
 % Set up styles of URL: it should be placed after hyperref.
 \urlstyle{same}
 
-\addto\captionsenglish{\renewcommand{\figurename}{Fig.\@ }}
-\makeatletter
-\def\fnum@figure{\figurename\thefigure{}}
-\makeatother
-\addto\captionsenglish{\renewcommand{\tablename}{Table }}
-\makeatletter
-\def\fnum@table{\tablename\thetable{}}
-\makeatother
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+\addto\captionsenglish{\renewcommand{\tablename}{Table}}
 \addto\captionsenglish{\renewcommand{\literalblockname}{Listing}}
 
 \addto\captionsenglish{\renewcommand{\literalblockcontinuedname}{continued from previous page}}
@@ -58,7 +52,7 @@
 
 
 \title{foldamers Documentation}
-\date{Apr 14, 2019}
+\date{Apr 18, 2019}
 \release{0.0.1}
 \author{Garrett A. Meek, Lenny T. Fobe, Michael R. Shirts}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -67,7 +61,7 @@
 \begin{document}
 
 \pagestyle{empty}
-\sphinxmaketitle
+\maketitle
 \pagestyle{plain}
 \sphinxtableofcontents
 \pagestyle{normal}
@@ -124,318 +118,9 @@ This page details the functions and classes in src/util.
 Shown below is a detailed description of the input/output
 options for the foldamers package.
 
-\phantomsection\label{\detokenize{util:module-iotools}}\index{iotools (module)@\spxentry{iotools}\spxextra{module}}
 
 \section{Utilities and random functions (src/utilities/util.py)}
-\label{\detokenize{util:module-util}}\label{\detokenize{util:utilities-and-random-functions-src-utilities-util-py}}\index{util (module)@\spxentry{util}\spxextra{module}}\index{append\_position() (in module util)@\spxentry{append\_position()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.append_position}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{append\_position}}}{\emph{positions}, \emph{new\_coordinate}}{}
-Updates a set of input coordinates with ‘new\_coordinate’ in the
-cartesian coordinate direction indexted by ‘direction’.
-
-new\_coordinate: Cartesian coordinates for a particle
-( np.array( float * unit ( length = 3 ) ) )
-
-direction: Cartesian direction index for particle placement, 
-where: x=0,y=1,z=2. 
-( integer )
-
-trial\_coordinates: Existing cartesian coordinates for the particle
-we are updating.
-( np.array( float * unit ( length = 3 ) ) )
-Optional, default = None
-
-trial\_coordinates: Updated coordinates for the particle.
-
-\end{fulllineitems}
-
-\index{assign\_backbone\_beads() (in module util)@\spxentry{assign\_backbone\_beads()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.assign_backbone_beads}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{assign\_backbone\_beads}}}{\emph{positions}, \emph{monomer\_start}, \emph{backbone\_length}, \emph{sidechain\_length}, \emph{sidechain\_positions}, \emph{bond\_length}}{}
-Assign random position for a backbone bead
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-monomer\_start: Index of the bead to which we will bond this
-new backbone bead.
-( integer )
-
-backbone\_length: Number of beads in the backbone
-portion of each (individual) monomer (integer), default = 1
-
-sidechain\_length: Number of beads in the sidechain
-portion of each (individual) monomer (integer), default = 1
-
-sidechain\_positions: List of integers defining the backbone
-bead indices upon which we will place the sidechains,
-default = {[}0{]} (Place a sidechain on the backbone bead with
-index “0” (first backbone bead) in each (individual) monomer
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-\end{fulllineitems}
-
-\index{assign\_position() (in module util)@\spxentry{assign\_position()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.assign_position}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{assign\_position}}}{\emph{positions}, \emph{bond\_length}, \emph{parent\_index=-1}}{}
-Assign random position for a bead
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-\end{fulllineitems}
-
-\index{assign\_sidechain\_beads() (in module util)@\spxentry{assign\_sidechain\_beads()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.assign_sidechain_beads}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{assign\_sidechain\_beads}}}{\emph{positions}, \emph{sidechain\_length}, \emph{bond\_length}}{}
-Assign random position for all sidechain beads
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-sidechain\_length: Number of beads in the sidechain
-portion of each (individual) monomer (integer), default = 1
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-\end{fulllineitems}
-
-\index{attempt\_move() (in module util)@\spxentry{attempt\_move()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.attempt_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{attempt\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}}{}
-Given a set of cartesian coordinates, assign a new particle
-a distance of ‘bond\_length’ away in a random direction.
-
-parent\_coordinates: Positions for a single particle,
-away from which we will place a new particle a distance
-of ‘bond\_length’ away.
-( np.array( float * unit.angstrom ( length = 3 ) ) )
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-trial\_coordinates: Positions for a new trial particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
-
-\end{fulllineitems}
-
-\index{collisions() (in module util)@\spxentry{collisions()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.collisions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{collisions}}}{\emph{distances}, \emph{bond\_length}}{}
-Determine whether there are any collisions between non-bonded
-particles, where a “collision” is defined as a distance shorter
-than the user-provided ‘bond\_length’.
-
-distances: List of the distances between all nonbonded particles.
-( list ( float * simtk.unit.distance ( length = \# nonbonded\_interactions ) ) )
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-collision: Logical variable stating whether or not the model has
-bead collisions.
-default = False
-
-\end{fulllineitems}
-
-\index{distance() (in module util)@\spxentry{distance()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.distance}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{distance}}}{\emph{positions\_1}, \emph{positions\_2}}{}
-Construct a matrix of the distances between all particles.
-
-positions\_1: Positions for a particle
-( np.array( length = 3 ) )
-
-positions\_2: Positions for a particle
-( np.array( length = 3 ) )
-
-distance
-( float * unit )
-
-\end{fulllineitems}
-
-\index{distance\_matrix() (in module util)@\spxentry{distance\_matrix()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.distance_matrix}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{distance\_matrix}}}{\emph{positions}}{}
-Construct a matrix of the distances between all particles.
-
-positions: Positions for an array of particles.
-( np.array( num\_particles x 3 ) )
-
-distance\_matrix: Matrix containing the distances between all beads.
-( np.array( num\_particles x 3 ) )
-
-\end{fulllineitems}
-
-\index{first\_bead() (in module util)@\spxentry{first\_bead()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.first_bead}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{first\_bead}}}{\emph{positions}}{}
-Determine if we have any particles in ‘positions’
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( float * unit ( shape = num\_beads x 3 ) ) )
-
-first\_bead: Logical variable stating if this is the first particle.
-
-\end{fulllineitems}
-
-\index{get\_move() (in module util)@\spxentry{get\_move()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.get_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{get\_move}}}{\emph{direction}, \emph{step}}{}
-Given the cartesian coordinates for a particle (‘move’),
-a ‘step’ (distance), and a ‘direction’ ( Index denoting
-x,y,z Cartesian direction), update the coordinates for
-the particle.
-
-direction: Cartesian directions in which we have attempted 
-a particle placement, where: x=0,y=1,z=2. 
-( integer )
-
-step: Number to add/subtract to the cartesian coordinates
-for direction ‘direction’ in ‘move’
-( float * simtk.unit.distance )
-
-move: Updated positions for the particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
-
-\end{fulllineitems}
-
-\index{non\_bonded\_distances() (in module util)@\spxentry{non\_bonded\_distances()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.non_bonded_distances}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{non\_bonded\_distances}}}{\emph{new\_coordinates}, \emph{existing\_coordinates}}{}
-Calculate the distances between a trial particle (‘new\_coordinates’)
-and all existing particles (‘existing\_coordinates’).
-
-new\_coordinates: Positions for a single trial particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
-
-existing\_coordinates: Positions for a single trial particle
-( np.array( float * unit.angstrom ( shape = num\_particles x 3 ) ) )
-
-distances: List of the distances between all nonbonded particles.
-( list ( float * simtk.unit.distance ( length = \# nonbonded\_interactions ) ) )
-
-\end{fulllineitems}
-
-\index{random\_positions() (in module util)@\spxentry{random\_positions()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.random_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{random\_positions}}}{\emph{polymer\_length}, \emph{backbone\_length}, \emph{sidechain\_length}, \emph{sidechain\_positions}, \emph{bond\_length}, \emph{sigma}}{}
-Assign random positions for all beads in a coarse-grained polymer.
-
-polymer\_length: Number of monomer units (integer), default = 8
-
-backbone\_length: Number of beads in the backbone 
-portion of each (individual) monomer (integer), default = 1
-
-sidechain\_length: Number of beads in the sidechain
-portion of each (individual) monomer (integer), default = 1
-
-sidechain\_positions: List of integers defining the backbone
-bead indices upon which we will place the sidechains,
-default = {[}0{]} (Place a sidechain on the backbone bead with
-index “0” (first backbone bead) in each (individual) monomer
-
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-sigma: Non-bonded bead Lennard-Jones interaction distances,
-( float * simtk.unit.distance )
-default = 8.4 * unit.angstrom
-
-bb\_bond\_length: Bond length for all bonded backbone beads,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-bs\_bond\_length: Bond length for all backbone-sidechain bonds,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-ss\_bond\_length: Bond length for all beads within a sidechain,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
-
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
-
-\end{fulllineitems}
-
-\index{random\_sign() (in module util)@\spxentry{random\_sign()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.random_sign}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{random\_sign}}}{\emph{number}}{}
-Returns ‘number’ with a random sign.
-
-number: float
-
-number
-
-\end{fulllineitems}
-
-\index{unit\_sqrt() (in module util)@\spxentry{unit\_sqrt()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.unit_sqrt}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{unit\_sqrt}}}{\emph{simtk\_quantity}}{}
-Returns the square root of a simtk ‘Quantity’.
-
-simtk\_quantity: A ‘Quantity’ object, as defined in simtk.
-( float * unit )
-
-sqrt: Square root of a simtk\_quantity.
-
-\end{fulllineitems}
-
-\index{update\_trial\_coordinates() (in module util)@\spxentry{update\_trial\_coordinates()}\spxextra{in module util}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{util:util.update_trial_coordinates}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{util.}}\sphinxbfcode{\sphinxupquote{update\_trial\_coordinates}}}{\emph{move}, \emph{trial\_coordinates=None}}{}
-Updates ‘trial\_coordinates by adding the coordinates in ‘move’.
-
-move: Cartesian coordinates for a particle
-( np.array( float * unit ( length = 3 ) ) )
-
-trial\_coordinates: Existing cartesian coordinates for the particle
-we are updating.
-( np.array( float * unit ( length = 3 ) ) )
-Optional, default = None
-
-new\_coordinates: Updated coordinates for the particle.
-
-\end{fulllineitems}
-
-
+\label{\detokenize{util:utilities-and-random-functions-src-utilities-util-py}}
 
 \chapter{Indices and tables}
 \label{\detokenize{index:indices-and-tables}}\begin{itemize}
@@ -451,15 +136,6 @@ new\_coordinates: Updated coordinates for the particle.
 \end{itemize}
 
 
-\renewcommand{\indexname}{Python Module Index}
-\begin{sphinxtheindex}
-\let\bigletter\sphinxstyleindexlettergroup
-\bigletter{i}
-\item\relax\sphinxstyleindexentry{iotools}\sphinxstyleindexpageref{util:\detokenize{module-iotools}}
-\indexspace
-\bigletter{u}
-\item\relax\sphinxstyleindexentry{util}\sphinxstyleindexpageref{util:\detokenize{module-util}}
-\end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}
 \printindex

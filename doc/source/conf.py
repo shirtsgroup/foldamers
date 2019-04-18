@@ -14,11 +14,6 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('/home/gmeek/Foldamers/foldamers/src'))
-sys.path.insert(1, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/cg_model'))
-#sys.path.insert(2, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/parameter_analysis'))
-sys.path.insert(2, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/thermo'))
-sys.path.insert(3, os.path.abspath('/home/gmeek/Foldamers/foldamers/src/utilities'))
 
 # -- Project information -----------------------------------------------------
 
