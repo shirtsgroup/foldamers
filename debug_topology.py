@@ -12,7 +12,8 @@ from simtk.openmm import *
 from simtk import unit
 from simtk.openmm.vec3 import Vec3
 # foldamers utilities
-from foldamers import CGModel
+from foldamers.src.cg_model.cgmodel import CGModel
+from foldamers.src.utilities.iotools import *
 import cg_openmm
 
 box_size = 10.00 * unit.nanometer # box width
@@ -30,6 +31,8 @@ polymer_length = 12 # Number of monomers in the polymer
 mass = 12.0 * unit.amu # Mass of beads
 sigma = 8.4 * unit.angstrom # Lennard-Jones interaction distance
 bond_length = 1.0 * unit.angstrom # bond length
+bond_force_constant = 0.0
+constrain_bonds = True
 epsilon = 0.5 * unit.kilocalorie_per_mole # Lennard-Jones interaction strength
 q = 0.0 * unit.elementary_charge # Charge of beads
 
@@ -310,20 +313,33 @@ def build_system():
             system.addParticle(mass)
             bead_index = bead_index + 1
             if bead_index != 1:
-              system.addBond(bead_index,bead_index-1)
-              system.addConstraint(bead_index,bead_index-sidechain_length-1,sigma)
+
+             force = mm.HarmonicBondForce()
+             force.addBond(bead_index-1, bead_index, bond_length * unit.nanometer,bond_force_constant)
+             system.addForce(force)
+
+             if constrain_bonds:
+              system.addConstraint(bead_index-1, bead_index, bond_length * unit.nanometer)
+
             if backbone_bead in sidechain_positions:
               for sidechain in range(sidechain_length):
                 system.addParticle(mass)
                 bead_index = bead_index + 1
-                system.addBond(bead_index,bead_index-1)
-                system.addConstraint(bead_index,bead_index-1,sigma)
+
+
+                force = mm.HarmonicBondForce()
+                force.addBond(bead_index-1, bead_index, bond_length * unit.nanometer,bond_force_constant)
+                system.addForce(force)
+
+                if constrain_bonds:
+                  system.addConstraint(bead_index,bead_index-1,sigma)
+
         return(system)
 
 cgmodel = CGModel()
 system = build_system()
 pdb_file = "test.pdb"
-write_pdbfile(cgmodel,filename)
+write_pdbfile(cgmodel,pdb_file)
 quit()
 #topology = build_topology(cgmodel.positions)
 simulation = build_mm_simulation(topology,system)

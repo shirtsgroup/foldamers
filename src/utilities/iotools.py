@@ -27,15 +27,18 @@ def write_pdbfile(CGModel,filename):
 
         pdb_object = open(filename,"w")
 
+
+        coordinates = CGModel.positions
+        bead_index = 1
         for monomer_index in range(CGModel.polymer_length):
           for backbone_bead in range(CGModel.backbone_length):
 
-            pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1 M"+str("{:>2}".format(monomer_index+1))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
+            pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1 "+str("{:>3}".format(str("M")+str(monomer_index+1)))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
             bead_index = bead_index + 1
 
-            if backbone_bead in CGModel.backbone_positions:
-              for sidechain_bead in range(0,sidechain_length):
-                pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2 M"+str("{:>2}".format(monomer_index+1))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1],3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2],3)))+"  1.00  0.00\n"))
+            if backbone_bead in CGModel.sidechain_positions:
+              for sidechain_bead in range(0,CGModel.sidechain_length):
+                pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2 "+str("{:>3}".format(str(str("M")+str(monomer_index+1))))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
                 bead_index = bead_index + 1
         pdb_object.write(str("END"))
         pdb_object.close()
