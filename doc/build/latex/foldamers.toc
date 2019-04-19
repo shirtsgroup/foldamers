@@ -1,4 +1,4 @@
-\babel@toc {english}{}
+\select@language {english}
 \contentsline {chapter}{\numberline {1}Coarse grained model utilities}{2}{chapter.1}
 \contentsline {section}{\numberline {1.1}\IeC {\textquoteleft }cgmodel\IeC {\textquoteright } class for OpenMM simulation}{2}{section.1.1}
 \contentsline {section}{\numberline {1.2}Other coarse grained model utilities}{2}{section.1.2}
@@ -9,6 +9,4 @@
 \contentsline {chapter}{\numberline {4}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{5}{chapter.4}
 \contentsline {section}{\numberline {4.1}Input/Output options (src/utilities/iotools.py)}{5}{section.4.1}
 \contentsline {section}{\numberline {4.2}Utilities and random functions (src/utilities/util.py)}{5}{section.4.2}
-\contentsline {chapter}{\numberline {5}Indices and tables}{9}{chapter.5}
-\contentsline {chapter}{Python Module Index}{10}{section*.19}
-\contentsline {chapter}{Index}{11}{section*.20}
+\contentsline {chapter}{\numberline {5}Indices and tables}{6}{chapter.5}

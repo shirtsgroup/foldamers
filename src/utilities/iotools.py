@@ -33,13 +33,37 @@ def write_pdbfile(CGModel,filename):
         for monomer_index in range(CGModel.polymer_length):
           for backbone_bead in range(CGModel.backbone_length):
 
-            pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1 "+str("{:>3}".format(str("M")+str(monomer_index+1)))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+            if monomer_index in list([0,CGModel.polymer_length-1]):
+             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1"+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+            else:
+             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG1"+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
             bead_index = bead_index + 1
 
             if backbone_bead in CGModel.sidechain_positions:
               for sidechain_bead in range(0,CGModel.sidechain_length):
-                pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2 "+str("{:>3}".format(str(str("M")+str(monomer_index+1))))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+                if monomer_index in list([0,CGModel.polymer_length-1]):
+                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2"+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+                else:
+                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"  CG2"+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
                 bead_index = bead_index + 1
-        pdb_object.write(str("END"))
+        pdb_object.write(str("TER\n"))
+
+        bead_index = 1
+        for monomer_index in range(CGModel.polymer_length):
+          for backbone_bead in range(CGModel.backbone_length):
+
+            if bead_index != 1:
+             parent_bead = bead_index - CGModel.sidechain_length - 1
+             pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")            
+             bead_index = bead_index + 1
+
+            if bead_index == 1:
+             bead_index = bead_index + 1
+
+            if backbone_bead in CGModel.sidechain_positions:
+              for sidechain_bead in range(0,CGModel.sidechain_length):
+                pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(bead_index-1))+"\n")
+                bead_index = bead_index + 1
+        pdb_object.write(str("END\n"))
         pdb_object.close()
         return
