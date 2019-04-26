@@ -1,4 +1,3 @@
-# This script generates random coordinates for a CG polymer
 
 # =============================================================================================
 # 1) PYTHON PACKAGE IMPORTS

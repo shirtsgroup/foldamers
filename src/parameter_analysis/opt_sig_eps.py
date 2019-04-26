@@ -5,6 +5,8 @@ from io import StringIO
 import numpy as np
 import math, random
 import matplotlib.pyplot as pyplot
+import statistics
+from statistics import mean
 # OpenMM utilities
 import simtk.openmm.app.element as elem
 from simtk.openmm.app.pdbfile import PDBFile
@@ -37,12 +39,13 @@ bond_force_constant = 9.9e5 # Units = kJ/mol/A^2
 constrain_bonds = False
 charge = 0.0 * unit.elementary_charge # Charge of beads
 
+ensemble_size = 100
 number_sigma = 20
 number_epsilon = 20
 min_sigma = 5.0
 min_epsilon = 0.1
 sigma_step = 0.5
-epsilon_step = 0.3
+epsilon_step = 0.2
 
 charge = charge._value
 bond_length = bond_length.in_units_of(unit.nanometer)._value
@@ -120,35 +123,32 @@ def get_dihedral_angles():
   return(dihedrals)
 
 add_new_elements()
-cgmodel = CGModel()
-pdb_file = "test.pdb"
-write_pdbfile(cgmodel,pdb_file)
-pdb_mm_obj = PDBFile(pdb_file)
-topology = pdb_mm_obj.getTopology()
 
 sigma = [ float(min_sigma + i * sigma_step) * unit.angstrom for i in range(number_sigma)] # Lennard-Jones interaction distance
-epsilon = [ float(min_epsilon + i * epsilon_step) * unit.kilocalorie_per_mole for i in range(number_epsilon)] # Lennard-Jones interaction strength
+epsilon = [ float(min_epsilon + i * epsilon_step) * unit.kilojoule_per_mole for i in range(number_epsilon)] # Lennard-Jones interaction strength
 potential_energies = np.zeros([len(sigma),len(epsilon)])
-number_stages = round((total_simulation_time._value/simulation_time_step._value)/print_frequency)
 
 for sig_index in range(len(sigma)):
 
  for eps_index in range(len(epsilon)):
 
-   sig = sigma[sig_index].in_units_of(unit.nanometer)._value
-   eps = epsilon[eps_index].in_units_of(unit.kilojoule_per_mole)._value
-#   print("Running OpenMM simulation with epsilon="+str(eps)+" and sigma="+str(sig))
+   ensemble_energies=[]
+   for pose in range(ensemble_size):
 
-   system = build_system(charge,sig,eps)
-   simulation = build_mm_simulation(topology,system,cgmodel.positions,temperature=temperature,simulation_time_step=simulation_time_step,total_simulation_time=simulation_time_step*print_frequency,output_pdb="opt_sig_eps.pdb",output_data="opt_sig_eps.dat",print_frequency=print_frequency)
+     cgmodel = CGModel()
+     pdb_file = "test.pdb"
+     write_pdbfile(cgmodel,pdb_file)
+     pdb_mm_obj = PDBFile(pdb_file)
+     topology = pdb_mm_obj.getTopology()
+     sig = sigma[sig_index].in_units_of(unit.nanometer)._value
+     eps = epsilon[eps_index].in_units_of(unit.kilojoule_per_mole)._value
+     system = build_system(charge,sig,eps)
+     simulation = build_mm_simulation(topology,system,cgmodel.positions,temperature=temperature,simulation_time_step=simulation_time_step,total_simulation_time=simulation_time_step,output_pdb="opt_sig_eps.pdb",output_data="opt_sig_eps.dat",print_frequency=print_frequency)
 
-   traj_energies=[]
-   for stage in range(number_stages):
-
-     simulation.step(print_frequency)
      energy = round(simulation.context.getState(getEnergy=True).getPotentialEnergy()._value,2)
-     traj_energies.append(energy)
-   potential_energies[sig_index][eps_index] = min(traj_energies)
+     ensemble_energies.append(energy)
+
+   potential_energies[sig_index][eps_index] = mean(ensemble_energies)
 
 sigma = [sigma[i]._value for i in range(len(sigma))]
 epsilon = [epsilon[i]._value for i in range(len(epsilon))]

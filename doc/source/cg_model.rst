@@ -3,19 +3,12 @@ Coarse grained model utilities
 
 This page details the functions and classes in src/cg_model/cgmodel.py
 
-'cgmodel' class for OpenMM simulation
--------------------------------------
+Coarse grained model objects and tools
+--------------------------------------
 
-Shown below is a detailed description of the 'cgmodel' class object,
-which contains all information about a coarse grained model.
-
-.. automodule:: cgmodel
-    :members: cgmodel
-
-Other coarse grained model utilities
-------------------------------------
+Shown below is a detailed description of the functions in the 'cgmodel'
+module.
 
 .. automodule:: cgmodel
     :members:
-    :exclude-members: cgmodel
 

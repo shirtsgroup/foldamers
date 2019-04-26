@@ -14,6 +14,7 @@
 #
 import os
 import sys
+sys.path.insert(0,os.path.abspath('../../src'))
 
 # -- Project information -----------------------------------------------------
 
@@ -116,7 +117,7 @@ latex_elements = {
 
     # The font size ('10pt', '11pt' or '12pt').
     #
-    # 'pointsize': '10pt',
+    'pointsize': '12pt',
 
     # Additional stuff for the LaTeX preamble.
     #
@@ -126,7 +127,7 @@ latex_elements = {
     #
     # 'figure_align': 'htbp',
 
-    'extraclassoptions': 'openany,oneside'
+    'extraclassoptions': 'openany,twoside'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

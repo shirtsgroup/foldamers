@@ -9,6 +9,81 @@
 from simtk import unit
 import sys, os
 from ..utilities import util
+from simtk import openmm as mm
+import simtk.openmm.app.element as elem
+
+def get_particle_masses(cgmodel):
+        list_of_masses = []
+        for backbone_bead in range(cgmodel.backbone_length):
+            list_of_masses.append(cgmodel.mass)
+            if backbone_bead in cgmodel.sidechain_positions:
+              for sidechain in range(cgmodel.sidechain_length):
+                 list_of_masses.append(cgmodel.mass)
+        return(list_of_masses)
+
+def add_new_elements(list_of_masses):
+        element_index = 117
+        cg_particle_index = 1
+        for mass in list_of_masses:
+         particle_name = str("cg-"+str(cg_particle_index))
+         particle_symbol = str("CG"+str(cg_particle_index))
+         elem.Element(element_index,particle_name,particle_symbol,mass)
+         element_index = element_index + 1
+         cg_particle_index = cg_particle_index + 1
+        return
+
+def build_system(cgmodel):
+
+        sigma = cgmodel.sigma.in_units_of(unit.nanometer)._value
+        charge = cgmodel.charge._value
+        epsilon = cgmodel.epsilon.in_units_of(unit.kilojoule_per_mole)._value
+        bond_length = cgmodel.bond_length.in_units_of(unit.nanometer)._value
+
+        # Create system
+        system = mm.System()
+        nonbonded_force = mm.NonbondedForce()
+        bead_index = 0
+        for monomer in range(cgmodel.polymer_length):
+          for backbone_bead in range(cgmodel.backbone_length):
+            system.addParticle(cgmodel.mass)
+            nonbonded_force.addParticle(charge,sigma,epsilon)
+            if monomer != 0:
+             bead_index = bead_index + 1
+
+             if backbone_bead == 0:
+              force = mm.HarmonicBondForce()
+              force.addBond(bead_index-cgmodel.sidechain_length-1, bead_index,bond_length,cgmodel.bond_force_constant)
+              system.addForce(force)
+              nonbonded_force.addException(bead_index-cgmodel.sidechain_length-1,bead_index,charge,bond_length,epsilon=0.0)
+
+              if cgmodel.constrain_bonds:
+               system.addConstraint(bead_index-cgmodel.sidechain_length-1, bead_index, bond_length)
+
+             if backbone_bead != 0:
+              force = mm.HarmonicBondForce()
+              force.addBond(bead_index-1, bead_index, bond_length,cgmodel.bond_force_constant)
+              system.addForce(force)
+              nonbonded_force.addException(bead_index-1, bead_index,charge,bond_length,epsilon=0.0)
+
+              if cgmodel.constrain_bonds:
+               system.addConstraint(bead_index-1, bead_index, bond_length)
+
+            if backbone_bead in cgmodel.sidechain_positions:
+              for sidechain in range(cgmodel.sidechain_length):
+                system.addParticle(cgmodel.mass)
+                nonbonded_force.addParticle(charge,sigma,epsilon)
+                bead_index = bead_index + 1
+
+                force = mm.HarmonicBondForce()
+                force.addBond(bead_index-1, bead_index, bond_length,cgmodel.bond_force_constant)
+                system.addForce(force)
+                nonbonded_force.addException(bead_index-1, bead_index,charge,bond_length,epsilon=0.0)
+
+                if cgmodel.constrain_bonds:
+                  system.addConstraint(bead_index,bead_index-1,bond_length)
+  
+        system.addForce(nonbonded_force)
+        return(system)
 
 class CGModel(object):
         """
@@ -45,6 +120,11 @@ class CGModel(object):
         ( float * simtk.unit.distance )
         default = 1.0 * unit.angstrom
 
+        bond_force_constant: Bond force constant for all beads that are bonded,
+        ( float )
+        default = 9.9e5 kJ/mol/A^2
+
+
         bb_bond_length: Bond length for all bonded backbone beads,
         ( float * simtk.unit.distance )
         default = 1.0 * unit.angstrom
@@ -72,13 +152,14 @@ class CGModel(object):
         sigma
         epsilon
         bond_length
+        bond_force_constant
         bb_bond_length
         bs_bond_length
         ss_bond_length
         charge
         num_beads
         positions
-        topology
+        system
 
         Notes
         -----
@@ -86,9 +167,9 @@ class CGModel(object):
         """
 
         # Built in class attributes
-        _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','mass','sigma','epsilon','bond_length','bs_bond_length','bb_bond_length','ss_bond_length','charge','num_beads','positions','topology')
+        _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','mass','sigma','epsilon','bond_length','bond_force_constant','bs_bond_length','bb_bond_length','ss_bond_length','charge','num_beads','positions','system','topology','constrain_bonds')
 
-        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], mass = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_length = 1.0 * unit.angstrom, bb_bond_length = 1.0 * unit.angstrom, bs_bond_length = 1.0 * unit.angstrom, ss_bond_length = 1.0 * unit.angstrom, charge = 0.0 * unit.elementary_charge):
+        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], mass = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_length = 1.0 * unit.angstrom, bond_force_constant = 9.9e5, bb_bond_length = 1.0 * unit.angstrom, bs_bond_length = 1.0 * unit.angstrom, ss_bond_length = 1.0 * unit.angstrom, charge = 0.0 * unit.elementary_charge,constrain_bonds = False):
 
           """
           Initialize variables that were passed as input
@@ -102,14 +183,25 @@ class CGModel(object):
           self.sigma = sigma
           self.epsilon = epsilon
           self.bond_length = bond_length
+          self.bond_force_constant = bond_force_constant
           self.bb_bond_length = bb_bond_length
           self.bs_bond_length = bs_bond_length
           self.ss_bond_length = ss_bond_length
-          self.charge = charge         
+          self.charge = charge
+          self.constrain_bonds = constrain_bonds
 
           """
           Initialize new (coarse grained) particle types:
           """
+
+          """
+          Make a list of coarse grained particle masses:
+          """
+          list_of_masses = get_particle_masses(self)
+
+          add_new_elements(list_of_masses)
+
+          self.system = build_system(self)
 
           self.num_particles = polymer_length * ( backbone_length + sidechain_length )
 
@@ -119,3 +211,22 @@ class CGModel(object):
           Initialize attributes of our coarse grained model.
           """
 
+        def get_dihedral_angles(self):
+          bead_index = 0
+          backbone_bead_indices = []
+          dihedrals = []
+          for monomer in range(self.polymer_length):
+           for backbone_bead in range(self.backbone_length):
+            backbone_bead_indices.append(bead_index)
+            if bead_index != 0:
+              bead_index = bead_index + 1
+            if backbone_bead in self.sidechain_positions:
+             for sidechain_bead in range(self.sidechain_length):
+               bead_index = bead_index + 1
+
+          for index in range(4,len(backbone_bead_indices)):
+
+            dihedrals.append(np.array(backbone_bead_indices[index-4:index]))
+
+          dihedrals = np.array([dihedral for dihedral in dihedrals])
+          return(dihedrals)
