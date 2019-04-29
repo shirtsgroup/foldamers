@@ -21,16 +21,37 @@ def get_particle_masses(cgmodel):
                  list_of_masses.append(cgmodel.mass)
         return(list_of_masses)
 
-def add_new_elements(list_of_masses):
+def add_new_elements(cgmodel,list_of_masses):
         element_index = 117
+        mass_index = 0
         cg_particle_index = 1
-        for mass in list_of_masses:
-         particle_name = str("cg-"+str(cg_particle_index))
-         particle_symbol = str("CG"+str(cg_particle_index))
-         elem.Element(element_index,particle_name,particle_symbol,mass)
+        for backbone_bead in range(cgmodel.backbone_length):
+
+         particle_name = str("bb-"+str(cg_particle_index))
+         particle_symbol = str("B"+str(cg_particle_index))
+         elem.Element(element_index,particle_name,particle_symbol,list_of_masses[mass_index])
          element_index = element_index + 1
          cg_particle_index = cg_particle_index + 1
+         mass_index = mass_index + 1
+         if backbone_bead in cgmodel.sidechain_positions:
+           for sidechain in range(cgmodel.sidechain_length):
+
+            particle_name = str("sc-"+str(cg_particle_index))
+            particle_symbol = str("S"+str(cg_particle_index))
+            elem.Element(element_index,particle_name,particle_symbol,list_of_masses[mass_index])
+            element_index = element_index + 1
+            cg_particle_index = cg_particle_index + 1
+            mass_index = mass_index + 1
+
         return
+
+def get_parent_bead(cgmodel,bead_index,backbone_bead_index):
+              parent_bead = -1
+              if backbone_bead_index - 1 in cgmodel.sidechain_positions:
+               parent_bead = bead_index - cgmodel.sidechain_length - 1
+              else:
+               parent_bead = bead_index - 1
+              return(parent_bead)
 
 def build_system(cgmodel):
 
@@ -43,44 +64,24 @@ def build_system(cgmodel):
         system = mm.System()
         nonbonded_force = mm.NonbondedForce()
         bead_index = 0
+
+        # Create nonbonded forces
         for monomer in range(cgmodel.polymer_length):
           for backbone_bead in range(cgmodel.backbone_length):
             system.addParticle(cgmodel.mass)
             nonbonded_force.addParticle(charge,sigma,epsilon)
-            if monomer != 0:
-             bead_index = bead_index + 1
 
-             if backbone_bead == 0:
+        # Create harmonic (bond potential) forces
+        bond_list = cgmodel.get_bond_list()
+        bead_index = 1
+        for bond in bond_list:
               force = mm.HarmonicBondForce()
-              force.addBond(bead_index-cgmodel.sidechain_length-1, bead_index,bond_length,cgmodel.bond_force_constant)
+              force.addBond(bond[0], bond[1],bond_length,cgmodel.bond_force_constant)
               system.addForce(force)
-              nonbonded_force.addException(bead_index-cgmodel.sidechain_length-1,bead_index,charge,bond_length,epsilon=0.0)
+              nonbonded_force.addException(bond[0],bond[1],charge,bond_length,epsilon=0.0)
 
               if cgmodel.constrain_bonds:
-               system.addConstraint(bead_index-cgmodel.sidechain_length-1, bead_index, bond_length)
-
-             if backbone_bead != 0:
-              force = mm.HarmonicBondForce()
-              force.addBond(bead_index-1, bead_index, bond_length,cgmodel.bond_force_constant)
-              system.addForce(force)
-              nonbonded_force.addException(bead_index-1, bead_index,charge,bond_length,epsilon=0.0)
-
-              if cgmodel.constrain_bonds:
-               system.addConstraint(bead_index-1, bead_index, bond_length)
-
-            if backbone_bead in cgmodel.sidechain_positions:
-              for sidechain in range(cgmodel.sidechain_length):
-                system.addParticle(cgmodel.mass)
-                nonbonded_force.addParticle(charge,sigma,epsilon)
-                bead_index = bead_index + 1
-
-                force = mm.HarmonicBondForce()
-                force.addBond(bead_index-1, bead_index, bond_length,cgmodel.bond_force_constant)
-                system.addForce(force)
-                nonbonded_force.addException(bead_index-1, bead_index,charge,bond_length,epsilon=0.0)
-
-                if cgmodel.constrain_bonds:
-                  system.addConstraint(bead_index,bead_index-1,bond_length)
+               system.addConstraint(bond[0],bond[1], bond_length)
   
         system.addForce(nonbonded_force)
         return(system)
@@ -199,17 +200,33 @@ class CGModel(object):
           """
           list_of_masses = get_particle_masses(self)
 
-          add_new_elements(list_of_masses)
+          add_new_elements(self,list_of_masses)
 
           self.system = build_system(self)
 
           self.num_particles = polymer_length * ( backbone_length + sidechain_length )
 
-          self.positions = util.random_positions( polymer_length, backbone_length, sidechain_length, sidechain_positions, bond_length, sigma ) 
+          self.positions = util.random_positions(self) 
 
           """
           Initialize attributes of our coarse grained model.
           """
+
+        def get_bond_list(self):
+          bond_list = []
+          bead_index = 1
+          for monomer_index in range(self.polymer_length):
+            for backbone_bead in range(self.backbone_length):
+
+             parent_index = get_parent_bead(self,bead_index,backbone_bead)
+
+             if parent_index != -1:
+              bond_list.append([parent_index,bead_index])
+
+             bead_index = bead_index + 1
+
+          return(bond_list)
+
 
         def get_dihedral_angles(self):
           bead_index = 0

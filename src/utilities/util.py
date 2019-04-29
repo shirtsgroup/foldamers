@@ -7,6 +7,7 @@
 import numpy as np
 import math, random
 from simtk import unit
+from foldamers.src.cg_model.cgmodel import *
 # =============================================================================================
 # 2) ENVIRONMENT/JOB SETTINGS
 # =============================================================================================
@@ -188,7 +189,7 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
           exit()
 
         # Define a blank set of cartesian coordinates
-        move = unit.Quantity(np.zeros(3),trial_coordinates.unit)
+        move = unit.Quantity(np.zeros(3),bond_length.unit)
 
         # Determine the 'max_step_size' as the square root of the difference
         # between 'bond_length' and 'distance'
@@ -248,7 +249,7 @@ def attempt_move(parent_coordinates,bond_length):
         """ 'dist' tracks the distance between the new trial particle
         and the parent particle """
 
-        units = parent_coordinates.unit
+        units = bond_length.unit
         dist = unit.Quantity(0.0,units)
 
         """ 'move_direction_list' tracks the Cartesian
@@ -257,17 +258,12 @@ def attempt_move(parent_coordinates,bond_length):
 
         move_direction_list = []
 
-        if parent_coordinates == None:
-          trial_coordinates = assign_position(parent_coordinates,bond_length) 
-          return(trial_coordinates)
+        # Assign the parent coordinates as the initial coordinates for a trial particle
 
-        else:
-          # Assign the parent coordinates as the initial coordinates for a trial particle
+        trial_coordinates = parent_coordinates
+        ref = trial_coordinates
 
-          trial_coordinates = parent_coordinates
-          ref = trial_coordinates
-
-          for direction in range(0,3):
+        for direction in range(0,3):
 
             move_direction = random.randint(0,2)
             while move_direction in move_direction_list:
@@ -378,7 +374,7 @@ def collisions(distances,bond_length):
 
         return(collision)
 
-def assign_position(positions,bond_length,parent_index=-1):
+def assign_position(positions,bond_length,bead_index,parent_index=-1):
         """
         Assign random position for a bead
 
@@ -400,25 +396,11 @@ def assign_position(positions,bond_length,parent_index=-1):
 
         """
 
-        if positions == None:
-          units = bond_length.unit
-          positions = unit.Quantity(np.zeros(3), units)
-          return(positions)
-    
-        else:
-
-          units = positions.unit            
-          if parent_index == -1:
-            if not single_bead(positions):
+        units = bond_length.unit       
+        if parent_index == -1:
                parent_index = len(positions) - 1
 
-          if single_bead(positions):
-
-            parent_coordinates = positions
-
-          else:
-
-            parent_coordinates = positions[parent_index]
+        parent_coordinates = positions[parent_index]
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
         success = False
@@ -426,21 +408,21 @@ def assign_position(positions,bond_length,parent_index=-1):
 
         while not success:
 
-          new_coordinates = attempt_move(parent_coordinates,bond_length)
+           new_coordinates = attempt_move(parent_coordinates,bond_length)
 
-          distances = non_bonded_distances(new_coordinates,positions)
+           distances = non_bonded_distances(new_coordinates,positions)
 
-          if not collisions(distances,bond_length): success = True
+           if not collisions(distances,bond_length): success = True
 
-          if not success and attempts > 1000000:
+           if not success and attempts > 1000000:
 
             print("Error: maximum number of bead placement attempts exceeded")
             print("Double-check the bond lengths (and units) in your coarse-grained model.")
             exit()
 
-          attempts = attempts + 1
+           attempts = attempts + 1
 
-        positions = append_position(positions,new_coordinates)
+        positions[bead_index] = new_coordinates
 
         return(positions)
 
@@ -467,12 +449,9 @@ def update_trial_coordinates(move,trial_coordinates=None):
         """
         units = move.unit
 
-        if trial_coordinates == None:
+        trial_coordinates = assign_position(positions=np.zeros(3),bond_length=0.0 * units)
 
-          trial_coordinates = assign_position(positions=None,bond_length=0.0 * units)
-
-        values = []
-        new_coordinates = assign_position(positions=None,bond_length=0.0 * units)
+        new_coordinates = assign_position(positions=np.zeros(3),bond_length=0.0 * units)
 
         for direction in range(0,3):
 
@@ -561,7 +540,7 @@ def assign_backbone_beads( positions, monomer_start, backbone_length, sidechain_
         return(positions)
 
 
-def random_positions( polymer_length, backbone_length, sidechain_length, sidechain_positions, bond_length, sigma ):
+def random_positions( cgmodel ):
         """
         Assign random positions for all beads in a coarse-grained polymer.
 
@@ -609,9 +588,18 @@ def random_positions( polymer_length, backbone_length, sidechain_length, sidecha
 
         """
 
-        positions = None
+        positions = np.zeros([cgmodel.num_particles,3])
+ 
+        new = True
+        if new:
+         bond_list = cgmodel.get_bond_list()
+         for bond in bond_list:
+          positions = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
+         
 
-        for monomer in range(0,polymer_length):
+        old = True
+        if not old:
+         for monomer in range(0,polymer_length):
 
           if monomer == 0:
             monomer_start = 0
