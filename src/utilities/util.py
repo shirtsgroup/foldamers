@@ -179,7 +179,7 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
         Returns
         -------
 
-        move: Updated positions for the particle
+        trial_coordinates: Updated positions for the particle
         ( np.array( float * unit.angstrom ( length = 3 ) ) )
 
         """
@@ -187,9 +187,6 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
         if distance.__gt__(bond_length):
           print("ERROR: The particle distance is larger than the bond length.")
           exit()
-
-        # Define a blank set of cartesian coordinates
-        move = unit.Quantity(np.zeros(3),bond_length.unit)
 
         # Determine the 'max_step_size' as the square root of the difference
         # between 'bond_length' and 'distance'
@@ -216,10 +213,8 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
           step = random.uniform(0.0,max_step_size._value)
 
         # Add this 'step' to the existing coordinates
-        values = [value for value in move._value]
-        values[move_direction] = step
-        move = unit.Quantity(values,move.unit)
-        return(move)
+        trial_coordinates[move_direction] = step * trial_coordinates.unit
+        return(trial_coordinates)
 
 def attempt_move(parent_coordinates,bond_length):
         """
@@ -260,10 +255,10 @@ def attempt_move(parent_coordinates,bond_length):
 
         # Assign the parent coordinates as the initial coordinates for a trial particle
 
-        trial_coordinates = parent_coordinates
-        ref = trial_coordinates
+        trial_coordinates = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
+        ref = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
 
-        for direction in range(0,3):
+        for direction in range(3):
 
             move_direction = random.randint(0,2)
             while move_direction in move_direction_list:
@@ -275,14 +270,12 @@ def attempt_move(parent_coordinates,bond_length):
               exit()
 
             if direction == 2:
-              move = get_move(trial_coordinates,move_direction,dist,bond_length,finish_bond=True)
+              trial_coordinates = get_move(trial_coordinates,move_direction,dist,bond_length,finish_bond=True)
 
             else:
-              move = get_move(trial_coordinates,move_direction,dist,bond_length)
+              trial_coordinates = get_move(trial_coordinates,move_direction,dist,bond_length)
 
             move_direction_list.append(move_direction)
-    
-            trial_coordinates = update_trial_coordinates(move,trial_coordinates)
 
             dist = distance(ref,trial_coordinates)
 
@@ -449,12 +442,10 @@ def update_trial_coordinates(move,trial_coordinates=None):
         """
         units = move.unit
 
-        trial_coordinates = assign_position(positions=np.zeros(3),bond_length=0.0 * units)
-
-        new_coordinates = assign_position(positions=np.zeros(3),bond_length=0.0 * units)
+        trial_coordinates = np.zeros(3) * units
+        new_coordinates = np.zeros(3) * units
 
         for direction in range(0,3):
-
            new_coordinates[direction] = trial_coordinates[direction].__add__(move[direction])
 
         return(new_coordinates)
@@ -588,12 +579,15 @@ def random_positions( cgmodel ):
 
         """
 
-        positions = np.zeros([cgmodel.num_particles,3])
+        positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
  
         new = True
         if new:
          bond_list = cgmodel.get_bond_list()
+         print(bond_list)
+         exit()
          for bond in bond_list:
+          print("Assigning positions for particle # "+str(bond[0]))
           positions = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
          
 
@@ -635,13 +629,13 @@ def distance(positions_1,positions_2):
         ( float * unit )
         """
 
-        direction_comp = [0.0 for i in range(0,3)]
+        direction_comp = np.zeros(3) * positions_1.unit
 
         for direction in range(len(direction_comp)):
           direction_comp[direction] = positions_1[direction].__sub__(positions_2[direction])
 
-        direction_comb = [0.0 for i in range(0,3)]
-        for direction in range(len(direction_comb)):
+        direction_comb = np.zeros(3) * positions_1.unit.__pow__(2.0)
+        for direction in range(3):
           direction_comb[direction] = direction_comp[direction].__pow__(2.0)
 
         sqrt_arg = direction_comb[0].__add__(direction_comb[1]).__add__(direction_comb[2])

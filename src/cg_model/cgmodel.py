@@ -45,12 +45,17 @@ def add_new_elements(cgmodel,list_of_masses):
 
         return
 
-def get_parent_bead(cgmodel,bead_index,backbone_bead_index):
+def get_parent_bead(cgmodel,bead_index,backbone_bead_index=None,sidechain_bead=False):
               parent_bead = -1
-              if backbone_bead_index - 1 in cgmodel.sidechain_positions:
-               parent_bead = bead_index - cgmodel.sidechain_length - 1
-              else:
-               parent_bead = bead_index - 1
+              if bead_index != 1:
+               if sidechain_bead == True:
+                parent_bead = bead_index - 1
+                return(parent_bead)
+               else:
+                 if backbone_bead_index - 2 in cgmodel.sidechain_positions:
+                  parent_bead = bead_index - cgmodel.sidechain_length - 1
+                 else:
+                  parent_bead = bead_index - 1
               return(parent_bead)
 
 def build_system(cgmodel):
@@ -204,7 +209,7 @@ class CGModel(object):
 
           self.system = build_system(self)
 
-          self.num_particles = polymer_length * ( backbone_length + sidechain_length )
+          self.num_beads = polymer_length * ( backbone_length + sidechain_length )
 
           self.positions = util.random_positions(self) 
 
@@ -215,15 +220,27 @@ class CGModel(object):
         def get_bond_list(self):
           bond_list = []
           bead_index = 1
-          for monomer_index in range(self.polymer_length):
-            for backbone_bead in range(self.backbone_length):
+          for monomer in range(self.polymer_length):
+            for backbone_bead in range(1,self.backbone_length+1):
 
-             parent_index = get_parent_bead(self,bead_index,backbone_bead)
-
+             print("Getting the parent index for a backbone bead")
+             parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=False)
+             if parent_index < -1:
+              print("Error: identifying parent index incorrectly when assigning a bond.")
+              print("The bead index is: "+str(bead_index))
+              print("The parent index is: "+str(parent_index))
+              print("The backbone index is: "+str(backbone_bead))
+              exit() 
              if parent_index != -1:
               bond_list.append([parent_index,bead_index])
-
+              print("Writing bond:"+str([parent_index,bead_index]))
              bead_index = bead_index + 1
+             if backbone_bead > 1:
+              if backbone_bead-1 in self.sidechain_positions:
+               for sidechain_bead in range(self.sidechain_length):
+                 print("Getting the parent index for a sidechain bead")
+                 parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=True)
+                 bead_index = bead_index + 1
 
           return(bond_list)
 
