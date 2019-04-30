@@ -361,7 +361,7 @@ def collisions(distances,bond_length):
 
           for distance in distances:
 
-            if round(distance._value,4) < round(bond_length._value/2.0,4):
+            if round(distance._value,4) < round(bond_length._value/4.0,4):
 
               collision = True
 
@@ -391,9 +391,9 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
         units = bond_length.unit       
         if parent_index == -1:
-               parent_index = len(positions) - 1
+               parent_index = len(positions)
 
-        parent_coordinates = positions[parent_index]
+        parent_coordinates = positions[parent_index-1]
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
         success = False
@@ -407,10 +407,7 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
            if not collisions(distances,bond_length): success = True
 
-           if not success and attempts > 50:
-
-            print("Error: maximum number of bead placement attempts exceeded")
-            print("Double-check the bond lengths (and units) in your coarse-grained model.")
+           if not success and attempts > 20:
             return(positions,success)
 
            attempts = attempts + 1
@@ -470,15 +467,28 @@ def random_positions( cgmodel ):
 
         positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
         bond_list = cgmodel.get_bond_list()
-        attempts = 0
-        finished = False
-        for bond in bond_list:
-          while attempts < 100 and not finished:
-           print("Assigning positions for particle # "+str(bond[0]))
+        bond_index = 0
+        total_attempts = 0
+        while bond_index in range(len(bond_list)) and total_attempts < 10:
+          bond = bond_list[bond_index]
+          attempts = 0
+          placement = False
+          while attempts < 10 and not placement:
            positions,placement = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
            attempts = attempts + 1
-           if placement: 
-          if bond == bond_list[len(bond_list)-1] and placement == True: finished = True
+          if not placement: 
+           print("Failed to place particle # "+str(bond_index+1)+" out of "+str(len(bond_list)+1))
+           bond_index = bond_index - round(random.triangular(0,bond_index))
+           total_attempts = total_attempts + 1
+           print("Attempting to rebuild the structure starting from particle # "+str(bond_index+1))
+           new_positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
+           for index in range(bond_index+1):
+            new_positions[index] = positions[index]
+           positions = new_positions
+          if placement: bond_index = bond_index + 1
+        if total_attempts >= 10:
+         print("Failed to build a CG model with "+str(cgmodel.backbone_length)+" backbone beads")
+         print(" and "+str(cgmodel.sidechain_length)+" sidechain beads")
 
         return(positions)
 

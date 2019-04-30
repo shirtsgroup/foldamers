@@ -87,7 +87,8 @@ def build_system(cgmodel):
 
               if cgmodel.constrain_bonds:
                system.addConstraint(bond[0],bond[1], bond_length)
-  
+#        nonbonded_force.createExceptionsFromBonds(bonds=bond_list) coulomb14scale=0.833333,
+        nonbonded_force.createExceptionsFromBonds(bonds=bond_list,lj14scale=0.5)
         system.addForce(nonbonded_force)
         return(system)
 

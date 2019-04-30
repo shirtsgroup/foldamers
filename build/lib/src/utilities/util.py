@@ -361,7 +361,7 @@ def collisions(distances,bond_length):
 
           for distance in distances:
 
-            if round(distance._value,4) < round(bond_length._value,4):
+            if round(distance._value,4) < round(bond_length._value/2.0,4):
 
               collision = True
 
@@ -407,129 +407,18 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
            if not collisions(distances,bond_length): success = True
 
-           if not success and attempts > 1000000:
+           if not success and attempts > 50:
 
             print("Error: maximum number of bead placement attempts exceeded")
             print("Double-check the bond lengths (and units) in your coarse-grained model.")
-            exit()
+            return(positions,success)
 
            attempts = attempts + 1
 
         positions[bead_index] = new_coordinates
+        success = True
 
-        return(positions)
-
-def update_trial_coordinates(move,trial_coordinates=None):
-        """
-        Updates 'trial_coordinates by adding the coordinates in 'move'.
-
-        Parameters
-        ----------
-
-        move: Cartesian coordinates for a new particle placement
-        ( np.array( float * unit ( length = 3 ) ) )
-
-        trial_coordinates: Existing cartesian coordinates for the particle
-        we are updating.
-        ( np.array( float * unit ( length = 3 ) ) )
-        Optional, default = None
-
-        Returns
-        -------
-
-        new_coordinates: Updated coordinates for the particle.
-
-        """
-        units = move.unit
-
-        trial_coordinates = np.zeros(3) * units
-        new_coordinates = np.zeros(3) * units
-
-        for direction in range(0,3):
-           new_coordinates[direction] = trial_coordinates[direction].__add__(move[direction])
-
-        return(new_coordinates)
-
-def assign_sidechain_beads( positions, sidechain_length, bond_length ):
-        """
-        Assign random position for all sidechain beads
-
-        Parameters
-        ----------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( num_beads x 3 ) )
-
-        sidechain_length: Number of beads in the sidechain
-        portion of each (individual) monomer (integer), default = 1
-
-        bond_length: Bond length for all beads that are bonded,
-        ( float * simtk.unit.distance )
-        default = 1.0 * unit.angstrom
-
-        Returns
-        -------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( num_beads x 3 ) )
-
-        """
-
-        for sidechain in range(0,sidechain_length):
-
-          positions = assign_position(positions,bond_length)
-
-        return(positions)
-
-def assign_backbone_beads( positions, monomer_start, backbone_length, sidechain_length, sidechain_positions, bond_length ):
-        """
-        Assign random position for a backbone bead
-
-        Parameters
-        ----------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( num_beads x 3 ) )
-
-        monomer_start: Index of the bead to which we will bond this
-        new backbone bead.
-        ( integer )
-
-        backbone_length: Number of beads in the backbone
-        portion of each (individual) monomer (integer), default = 1
-
-        sidechain_length: Number of beads in the sidechain
-        portion of each (individual) monomer (integer), default = 1
-
-        sidechain_positions: List of integers defining the backbone
-        bead indices upon which we will place the sidechains,
-        default = [0] (Place a sidechain on the backbone bead with
-        index "0" (first backbone bead) in each (individual) monomer
-
-        bond_length: Bond length for all beads that are bonded,
-        ( float * simtk.unit.distance )
-        default = 1.0 * unit.angstrom
-
-        Returns
-        -------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( num_beads x 3 ) )
-
-        """
-
-        for backbone_bead_index in range(0,backbone_length):
-
-          positions = assign_position(positions,bond_length,parent_index=monomer_start)
-
-          # Assign side-chain beads
-
-          if backbone_bead_index in sidechain_positions:
-
-            positions = assign_sidechain_beads(positions,sidechain_length,bond_length)
-
-        return(positions)
-
+        return(positions,success)
 
 def random_positions( cgmodel ):
         """
@@ -580,32 +469,16 @@ def random_positions( cgmodel ):
         """
 
         positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
- 
-        new = True
-        if new:
-         bond_list = cgmodel.get_bond_list()
-         print(bond_list)
-         exit()
-         for bond in bond_list:
-          print("Assigning positions for particle # "+str(bond[0]))
-          positions = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
-         
-
-        old = True
-        if not old:
-         for monomer in range(0,polymer_length):
-
-          if monomer == 0:
-            monomer_start = 0
-
-          if monomer != 0:
-            if positions == None:
-              print("Error: the positions aren't being updated when adding new particles.")
-              exit()
-            monomer_start = len(positions) - sidechain_length - 1
-
-          # Assign backbone bead positions
-          positions = assign_backbone_beads(positions,monomer_start,backbone_length,sidechain_length,sidechain_positions,bond_length)
+        bond_list = cgmodel.get_bond_list()
+        attempts = 0
+        finished = False
+        for bond in bond_list:
+          while attempts < 100 and not finished:
+           print("Assigning positions for particle # "+str(bond[0]))
+           positions,placement = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
+           attempts = attempts + 1
+           if placement: 
+          if bond == bond_list[len(bond_list)-1] and placement == True: finished = True
 
         return(positions)
 
