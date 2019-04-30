@@ -223,6 +223,7 @@ class CGModel(object):
           for monomer in range(self.polymer_length):
             for backbone_bead in range(1,self.backbone_length+1):
 
+             print("Getting the parent index for a backbone bead")
              parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=False)
              if parent_index < -1:
               print("Error: identifying parent index incorrectly when assigning a bond.")
@@ -232,13 +233,13 @@ class CGModel(object):
               exit() 
              if parent_index != -1:
               bond_list.append([parent_index,bead_index])
+              print("Writing bond:"+str([parent_index,bead_index]))
              bead_index = bead_index + 1
-             
              if backbone_bead > 1:
               if backbone_bead-1 in self.sidechain_positions:
                for sidechain_bead in range(self.sidechain_length):
+                 print("Getting the parent index for a sidechain bead")
                  parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=True)
-                 bond_list.append([parent_index,bead_index])
                  bead_index = bead_index + 1
 
           return(bond_list)
