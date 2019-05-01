@@ -34,6 +34,27 @@ def random_sign(number):
 
         return(number)
 
+def first_bead(positions):
+        """
+        Determine if we have any particles in 'positions'
+        Parameters
+        ----------
+        positions: Positions for all beads in the coarse-grained model.
+        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
+        Returns
+        -------
+        first_bead: Logical variable stating if this is the first particle.
+        """
+
+        first_bead = True
+    
+        for value in positions._value:
+           if any(i != 0. for i in value):
+             first_bead = False
+
+        return(first_bead)
+
+
 def unit_sqrt(simtk_quantity):
         """
         Returns the square root of a simtk 'Quantity'.
@@ -55,101 +76,6 @@ def unit_sqrt(simtk_quantity):
         answer = unit.Quantity(value,simtk_quantity.unit)
 
         return(answer)
-
-def first_bead(positions):
-        """
-        Determine if we have any particles in 'positions'
-
-        Parameters
-        ----------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
-
-        Returns
-        -------
-
-        first_bead: Logical variable stating if this is the first particle.
-
-        """
-
-        first_bead = True
-
-        if positions != None:
-
-           first_bead = False
-
-        return(first_bead)
-
-def single_bead(positions):
-        """
-        Determine if we have one particle in positions
-
-        Parameters
-        ----------
-
-        positions: Positions for all beads in the coarse-grained model.
-        ( np.array( float * unit ( shape = num_beads x 3 ) ) )
-
-        Returns
-        -------
-
-        single_bead: Logical variable stating if this is the first particle.
-
-        """
-        single_bead = False
-        if str(positions.shape) == '(3,)':
-          single_bead = True
-
-        return(single_bead)
-
-def append_position(positions,new_coordinates):
-        """
-        Updates a set of input coordinates with 'new_coordinate' in the
-        cartesian coordinate direction indexted by 'direction'.
-
-        Parameters
-        ----------
-
-        new_coordinates: Cartesian coordinates for a particle
-        ( np.array( float * unit ( length = 3 ) ) )
-
-        direction: Cartesian direction index for particle placement, 
-        where: x=0,y=1,z=2. 
-        ( integer )
-
-        trial_coordinates: Existing cartesian coordinates for the particle
-        we are updating.
-        ( np.array( float * unit ( length = 3 ) ) )
-        Optional, default = None
-
-        Returns
-        -------
-
-        trial_coordinates: Updated coordinates for the particle.
-
-        """
-
-        units = new_coordinates.unit
-        if positions == None:
-
-          new_positions = new_coordinates
-
-        else:
-
-          new_positions = unit.Quantity(np.zeros((2,3)),units)
-          if single_bead(positions):
-            new_positions = unit.Quantity(np.zeros((2,3)),units)
-            new_positions[0] = positions
-            new_positions[1] = new_coordinates
-
-          if not single_bead(positions):
-            new_positions = unit.Quantity(np.zeros((len(positions)+1,3)),units)
-            for particle in range(len(positions)):
-              new_positions[particle] = positions[particle]
-            new_positions[len(new_positions)-1] = new_coordinates
-
-        return(new_positions)
 
 def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=False):
         """
@@ -266,6 +192,8 @@ def attempt_move(parent_coordinates,bond_length):
 
             if float(round(bond_length._value**2.0,4)-round(dist._value**2.0,4)) < 0.0:
 
+              print(round(bond_length._value**2.0,4))
+              print(round(dist._value**2.0,4))
               print("Error: new particles are not being assigned correctly.")
               exit()
 
@@ -320,13 +248,8 @@ def non_bonded_distances(new_coordinates,existing_coordinates):
 
         else:
 
-          if single_bead(existing_coordinates):
-              distances.append(distance(new_coordinates,existing_coordinates))
-
-          else:
-
-            for particle in range(0,len(existing_coordinates)):
-              distances.append(distance(new_coordinates,existing_coordinates[particle]))
+          for particle in range(0,len(existing_coordinates)):
+            distances.append(distance(new_coordinates,existing_coordinates[particle]))
 
         return(distances)
 
@@ -388,10 +311,14 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
         ( np.array( num_beads x 3 ) )
 
         """
+        if bead_index == 1:
+           success = True
+           return(positions,success)
 
         units = bond_length.unit       
         if parent_index == -1:
-               parent_index = len(positions)
+               parent_index = bead_index - 1
+
 
         parent_coordinates = positions[parent_index-1]
 
@@ -407,13 +334,12 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
            if not collisions(distances,bond_length): success = True
 
-           if not success and attempts > 20:
+           if attempts > 20:
             return(positions,success)
 
            attempts = attempts + 1
 
-        positions[bead_index] = new_coordinates
-        success = True
+        positions[bead_index-1] = new_coordinates
 
         return(positions,success)
 
@@ -474,7 +400,7 @@ def random_positions( cgmodel ):
           attempts = 0
           placement = False
           while attempts < 10 and not placement:
-           positions,placement = assign_position(positions,cgmodel.bond_length,bond[0],bond[1])
+           positions,placement = assign_position(positions,cgmodel.bond_length,bond[1],bond[0])
            attempts = attempts + 1
           if not placement: 
            print("Failed to place particle # "+str(bond_index+1)+" out of "+str(len(bond_list)+1))
