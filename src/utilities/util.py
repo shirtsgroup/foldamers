@@ -55,28 +55,6 @@ def first_bead(positions):
         return(first_bead)
 
 
-def unit_sqrt(simtk_quantity):
-        """
-        Returns the square root of a simtk 'Quantity'.
-
-        Parameters
-        ----------
-
-        simtk_quantity: A 'Quantity' object, as defined in simtk.
-        ( float * unit )
-
-        Returns
-        -------
-
-        answer: Square root of a simtk_quantity.
-
-        """
-
-        value = math.sqrt(simtk_quantity._value)
-        answer = unit.Quantity(value,simtk_quantity.unit)
-
-        return(answer)
-
 def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=False):
         """
         Given a 'move_direction', a current distance, and a
@@ -116,7 +94,9 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
 
         # Determine the 'max_step_size' as the square root of the difference
         # between 'bond_length' and 'distance'
-        max_step_size = unit_sqrt(bond_length.__pow__(2.0).__sub__(distance.__pow__(2.0)))
+#        print("Bond length is "+str(bond_length))
+#        print("Distance is "+str(distance))
+        max_step_size = bond_length.__pow__(2.0).__sub__(distance.__pow__(2.0)).sqrt()
 
         # Add a random sign to 'max_step_size', to randomize our particle placement.
         sign_index = random.randint(0,1)
@@ -139,7 +119,11 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
           step = random.uniform(0.0,max_step_size._value)
 
         # Add this 'step' to the existing coordinates
-        trial_coordinates[move_direction] = step * trial_coordinates.unit
+        # print("The trial coordinates are: "+str(trial_coordinates))
+        # print("The step size is: "+str(step))
+        trial_coordinates[move_direction] = trial_coordinates[move_direction].__add__(unit.Quantity(step,trial_coordinates.unit))
+        # print("The trial coordinates are: "+str(trial_coordinates))
+
         return(trial_coordinates)
 
 def attempt_move(parent_coordinates,bond_length):
@@ -185,15 +169,16 @@ def attempt_move(parent_coordinates,bond_length):
         ref = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
 
         for direction in range(3):
-
             move_direction = random.randint(0,2)
             while move_direction in move_direction_list:
               move_direction = random.randint(0,2)
 
             if float(round(bond_length._value**2.0,4)-round(dist._value**2.0,4)) < 0.0:
 
-              print(round(bond_length._value**2.0,4))
-              print(round(dist._value**2.0,4))
+              print("The bond length is: "+str(round(bond_length._value**2.0,4)))
+              print("The distance is: "+str(round(dist._value**2.0,4)))
+              print("The parent coordinates are: "+str(ref))
+              print("The trial coordinates are: "+str(trial_coordinates))
               print("Error: new particles are not being assigned correctly.")
               exit()
 
@@ -205,7 +190,11 @@ def attempt_move(parent_coordinates,bond_length):
 
             move_direction_list.append(move_direction)
 
+#            print("Parent coordinates are: "+str(ref))
+#            print("Trial coordinates are: "+str(trial_coordinates))
             dist = distance(ref,trial_coordinates)
+#            print(direction)
+#            print(dist)
 
         if round(dist._value,4) < round(bond_length._value,4):
 
@@ -284,7 +273,7 @@ def collisions(distances,bond_length):
 
           for distance in distances:
 
-            if round(distance._value,4) < round(bond_length._value/4.0,4):
+            if round(distance._value,4) < round(bond_length._value/2.0,4):
 
               collision = True
 
@@ -320,6 +309,8 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
                parent_index = bead_index - 1
 
 
+#        print("Attempting to place a coarse grained bead using")
+#        print("parent bead "+str(parent_index)+" as a reference")
         parent_coordinates = positions[parent_index-1]
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
