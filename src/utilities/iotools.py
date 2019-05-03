@@ -14,34 +14,12 @@ from simtk import unit
 # =============================================================================================
 
 def write_bonds(CGModel,pdb_object):
-        bead_index = 1
-        for monomer_index in range(CGModel.polymer_length):
-          for backbone_bead in range(CGModel.backbone_length):
-
-            if backbone_bead != 0:
-             if backbone_bead - 1 in CGModel.sidechain_positions:
-              parent_bead = bead_index - CGModel.sidechain_length - 1
-             else:
-              parent_bead = bead_index - 1
-
-             pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")      
-             bead_index = bead_index + 1
-
-            else:
-             if bead_index != 1:
-              if backbone_bead - 1 in CGModel.sidechain_positions:
-               parent_bead = bead_index - CGModel.sidechain_length - 1
-              else:
-               parent_bead = bead_index - 1
-              pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")
-              bead_index = bead_index + 1
-
-             if bead_index == 1:
-              bead_index = bead_index + 1
-            if backbone_bead in CGModel.sidechain_positions:
-              for sidechain_bead in range(0,CGModel.sidechain_length):
-               pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(bead_index-1))+"\n")
-               bead_index = bead_index + 1
+        bond_list = CGModel.bond_list
+        for bond in bond_list:
+         if int(bond[0]) < int(bond[1]):
+          pdb_object.write("CONECT"+str("{:>5}".format(bond[0]))+str("{:>5}".format(bond[1]))+"\n")      
+         else:
+          pdb_object.write("CONECT"+str("{:>5}".format(bond[1]))+str("{:>5}".format(bond[0]))+"\n")
         pdb_object.write(str("END\n"))
         return
 
@@ -54,7 +32,7 @@ def write_cg_pdb(cgmodel,topology,positions,file_name):
         return
 
 
-def write_pdbfile(CGModel,filename):
+def write_pdbfile_without_topology(CGModel,filename):
         """
         Writes the positions in 'CGModel' to the file 'filename'.
 

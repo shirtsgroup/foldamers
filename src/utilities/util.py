@@ -161,8 +161,6 @@ def attempt_lattice_move(parent_coordinates,bond_length):
         directions in which we have attempted a particle placement,
         where: x=0,y=1,z=2. """
 
-        move_direction_list = []
-
         # Assign the parent coordinates as the initial coordinates for a trial particle
 
         trial_coordinates = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
@@ -265,7 +263,7 @@ def attempt_move(parent_coordinates,bond_length):
 
         return(trial_coordinates)
 
-def non_bonded_distances(new_coordinates,existing_coordinates):
+def nonbonded_distances(nonbonded_interaction_list,positions):
         """
         Calculate the distances between a trial particle ('new_coordinates')
         and all existing particles ('existing_coordinates').
@@ -289,18 +287,19 @@ def non_bonded_distances(new_coordinates,existing_coordinates):
 
         distances = []
 
-        if first_bead(existing_coordinates):
+        if first_bead(positions):
 
           return(distances)
 
         else:
 
-          for particle in range(0,len(existing_coordinates)):
-            distances.append(distance(new_coordinates,existing_coordinates[particle]))
+          for interaction in nonbonded_interaction_list:
+            if interaction[0] < len(positions) and interaction[1] < len(positions):
+             distances.append(distance(positions[interaction[0]],positions[interaction[1]]))
 
         return(distances)
 
-def collisions(distances,sigma):
+def collisions(distances,distance_cutoff):
         """
         Determine whether there are any collisions between non-bonded
         particles, where a "collision" is defined as a distance shorter
@@ -332,13 +331,13 @@ def collisions(distances,sigma):
 
           for distance in distances:
 
-            if round(distance._value,4) < round(sigma._value/4.0,4):
+            if round(distance._value,4) < round(distance_cutoff._value,4):
 
               collision = True
 
         return(collision)
 
-def assign_position_lattice_style(positions,bond_length,sigma,bead_index,parent_index=-1):
+def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,parent_index):
         """
         Assign random position for a bead
 
@@ -363,37 +362,42 @@ def assign_position_lattice_style(positions,bond_length,sigma,bead_index,parent_
            success = True
            return(positions,success)
 
-        units = bond_length.unit       
+        units = cgmodel.bond_length.unit       
         if parent_index == -1:
                parent_index = bead_index - 1
 
-
-#        print("Attempting to place a coarse grained bead using")
-#        print("parent bead "+str(parent_index)+" as a reference")
         parent_coordinates = positions[parent_index-1]
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
         success = False
+        best_attempt = unit.Quantity(np.zeros(3), units)
+        best_distances = nonbonded_distances(cgmodel.nonbonded_interactions,positions[0:bead_index-1])
         attempts = 0
 
         while not success:
 
-           new_coordinates = attempt_lattice_move(parent_coordinates,bond_length)
+           new_coordinates = attempt_lattice_move(parent_coordinates,cgmodel.bond_length)
 
-           distances = non_bonded_distances(new_coordinates,positions)
+           test_positions = positions.__deepcopy__(memo={})
+           test_positions[bead_index-1] = new_coordinates
+           distances = nonbonded_distances(cgmodel.nonbonded_interactions,test_positions[0:bead_index-1])
 
-           if not collisions(distances,sigma): success = True
+           if not collisions(distances,distance_cutoff): success = True
+           if collisions and len(distances) > 0:
+#             print(distances)
+#             print(best_distances)
+             if min(distances) > min(best_distances):
+               best_attempt = new_coordinates
 
-           if attempts > 100:
-            print([distance._value for distance in distances])
+           if attempts > 20:
             return(positions,success)
 
            attempts = attempts + 1
 
-        positions[bead_index-1] = new_coordinates
-        print("Finished assigning lattice position")
+        positions = test_positions
+        return(positions,success)
 
-def assign_position(positions,bond_length,sigma,bead_index,parent_index=-1):
+def assign_position(positions,bond_length,sigma,bead_index,parent_index):
         """
         Assign random position for a bead
 
@@ -422,9 +426,6 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index=-1):
         if parent_index == -1:
                parent_index = bead_index - 1
 
-
-#        print("Attempting to place a coarse grained bead using")
-#        print("parent bead "+str(parent_index)+" as a reference")
         parent_coordinates = positions[parent_index-1]
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
@@ -435,7 +436,7 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index=-1):
 
            new_coordinates = attempt_move(parent_coordinates,bond_length)
 
-           distances = non_bonded_distances(new_coordinates,positions)
+           distances = nonbonded_distances(new_coordinates,positions)
 
            if not collisions(distances,sigma): success = True
 
@@ -501,25 +502,24 @@ def random_positions( cgmodel,max_attempts=100 ):
         bond_list = cgmodel.get_bond_list()
         bond_index = 0
         total_attempts = 0
+        distance_cutoff = 1.2 * cgmodel.bond_length
 
-        lattice_placement = True
+        lattice_style = True
 
         while bond_index in range(len(bond_list)) and total_attempts < max_attempts:
           bond = bond_list[bond_index]
           attempts = 0
           placement = False
           while attempts < max_attempts and not placement:
-           if lattice_placement:
-            print("Calling 'assign_position_lattice_style'")
-            positions,placement = assign_position_lattice_style(positions,cgmodel.bond_length,cgmodel.sigma,bond[1],bond[0])
+           if lattice_style:
+            stored_positions = positions.__deepcopy__(memo={})
+            positions,placement = assign_position_lattice_style(cgmodel,positions,distance_cutoff,bond[1],bond[0])
            else:
-            positions,placement = assign_position(positions,cgmodel.bond_length,cgmodel.sigma,bond[1],bond[0])
+            positions,placement = assign_position(positions,cgmodel.bond_length,distance_cutoff,bond[1],bond[0])
            attempts = attempts + 1
           if not placement: 
-           print("Failed to place particle # "+str(bond_index+1)+" out of "+str(len(bond_list)+1))
            bond_index = bond_index - round(random.triangular(0,bond_index))
            total_attempts = total_attempts + 1
-           print("Attempting to rebuild the structure starting from particle # "+str(bond_index+1))
            new_positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
            for index in range(bond_index+1):
             new_positions[index] = positions[index]
