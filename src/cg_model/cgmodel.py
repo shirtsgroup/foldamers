@@ -89,13 +89,18 @@ def build_system(cgmodel):
               new_bond[0],new_bond[1] = bond[0]-1,bond[1]-1
               new_bond_list.append(new_bond)
               force = mm.HarmonicBondForce()
-              force.addBond(bond[0], bond[1],bond_length,cgmodel.bond_force_constant)
+              force.addBond(new_bond[0],new_bond[1],bond_length,cgmodel.bond_force_constant)
               system.addForce(force)
 
               if cgmodel.constrain_bonds:
-               system.addConstraint(bond[0],bond[1], bond_length)
+               system.addConstraint(new_bond[0],new_bond[1], bond_length)
+               nonbonded_force.addException(new_bond[0],new_bond[1],cgmodel.charge,cgmodel.sigma,0.0)
 
-        nonbonded_force.createExceptionsFromBonds(new_bond_list,0.833333,0.5)
+        if cgmodel.constrain_bonds and nonbonded_force.getNumExceptions() != len(new_bond_list):
+           print("Error: Bond constraints were requested, but the number of non-bonded exceptions")
+           print("is not equal to the number of bonds.")
+           print("There are "+str(nonbonded_force.getNumExceptions())+" force exceptions and "+str(len(new_bond_list))+" bonds.")
+           exit()
         system.addForce(nonbonded_force)
         return(system)
 

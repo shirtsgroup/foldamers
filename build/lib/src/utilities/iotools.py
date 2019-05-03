@@ -5,12 +5,54 @@
 # =============================================================================================
 
 # System packages
+from simtk.openmm.app.pdbfile import PDBFile
 import numpy as np
 import math, random
 from simtk import unit
 # =============================================================================================
 # 2) ENVIRONMENT/JOB SETTINGS
 # =============================================================================================
+
+def write_bonds(CGModel,pdb_object):
+        bead_index = 1
+        for monomer_index in range(CGModel.polymer_length):
+          for backbone_bead in range(CGModel.backbone_length):
+
+            if backbone_bead != 0:
+             if backbone_bead - 1 in CGModel.sidechain_positions:
+              parent_bead = bead_index - CGModel.sidechain_length - 1
+             else:
+              parent_bead = bead_index - 1
+
+             pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")      
+             bead_index = bead_index + 1
+
+            else:
+             if bead_index != 1:
+              if backbone_bead - 1 in CGModel.sidechain_positions:
+               parent_bead = bead_index - CGModel.sidechain_length - 1
+              else:
+               parent_bead = bead_index - 1
+              pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")
+              bead_index = bead_index + 1
+
+             if bead_index == 1:
+              bead_index = bead_index + 1
+            if backbone_bead in CGModel.sidechain_positions:
+              for sidechain_bead in range(0,CGModel.sidechain_length):
+               pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(bead_index-1))+"\n")
+               bead_index = bead_index + 1
+        pdb_object.write(str("END\n"))
+        return
+
+def write_cg_pdb(cgmodel,topology,positions,file_name):
+        file_obj = open(file_name,'w')
+        PDBFile.writeHeader(topology, file_obj)
+        PDBFile.writeModel(topology, positions, file_obj)
+        write_bonds(cgmodel,file_obj)
+        file_obj.close()
+        return
+
 
 def write_pdbfile(CGModel,filename):
         """
@@ -51,34 +93,6 @@ def write_pdbfile(CGModel,filename):
                 element_index = element_index + 1
         pdb_object.write(str("TER\n"))
 
-        bead_index = 1
-        for monomer_index in range(CGModel.polymer_length):
-          for backbone_bead in range(CGModel.backbone_length):
-
-            if backbone_bead != 0:
-             if backbone_bead - 1 in CGModel.sidechain_positions:
-              parent_bead = bead_index - CGModel.sidechain_length - 1
-             else:
-              parent_bead = bead_index - 1
-
-             pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")            
-             bead_index = bead_index + 1
-
-            else:
-             if bead_index != 1:
-              if backbone_bead - 1 in CGModel.sidechain_positions:
-               parent_bead = bead_index - CGModel.sidechain_length - 1
-              else:
-               parent_bead = bead_index - 1
-              pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(parent_bead))+"\n")
-              bead_index = bead_index + 1
-
-             if bead_index == 1:
-              bead_index = bead_index + 1
-            if backbone_bead in CGModel.sidechain_positions:
-              for sidechain_bead in range(0,CGModel.sidechain_length):
-               pdb_object.write("CONECT"+str("{:>5}".format(bead_index))+str("{:>5}".format(bead_index-1))+"\n")
-               bead_index = bead_index + 1
-        pdb_object.write(str("END\n"))
+        write_bonds(CGModel,pdb_object)
         pdb_object.close()
         return

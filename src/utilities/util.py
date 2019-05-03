@@ -126,6 +126,64 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
 
         return(trial_coordinates)
 
+def attempt_lattice_move(parent_coordinates,bond_length):
+        """
+        Given a set of cartesian coordinates, assign a new particle
+        a distance of 'bond_length' away in a random direction.
+
+        Parameters
+        ----------
+
+        parent_coordinates: Positions for a single particle,
+        away from which we will place a new particle a distance
+        of 'bond_length' away.
+        ( np.array( float * unit.angstrom ( length = 3 ) ) )
+
+        bond_length: Bond length for all beads that are bonded,
+        ( float * simtk.unit.distance )
+        default = 1.0 * unit.angstrom
+
+        Returns
+        -------
+
+        trial_coordinates: Positions for a new trial particle
+        ( np.array( float * unit.angstrom ( length = 3 ) ) )
+
+        """
+
+        """ 'dist' tracks the distance between the new trial particle
+        and the parent particle """
+
+        units = bond_length.unit
+        dist = unit.Quantity(0.0,units)
+
+        """ 'move_direction_list' tracks the Cartesian
+        directions in which we have attempted a particle placement,
+        where: x=0,y=1,z=2. """
+
+        move_direction_list = []
+
+        # Assign the parent coordinates as the initial coordinates for a trial particle
+
+        trial_coordinates = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
+        ref = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
+
+        move_direction = random.randint(0,2)
+        trial_coordinates[move_direction] = trial_coordinates[move_direction].__add__(bond_length)
+
+        dist = distance(ref,trial_coordinates)
+
+        if round(dist._value,4) < round(bond_length._value,4):
+
+           print("Error: particles are being placed at a distance different from the bond length")
+           print("Bond length is: "+str(bond_length))
+           print("The particle distance is: "+str(dist))
+           print(ref)
+           print(trial_coordinates)
+           exit()
+
+        return(trial_coordinates)
+
 def attempt_move(parent_coordinates,bond_length):
         """
         Given a set of cartesian coordinates, assign a new particle
@@ -242,7 +300,7 @@ def non_bonded_distances(new_coordinates,existing_coordinates):
 
         return(distances)
 
-def collisions(distances,bond_length):
+def collisions(distances,sigma):
         """
         Determine whether there are any collisions between non-bonded
         particles, where a "collision" is defined as a distance shorter
@@ -269,17 +327,73 @@ def collisions(distances,bond_length):
 
         collision = False
 
+#        print("The nonbonded cutoff distance is: "+str(sigma._value))
         if len(distances) > 0:
 
           for distance in distances:
 
-            if round(distance._value,4) < round(bond_length._value/2.0,4):
+            if round(distance._value,4) < round(sigma._value/4.0,4):
 
               collision = True
 
         return(collision)
 
-def assign_position(positions,bond_length,bead_index,parent_index=-1):
+def assign_position_lattice_style(positions,bond_length,sigma,bead_index,parent_index=-1):
+        """
+        Assign random position for a bead
+
+        Parameters
+        ----------
+
+        positions: Positions for all beads in the coarse-grained model.
+        ( np.array( num_beads x 3 ) )
+
+        bond_length: Bond length for all beads that are bonded,
+        ( float * simtk.unit.distance )
+        default = 1.0 * unit.angstrom
+
+        Returns
+        -------
+
+        positions: Positions for all beads in the coarse-grained model.
+        ( np.array( num_beads x 3 ) )
+
+        """
+        if bead_index == 1:
+           success = True
+           return(positions,success)
+
+        units = bond_length.unit       
+        if parent_index == -1:
+               parent_index = bead_index - 1
+
+
+#        print("Attempting to place a coarse grained bead using")
+#        print("parent bead "+str(parent_index)+" as a reference")
+        parent_coordinates = positions[parent_index-1]
+
+        new_coordinates = unit.Quantity(np.zeros(3), units)
+        success = False
+        attempts = 0
+
+        while not success:
+
+           new_coordinates = attempt_lattice_move(parent_coordinates,bond_length)
+
+           distances = non_bonded_distances(new_coordinates,positions)
+
+           if not collisions(distances,sigma): success = True
+
+           if attempts > 100:
+            print([distance._value for distance in distances])
+            return(positions,success)
+
+           attempts = attempts + 1
+
+        positions[bead_index-1] = new_coordinates
+        print("Finished assigning lattice position")
+
+def assign_position(positions,bond_length,sigma,bead_index,parent_index=-1):
         """
         Assign random position for a bead
 
@@ -323,9 +437,10 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
            distances = non_bonded_distances(new_coordinates,positions)
 
-           if not collisions(distances,bond_length): success = True
+           if not collisions(distances,sigma): success = True
 
-           if attempts > 20:
+           if attempts > 100:
+            print([distance._value for distance in distances])
             return(positions,success)
 
            attempts = attempts + 1
@@ -334,7 +449,7 @@ def assign_position(positions,bond_length,bead_index,parent_index=-1):
 
         return(positions,success)
 
-def random_positions( cgmodel ):
+def random_positions( cgmodel,max_attempts=100 ):
         """
         Assign random positions for all beads in a coarse-grained polymer.
 
@@ -386,12 +501,19 @@ def random_positions( cgmodel ):
         bond_list = cgmodel.get_bond_list()
         bond_index = 0
         total_attempts = 0
-        while bond_index in range(len(bond_list)) and total_attempts < 10:
+
+        lattice_placement = True
+
+        while bond_index in range(len(bond_list)) and total_attempts < max_attempts:
           bond = bond_list[bond_index]
           attempts = 0
           placement = False
-          while attempts < 10 and not placement:
-           positions,placement = assign_position(positions,cgmodel.bond_length,bond[1],bond[0])
+          while attempts < max_attempts and not placement:
+           if lattice_placement:
+            print("Calling 'assign_position_lattice_style'")
+            positions,placement = assign_position_lattice_style(positions,cgmodel.bond_length,cgmodel.sigma,bond[1],bond[0])
+           else:
+            positions,placement = assign_position(positions,cgmodel.bond_length,cgmodel.sigma,bond[1],bond[0])
            attempts = attempts + 1
           if not placement: 
            print("Failed to place particle # "+str(bond_index+1)+" out of "+str(len(bond_list)+1))
@@ -403,7 +525,7 @@ def random_positions( cgmodel ):
             new_positions[index] = positions[index]
            positions = new_positions
           if placement: bond_index = bond_index + 1
-        if total_attempts >= 10:
+        if total_attempts >= max_attempts:
          print("Failed to build a CG model with "+str(cgmodel.backbone_length)+" backbone beads")
          print(" and "+str(cgmodel.sidechain_length)+" sidechain beads")
 

@@ -71,14 +71,23 @@ def build_system(cgmodel):
         bead_index = 0
 
         # Create nonbonded forces
-        for monomer in range(cgmodel.num_beads):
+        for monomer in range(cgmodel.polymer_length):
+          for backbone_bead in range(cgmodel.backbone_length):
             system.addParticle(cgmodel.mass)
             nonbonded_force.addParticle(charge,sigma,epsilon)
+            if backbone_bead in cgmodel.sidechain_positions:
+              for sidechain_bead in range(cgmodel.sidechain_length):
+                system.addParticle(cgmodel.mass)
+                nonbonded_force.addParticle(charge,sigma,epsilon)
 
         # Create harmonic (bond potential) forces
         bond_list = cgmodel.get_bond_list()
+        new_bond_list = []
         bead_index = 1
         for bond in bond_list:
+              new_bond = [-1,-1]
+              new_bond[0],new_bond[1] = bond[0]-1,bond[1]-1
+              new_bond_list.append(new_bond)
               force = mm.HarmonicBondForce()
               force.addBond(bond[0], bond[1],bond_length,cgmodel.bond_force_constant)
               system.addForce(force)
@@ -86,8 +95,7 @@ def build_system(cgmodel):
               if cgmodel.constrain_bonds:
                system.addConstraint(bond[0],bond[1], bond_length)
 
-        print(nonbonded_force.getNumParticles())
-        nonbonded_force.createExceptionsFromBonds(bond_list,0.833333,0.5)
+        nonbonded_force.createExceptionsFromBonds(new_bond_list,0.833333,0.5)
         system.addForce(nonbonded_force)
         return(system)
 
