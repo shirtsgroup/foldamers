@@ -86,15 +86,12 @@ def build_system(cgmodel):
         new_bond_list = []
         bead_index = 1
         for bond in bond_list:
-              new_bond = [-1,-1]
-              new_bond[0],new_bond[1] = bond[0]-1,bond[1]-1
+              new_bond = [bond[0]-1,bond[1]-1]
               new_bond_list.append(new_bond)
               force = mm.HarmonicBondForce()
-              if not cgmodel.constrain_bonds:
-               force.addBond(new_bond[0],new_bond[1],bond_length,cgmodel.bond_force_constant)
+              force.addBond(new_bond[0],new_bond[1],bond_length,cgmodel.bond_force_constant)
               if cgmodel.constrain_bonds:
                system.addConstraint(new_bond[0],new_bond[1], bond_length)
-               force.addBond(new_bond[0],new_bond[1],bond_length,0.0)
               system.addForce(force)
 
         
@@ -238,28 +235,28 @@ class CGModel(object):
             for backbone_bead in range(1,self.backbone_length+1):
 
              parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=False)
-             if parent_index < -1:
-              print("Error: identifying parent index incorrectly when assigning a bond.")
-              print("The bead index is: "+str(bead_index))
-              print("The parent index is: "+str(parent_index))
-              print("The backbone index is: "+str(backbone_bead))
-              exit() 
-             if parent_index != -1:
-              if parent_index < bead_index:
-               bond_list.append([parent_index,bead_index])
-              else:
-               bond_list.append([bead_index,parent_index])
+             if bead_index != 1:
+              if parent_index < 0:
+               print("Error: identifying parent index incorrectly when assigning a bond.")
+               print("The bead index is: "+str(bead_index))
+               print("The parent index is: "+str(parent_index))
+               print("The backbone index is: "+str(backbone_bead))
+               exit() 
+              if parent_index != -1:
+               if parent_index < bead_index:
+                bond_list.append([parent_index,bead_index])
+               else:
+                bond_list.append([bead_index,parent_index])
              bead_index = bead_index + 1
              
-             if backbone_bead > 1:
-              if backbone_bead-1 in self.sidechain_positions:
-               for sidechain_bead in range(self.sidechain_length):
-                 parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=True)
-                 if parent_index < bead_index:
-                  bond_list.append([parent_index,bead_index])
-                 else:
-                  bond_list.append([bead_index,parent_index])
-                 bead_index = bead_index + 1
+             if backbone_bead-1 in self.sidechain_positions:
+                for sidechain_bead in range(self.sidechain_length):
+                  parent_index = get_parent_bead(self,bead_index,backbone_bead,sidechain_bead=True)
+                  if parent_index < bead_index:
+                   bond_list.append([parent_index,bead_index])
+                  else:
+                   bond_list.append([bead_index,parent_index])
+                  bead_index = bead_index + 1
 
           return(bond_list)
 
