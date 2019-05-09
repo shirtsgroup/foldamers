@@ -33,6 +33,7 @@ temperature = 300.0 * unit.kelvin
 print_frequency = 10 # Number of steps to skip when printing output
 total_simulation_time = 100.0 * unit.picosecond # Units = picoseconds
 number_steps = 100000
+number_bins = 20
 run_simulations = False
 analyze_data = True
 plot_results = True
@@ -50,13 +51,6 @@ bond_force_constant = 9e7 # Units = kJ/mol/A^2
 constrain_bonds = False
 epsilon = 0.1 * unit.kilocalorie_per_mole # Lennard-Jones interaction strength
 charge = 0.0 * unit.elementary_charge # Charge of beads
-
-
-# Make arrays for output data
-trajectory_list = []
-energies = []
-time_step_list = []
-ete_distance_list = []
 
 # Setup and run OpenMM simulations
 if run_simulations == True:
@@ -84,6 +78,12 @@ else:
 
 if analyze_data == True:
 # Get the output energies
+# Make arrays for output data
+ trajectory_list = []
+ energies = []
+ time_step_list = []
+ ete_distance_list = []
+
  for index in range(total_simulations):
   all_energies = []
   output_data = str("simulation_"+str(index)+".dat")
@@ -105,12 +105,46 @@ if analyze_data == True:
   ete_distance_list.append(np.array([float(dist) for dist in ete_distances]))
 
 # Reformat and save our data to output files
-energies_array = np.array([energy_array for energy_array in energies])
-ete_distance_array = np.array([distances for distances in ete_distance_list])
+ energies_array = np.array([energy_array for energy_array in energies])
+ ete_distance_array = np.array([distances for distances in ete_distance_list])
 #np.savetxt("all_energies.dat",energies_array.transpose(1,0))
 #np.savetxt("end_to_end_distances.dat",ete_distance_array.transpose(1,0))
-best_distances = []
-best_energies = []
+ best_distances = []
+ best_energies = []
+
+# Get the lowest energy and smallest end-to-end distance structures
+ for index_1 in range(len(ete_distance_list)):
+  energy_array = energies[index_1]
+  distance_array = ete_distance_list[index_1]
+  for index_2 in range(len(distance_array)):
+   if len(best_distances) < 1000:
+    best_distances.append(distance_array[index_2])
+    best_energies.append(energy_array[index_2])
+   else:
+    best_distance_array = np.array([float(distance) for distance in best_distances])
+    if float(distance_array[index_2]) < float(np.amax(best_distance_array)):
+     largest_distance_index = np.argmax(best_distance_array)
+     best_energy_array = np.array([float(energy) for energy in best_energies])
+     if float(energy_array[index_2]) < float(best_energies[largest_distance_index]):
+      best_distances[largest_distance_index] = distance_array[index_2]
+      best_energies[largest_distance_index] = energy_array[index_2]
+
+ max_energy = max(best_energies)
+ min_energy = min(best_energies)
+ energy_bin_size = ( max_energy - min_energy ) / number_bins
+ energy_bin_list = [min_energy + 0.5 * energy_bin_size for i in range(number_bins)]
+ max_distance = max(best_distances)
+ min_distance = min(best_distances)
+ distance_bin_size = ( max_distance - min_distance ) / number_bins
+ distance_bin_list = [min_distance + 0.5 * distance_bin_size for i in range(number_bins)]
+ counts_list = np.array([number_bins,number_bins])
+ for index_1 in range(len(distance_bin_list)):
+  for index_2 in range(len(energy_bin_list)):
+   for distance_index in range(len(best_distances)):
+    if best_distances[distance_index] > (distance_bin_list[index_1]-0.5*distance_bin_size) and best_distances[distance_index] <= (distance_bin_list[index_1]+0.5*distance_bin_size):
+     for energy_index in range(len(best_energies)):
+      if best_energies[energy_index] > (energy_bin_list[index_1]-0.5*energy_bin_size) and best_energies[distance_index] <= (energy_bin_list[index_1]+0.5*energy_bin_size):
+       counts_list[index_1][index_2] = counts_list[index_1][index_2] + 1
 
 if plot_results == True:
 # Plot the energies for all trajectories
@@ -139,55 +173,11 @@ if plot_results == True:
  pyplot.legend(loc=2)
  pyplot.close()
 
- energy_bin_list = [min_energy + 0.5 * energy_bin_size for i in range(number_bins)]
- max_distance = max(best_distances)
- min_distance = min(best_distances)
- distance_bin_size = ( max_distance - min_distance ) / number_bins
- distance_bin_list = [min_distance + 0.5 * distance_bin_size for i in range(number_bins)]
- print(distance_bin_list)
- exit()
-
-# Get the lowest energy and smallest end-to-end distance structures
- for index_1 in range(len(ete_distance_list)):
-  energy_array = energies[index_1]
-  distance_array = ete_distance_list[index_1]
-  for index_2 in range(len(distance_array)):
-   if len(best_distances) < 1000:
-    best_distances.append(distance_array[index_2])
-    best_energies.append(energy_array[index_2])
-   else:
-    best_distance_array = np.array([float(distance) for distance in best_distances])
-    if float(distance_array[index_2]) < float(np.amax(best_distance_array)):
-     largest_distance_index = np.argmax(best_distance_array)
-     best_energy_array = np.array([float(energy) for energy in best_energies])
-     if float(energy_array[index_2]) < float(best_energies[largest_distance_index]): 
-      best_distances[largest_distance_index] = distance_array[index_2]
-      best_energies[largest_distance_index] = energy_array[index_2]
-
 # Plot the number of conformations with a given energy and end-to-end distance
- number_bins = 20
- max_energy = max(best_energies)
- min_energy = min(best_energies)
- energy_bin_size = ( max_energy - min_energy ) / number_bins
- energy_bin_list = [min_energy + 0.5 * energy_bin_size for i in range(number_bins)]
- max_distance = max(best_distances)
- min_distance = min(best_distances)
- distance_bin_size = ( max_distance - min_distance ) / number_bins
- distance_bin_list = [min_distance + 0.5 * distance_bin_size for i in range(number_bins)]
- counts_list = np.array([number_bins,number_bins])
- for index_1 in range(len(distance_bin_list)):
-  for index_2 in range(len(energy_bin_list)):
-   for distance_index in range(len(best_distances)):
-    if best_distances[distance_index] > (distance_bin_list[index_1]-0.5*distance_bin_size) and best_distances[distance_index] <= (distance_bin_list[index_1]+0.5*distance_bin_size):
-     for energy_index in range(len(best_energies)):
-      if best_energies[energy_index] > (energy_bin_list[index_1]-0.5*energy_bin_size) and best_energies[distance_index] <= (energy_bin_list[index_1]+0.5*energy_bin_size):
-       counts_list[index_1][index_2] = counts_list[index_1][index_2] + 1
-
  x=np.unique(distance_bin_list)
  y=np.unique(energy_bin_list)
  z=np.array(counts_list)
  X,Y = np.meshgrid(x,y)
-
  Z=z.reshape(len(y),len(x))
 
  figure_index = 1
@@ -197,6 +187,5 @@ if plot_results == True:
  pyplot.pcolormesh(X,Y,Z)
  pyplot.savefig(str("energy_vs_end-to-end_distance.png"))
  pyplot.close()
-
 
 exit()
