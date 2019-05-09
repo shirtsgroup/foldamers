@@ -53,7 +53,7 @@ def get_parent_bead(cgmodel,bead_index,backbone_bead_index=None,sidechain_bead=F
                 parent_bead = bead_index - 1
                 return(parent_bead)
                else:
-                 if backbone_bead_index - 2 in cgmodel.sidechain_positions:
+                 if backbone_bead_index - 1 in cgmodel.sidechain_positions:
                   parent_bead = bead_index - cgmodel.sidechain_length - 1
                  else:
                   parent_bead = bead_index - 1
@@ -95,9 +95,10 @@ def build_system(cgmodel):
               system.addForce(force)
 
         
-        for interaction in cgmodel.get_nonbonded_interaction_list():
-               nonbonded_force.addException(interaction[0],interaction[1],cgmodel.charge,cgmodel.sigma,0.0)
+#        for interaction in cgmodel.get_nonbonded_interaction_list():
+#               nonbonded_force.addException(interaction[0],interaction[1],charge,sigma,0.0)
 
+        nonbonded_force.createExceptionsFromBonds(new_bond_list,1.0,1.0)
         system.addForce(nonbonded_force)
         return(system)
 
@@ -222,7 +223,8 @@ class CGModel(object):
 
           self.system = build_system(self)
 
-          self.positions = util.random_positions(self) 
+          if positions == None: self.positions = util.random_positions(self) 
+          else: self.positions = positions
 
           """
           Initialize attributes of our coarse grained model.

@@ -48,9 +48,12 @@ def first_bead(positions):
 
         first_bead = True
     
-        for value in positions._value:
-           if any(i != 0. for i in value):
-             first_bead = False
+        if str(positions.shape) == '(2,)':
+          return(first_bead)
+        else:
+          for value in positions._value:
+            if any(i != 0. for i in value):
+              first_bead = False
 
         return(first_bead)
 
@@ -126,7 +129,7 @@ def get_move(trial_coordinates,move_direction,distance,bond_length,finish_bond=F
 
         return(trial_coordinates)
 
-def attempt_lattice_move(parent_coordinates,bond_length):
+def attempt_lattice_move(parent_coordinates,bond_length,move_direction_list):
         """
         Given a set of cartesian coordinates, assign a new particle
         a distance of 'bond_length' away in a random direction.
@@ -163,11 +166,23 @@ def attempt_lattice_move(parent_coordinates,bond_length):
 
         # Assign the parent coordinates as the initial coordinates for a trial particle
 
-        trial_coordinates = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
-        ref = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
+        trial_coordinates = parent_coordinates.__deepcopy__(memo={})
+        ref = parent_coordinates.__deepcopy__(memo={})
 
-        move_direction = random.randint(0,2)
-        trial_coordinates[move_direction] = trial_coordinates[move_direction].__add__(bond_length)
+        move_direction = random.randint(1,3)
+        move_sign = random_sign(move_direction)
+        while move_sign in move_direction_list:
+         move_direction = random.randint(1,3)
+         move_sign = random_sign(move_direction)
+        move_direction_list.append(move_sign)
+        if move_sign < 0:
+         move_sign = -bond_length
+        else:
+         move_sign = bond_length
+#        print(move_direction)
+#        print(trial_coordinates[move_direction-1])
+#        print(move_sign)
+        trial_coordinates[move_direction-1] = trial_coordinates[move_direction-1].__add__(move_sign)
 
         dist = distance(ref,trial_coordinates)
 
@@ -180,7 +195,7 @@ def attempt_lattice_move(parent_coordinates,bond_length):
            print(trial_coordinates)
            exit()
 
-        return(trial_coordinates)
+        return(trial_coordinates,move_direction_list)
 
 def attempt_move(parent_coordinates,bond_length):
         """
@@ -221,8 +236,8 @@ def attempt_move(parent_coordinates,bond_length):
 
         # Assign the parent coordinates as the initial coordinates for a trial particle
 
-        trial_coordinates = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
-        ref = np.array([parent_coordinates[i]._value for i in range(3)]) * parent_coordinates.unit
+        trial_coordinates = parent_coordinates.__deepcopy__(memo={})
+        ref = parent_coordinates.__deepcopy__(memo={})
 
         for direction in range(3):
             move_direction = random.randint(0,2)
@@ -246,11 +261,11 @@ def attempt_move(parent_coordinates,bond_length):
 
             move_direction_list.append(move_direction)
 
-#            print("Parent coordinates are: "+str(ref))
-#            print("Trial coordinates are: "+str(trial_coordinates))
+            print("Parent coordinates are: "+str(ref))
+            print("Trial coordinates are: "+str(trial_coordinates))
             dist = distance(ref,trial_coordinates)
-#            print(direction)
-#            print(dist)
+            print(direction)
+            print(dist)
 
         if round(dist._value,4) < round(bond_length._value,4):
 
@@ -263,7 +278,7 @@ def attempt_move(parent_coordinates,bond_length):
 
         return(trial_coordinates)
 
-def nonbonded_distances(nonbonded_interaction_list,positions):
+def distances(interaction_list,positions):
         """
         Calculate the distances between a trial particle ('new_coordinates')
         and all existing particles ('existing_coordinates').
@@ -285,21 +300,17 @@ def nonbonded_distances(nonbonded_interaction_list,positions):
 
         """
 
-        distances = []
+        distance_list = []
 
-        if first_bead(positions):
-
-          return(distances)
-
-        else:
-
-          for interaction in nonbonded_interaction_list:
+        for interaction in interaction_list:
             if interaction[0] < len(positions) and interaction[1] < len(positions):
-             distances.append(distance(positions[interaction[0]],positions[interaction[1]]))
+             print("The distance between particles: "+str(interaction[0])+" and "+str(interaction[1])+" is "+str(distance(positions[interaction[0]],positions[interaction[1]])))
+             distance_list.append(distance(positions[interaction[0]],positions[interaction[1]]))
 
-        return(distances)
 
-def collisions(distances,distance_cutoff):
+        return(distance_list)
+
+def collisions(distance_list,distance_cutoff):
         """
         Determine whether there are any collisions between non-bonded
         particles, where a "collision" is defined as a distance shorter
@@ -327,9 +338,9 @@ def collisions(distances,distance_cutoff):
         collision = False
 
 #        print("The nonbonded cutoff distance is: "+str(sigma._value))
-        if len(distances) > 0:
+        if len(distance_list) > 0:
 
-          for distance in distances:
+          for distance in distance_list:
 
             if round(distance._value,4) < round(distance_cutoff._value,4):
 
@@ -366,34 +377,51 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,p
         if parent_index == -1:
                parent_index = bead_index - 1
 
-        parent_coordinates = positions[parent_index-1]
+#        print("Parent bead index is: "+str(parent_index-1))
+#        print("Parent coordinates are: "+str(positions[parent_index-1]))
+#        print("Child bead index is: "+str(bead_index-1))
+#        print("Child coordinates are: "+str(positions[bead_index-1]))
+#        print("Positions are: "+str(positions))
+        bond_list = [[bond[0]-1,bond[1]-1] for bond in cgmodel.get_bond_list()]
+       
+#        print("The bond list is: "+str(bond_list))
+        full_nonbonded_list = []
+        for i in range(cgmodel.num_beads):
+         for j in range(i+1,cgmodel.num_beads):
+           if [i,j] not in bond_list:
+             full_nonbonded_list.append([i,j])
+#        print(full_nonbonded_list)
+        parent_coordinates = positions[parent_index-1].__deepcopy__(memo={})
 
         new_coordinates = unit.Quantity(np.zeros(3), units)
         success = False
-        best_attempt = unit.Quantity(np.zeros(3), units)
-        best_distances = nonbonded_distances(cgmodel.nonbonded_interactions,positions[0:bead_index-1])
-        attempts = 0
+        best_attempt = positions[parent_index-1].__deepcopy__(memo={})
+        best_distances = distances(full_nonbonded_list,positions[0:bead_index-1])
+#        print(best_distances)
+        move_direction_list = []
+        while len(move_direction_list) < 6 and not success:
 
-        while not success:
-
-           new_coordinates = attempt_lattice_move(parent_coordinates,cgmodel.bond_length)
+           new_coordinates,move_direction_list = attempt_lattice_move(parent_coordinates,cgmodel.bond_length,move_direction_list)
 
            test_positions = positions.__deepcopy__(memo={})
            test_positions[bead_index-1] = new_coordinates
-           distances = nonbonded_distances(cgmodel.nonbonded_interactions,test_positions[0:bead_index-1])
+           print("Getting the non-bonded distances for these trial positions: ")
+           print(test_positions[bead_index-1])
+           distance_list = distances(full_nonbonded_list,test_positions[0:bead_index-1])
+#           print(distance_list)
+           if not collisions(distance_list,distance_cutoff): 
+             success = True
+             print("No collisions found")
 
-           if not collisions(distances,distance_cutoff): success = True
-           if collisions and len(distances) > 0:
-#             print(distances)
-#             print(best_distances)
-             if min(distances) > min(best_distances):
-               best_attempt = new_coordinates
-
-           if attempts > 20:
-            return(positions,success)
-
-           attempts = attempts + 1
-
+           if collisions(distance_list,distance_cutoff) and len(distance_list) > 0:
+             if min(distance_list) > min(best_distances):
+               best_attempt = test_positions.__deepcopy__(memo={})
+               best_distances = distance_list.__deepcopy__(memo={})
+               
+        if len(move_direction_list) == 6 and not success:
+          print("Couldn't find a place to put a coarse grained bead.")
+          exit()
+        print("The new coordinates are: "+str(test_positions))
         positions = test_positions
         return(positions,success)
 
@@ -436,12 +464,12 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index):
 
            new_coordinates = attempt_move(parent_coordinates,bond_length)
 
-           distances = nonbonded_distances(new_coordinates,positions)
+           distance_list = distances(new_coordinates,positions)
 
-           if not collisions(distances,sigma): success = True
+           if not collisions(distance_list,sigma): success = True
 
            if attempts > 100:
-            print([distance._value for distance in distances])
+            print([distance._value for distance in distance_list])
             return(positions,success)
 
            attempts = attempts + 1
@@ -520,10 +548,7 @@ def random_positions( cgmodel,max_attempts=100 ):
           if not placement: 
            bond_index = bond_index - round(random.triangular(0,bond_index))
            total_attempts = total_attempts + 1
-           new_positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
-           for index in range(bond_index+1):
-            new_positions[index] = positions[index]
-           positions = new_positions
+           positions = stored_positions
           if placement: bond_index = bond_index + 1
         if total_attempts >= max_attempts:
          print("Failed to build a CG model with "+str(cgmodel.backbone_length)+" backbone beads")
