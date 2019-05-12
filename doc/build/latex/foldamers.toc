@@ -1,4 +1,12 @@
 \babel@toc {english}{}
-\contentsline {chapter}{\numberline {1}Indices and tables}{5}{chapter.1}
-\contentsline {chapter}{Python Module Index}{7}{section*.26}
-\contentsline {chapter}{Index}{9}{section*.27}
+\contentsline {chapter}{\numberline {1}Coarse grained model utilities}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}\IeC {\textquoteleft }CGModel\IeC {\textquoteright } class for OpenMM simulation}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Other coarse grained model utilities}{2}{section.1.2}
+\contentsline {chapter}{\numberline {2}Thermodynamic analysis tools for coarse grained modeling}{6}{chapter.2}
+\contentsline {section}{\numberline {2.1}Tools to calculate the heat capacity with pymbar}{6}{section.2.1}
+\contentsline {chapter}{\numberline {3}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Input/Output options (src/utilities/iotools.py)}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}Utilities and random functions (src/utilities/util.py)}{7}{section.3.2}
+\contentsline {chapter}{\numberline {4}Indices and tables}{11}{chapter.4}
+\contentsline {chapter}{Python Module Index}{12}{section*.29}
+\contentsline {chapter}{Index}{13}{section*.30}

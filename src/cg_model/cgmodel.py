@@ -1,18 +1,24 @@
-#!/usr/local/bin/env python
-
-#Tools for building coarse grained models 
-
-# ==============================================================================
-# GLOBAL IMPORTS
-# ==============================================================================
-
 from simtk import unit
 import sys, os
-from ..utilities import util
+from foldamers.src.utilities import util
 from simtk import openmm as mm
 import simtk.openmm.app.element as elem
 
 def get_particle_masses(cgmodel):
+        """
+        Returns a list of unique particle masses
+
+        Parameters
+        ----------
+
+        cgmodel: CGModel() class object
+
+        Returns
+        -------
+
+        List( unique particle masses )
+
+        """
         list_of_masses = []
         for backbone_bead in range(cgmodel.backbone_length):
             list_of_masses.append(cgmodel.mass)
@@ -22,6 +28,17 @@ def get_particle_masses(cgmodel):
         return(list_of_masses)
 
 def add_new_elements(cgmodel,list_of_masses):
+        """
+        Adds new coarse grained particle types to OpenMM
+
+        Parameters
+        ----------
+
+        cgmodel: CGModel() class object
+
+        list_of_masses: List of masses for the particles we want to add to OpenMM
+
+        """
         element_index = 117
         mass_index = 0
         cg_particle_index = 1
@@ -47,8 +64,36 @@ def add_new_elements(cgmodel,list_of_masses):
         return
 
 def get_parent_bead(cgmodel,bead_index,backbone_bead_index=None,sidechain_bead=False):
-              parent_bead = -1
-              if bead_index != 1:
+        """
+        Determines the particle to which a given particle is bonded.  (Used for coarse grained model construction.)
+
+        Parameters
+        ----------
+
+        cgmodel: CGModel() class object
+
+        bead_index: Index of the particle for which we would like to determine the parent particle it is bonded to.
+        ( integer )
+        Default = None
+
+        backbone_bead_index: If this bead is a backbone bead, this index tells us its index (within a monomer) along the backbone
+        ( integer )
+        Default = None
+
+        sidechain_bead: Logical variable stating whether or not this bead is in the sidechain.
+        ( Logical )
+        Default = False
+
+        Returns
+        -------
+
+        parent_bead: Index for the particle that 'bead_index' is bonded to.
+        ( Integer )
+
+        """
+
+        parent_bead = -1
+        if bead_index != 1:
                if sidechain_bead == True:
                 parent_bead = bead_index - 1
                 return(parent_bead)
@@ -57,10 +102,23 @@ def get_parent_bead(cgmodel,bead_index,backbone_bead_index=None,sidechain_bead=F
                   parent_bead = bead_index - cgmodel.sidechain_length - 1
                  else:
                   parent_bead = bead_index - 1
-              return(parent_bead)
+        return(parent_bead)
 
 def build_system(cgmodel):
+        """
+        Builds an OpenMM System() class object, given a CGModel() class object as input.
 
+        Parameters
+        ----------
+
+        cgmodel: CGModel() class object
+
+        Returns
+        -------
+
+        system: OpenMM System() class object
+
+        """
         sigma = cgmodel.sigma.in_units_of(unit.nanometer)._value
         charge = cgmodel.charge._value
         epsilon = cgmodel.epsilon.in_units_of(unit.kilojoule_per_mole)._value
