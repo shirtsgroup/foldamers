@@ -11,6 +11,7 @@ from simtk import unit
 import mdtraj as md
 
 # foldamers utilities
+import foldamers
 from foldamers.src.cg_model.cgmodel import CGModel
 from foldamers.src.utilities.util import *
 from foldamers.src.utilities.iotools import *

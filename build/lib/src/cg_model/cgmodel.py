@@ -125,6 +125,7 @@ class CGModel(object):
 
         positions: Positions for all of the particles, default = None
 
+
         polymer_length: Number of monomer units (integer), default = 8
       
         backbone_length: Number of beads in the backbone 
@@ -138,80 +139,40 @@ class CGModel(object):
         default = [0] (Place a sidechain on the backbone bead with
         index "0" (first backbone bead) in each (individual) monomer
 
-        masses: Masses of all particle types
-        ( List ( [ [ Backbone masses ], [ Sidechain masses ] ] ) )
-        default = [ [ 12.0 * unit.amu ], [ 12.0 * unit.amu ] ]
+        mass: Mass of coarse grained beads ( float * simtk.unit.mass )
+        default = 12.0 * unit.amu
 
-        sigma: Non-bonded bead Lennard-Jones equilibrium interaction distance
+        sigma: Non-bonded bead Lennard-Jones interaction distances,
         ( float * simtk.unit.distance )
         default = 8.4 * unit.angstrom
 
-        epsilon: Non-bonded Lennard-Jones equilibrium interaction strength
+        epsilon: Non-bonded bead Lennard-Jones interaction strength,
         ( float * simtk.unit.energy )
         default = 0.5 * unit.kilocalorie_per_mole
 
-        bond_lengths: Bond lengths for all bond types
+        bond_length: Bond length for all beads that are bonded,
         ( float * simtk.unit.distance )
         default = 1.0 * unit.angstrom
 
-        bond_force_constants: Bond force constants for all bond types
+        bond_force_constant: Bond force constant for all beads that are bonded,
         ( float )
         default = 9.9e5 kJ/mol/A^2
 
-        charges: Charges for all beads
+        bb_bond_length: Bond length for all bonded backbone beads,
+        ( float * simtk.unit.distance )
+        default = 1.0 * unit.angstrom
+
+        bs_bond_length: Bond length for all backbone-sidechain bonds,
+        ( float * simtk.unit.distance )
+        default = 1.0 * unit.angstrom
+
+        ss_bond_length: Bond length for all beads within a sidechain,
+        ( float * simtk.unit.distance )
+        default = 1.0 * unit.angstrom
+
+        charge: Charge for all beads
         ( float * simtk.unit.charge )
-        default = 0.0 * unit.elementary_charge (for all beads)
-
-        num_beads: Total number of particles in the coarse grained model
-        ( integer )
-        default = polymer_length * ( backbone_length + sidechain_length )
-
-        system: OpenMM system object, which stores forces, and can be used
-        to check a model for energy conservation
-        ( OpenMM System() class object )
-        default = None
-
-        topology: OpenMM topology object, which stores bonds, angles, and
-        other structural attributes of the coarse grained model
-        ( OpenMM Topology() class object )
-        default = None
-
-        constrain_bonds: Logical variable determining whether bond constraints
-        are applied during a molecular dynamics simulation of the system.
-        ( Logical )
-        default = False
-
-        bond_list: List of bonds in the coarse grained model
-        ( List( [ [ int, int ] for # bonds ] ) )
-        default = None
-
-        angle_list: List of bond angles that are defined for this coarse
-        grained model
-        ( List( [ [ int, int, int ] for # bond angles ] ) )
-
-        torsion_list: List of torsions that are defined for this coarse
-        grained model
-        List( [ [ int, int, int, int ] for # torsions ] ) )
-
-        include_bond_forces: Include contributions from bond
-        (harmonic) potentials when calculating the potential energy
-        ( Logical )
-        default = True
-
-        include_nonbonded_forces: Include contributions from nonbonded
-        interactions when calculating the potential energy
-        ( Logical )
-        default = True
-
-        include_bond_angle_forces: Include contributions from bond angles
-        when calculating the potential energy
-        ( Logical )
-        default = False
-
-        include_torsion_forces: Include contributions from torsions
-        when calculating the potential energy
-        ( Logical )
-        default = False
+        default = 0.0 * unit.elementary_charge
 
         Attributes
         ----------
@@ -220,24 +181,18 @@ class CGModel(object):
         backbone_length
         sidechain_length
         sidechain_positions
-        masses
+        mass
         sigma
         epsilon
-        bond_lengths
-        bond_force_constants
-        charges
+        bond_length
+        bond_force_constant
+        bb_bond_length
+        bs_bond_length
+        ss_bond_length
+        charge
         num_beads
         positions
         system
-        topology
-        constrain_bonds
-        bond_list
-        angle_list
-        torsion_list
-        include_bond_forces
-        include_nonbonded_forces
-        include_bond_angle_forces
-        include_torsion_forces
 
         Notes
         -----
@@ -245,9 +200,9 @@ class CGModel(object):
         """
 
         # Built in class attributes
-        _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','masses','sigma','epsilon','bond_lengths','bond_force_constants','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
+        _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','mass','sigma','epsilon','bond_length','bond_force_constant','bs_bond_length','bb_bond_length','ss_bond_length','charge','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interactions')
 
-        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], masses = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_lengths = 1.0 * unit.angstrom, bond_force_constants = 9.9e5, charges = 0.0 * unit.elementary_charge, constrain_bonds = False,include_bond_forces=True,include_nonbonded_forces=True,include_bond_angle_forces=True,include_torsion_forces=True,check_energy_conservation=True):
+        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], mass = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_length = 1.0 * unit.angstrom, bond_force_constant = 9.9e5, bb_bond_length = 1.0 * unit.angstrom, bs_bond_length = 1.0 * unit.angstrom, ss_bond_length = 1.0 * unit.angstrom, charge = 0.0 * unit.elementary_charge,constrain_bonds = False):
 
           """
           Initialize variables that were passed as input
@@ -258,30 +213,28 @@ class CGModel(object):
           self.sidechain_length = sidechain_length
           self.sidechain_positions = sidechain_positions
           self.num_beads = polymer_length * ( backbone_length + sidechain_length )
-          self.masses = masses
+          self.mass = mass
           self.sigma = sigma
           self.epsilon = epsilon
-          self.bond_lengths = bond_lengths
-          self.bond_force_constants = bond_force_constants
-          self.charges = charges
+          self.bond_length = bond_length
+          self.bond_force_constant = bond_force_constant
+          self.bb_bond_length = bb_bond_length
+          self.bs_bond_length = bs_bond_length
+          self.ss_bond_length = ss_bond_length
+          self.charge = charge
+          self.bond_list = self.get_bond_list()
+          self.nonbonded_interactions = self.get_nonbonded_interaction_list()
+          self.constrain_bonds = constrain_bonds
 
           """
-          Get bond, angle, and torsion lists.
+          Initialize new (coarse grained) particle types:
           """
-          self.bond_list = self.get_bond_list()
-          self.nonbonded_interaction_list = self.get_nonbonded_interaction_list()
-          self.angle_list = self.get_angle_list()
-          self.torsion_list = self.get_torsion_list()
-          self.constrain_bonds = constrain_bonds
 
           """
           Make a list of coarse grained particle masses:
           """
           list_of_masses = get_particle_masses(self)
 
-          """
-          Initialize new (coarse grained) particle types:
-          """
           add_new_elements(self,list_of_masses)
 
           self.system = build_system(self)
@@ -289,10 +242,11 @@ class CGModel(object):
           if positions == None: self.positions = util.random_positions(self) 
           else: self.positions = positions
 
+          """
+          Initialize attributes of our coarse grained model.
+          """
+
         def get_bond_list(self):
-          """
-          Construct a bond list for the coarse grained model
-          """
           bond_list = []
           bead_index = 1
           for monomer in range(self.polymer_length):
@@ -324,15 +278,11 @@ class CGModel(object):
 
           return(bond_list)
 
-        def get_nonbonded_interaction_list(self):
-          """
-          Construct a nonbonded interaction list for our coarse grained model
-          """
-
-          interaction_list = []
-          bond_list = [[bond[0]-1,bond[1]-1] for bond in self.get_bond_list()]
-          for particle_1 in range(self.num_beads):
-               for particle_2 in range(self.num_beads):
+        def get_nonbonded_interaction_list(cgmodel):
+             interaction_list = []
+             bond_list = [[bond[0]-1,bond[1]-1] for bond in cgmodel.get_bond_list()]
+             for particle_1 in range(cgmodel.num_beads):
+               for particle_2 in range(cgmodel.num_beads):
                  if particle_1 != particle_2 and abs(particle_1 - particle_2) >= 3:
                    if [particle_1,particle_2] not in bond_list and [particle_2,particle_1] not in bond_list:
                      if [particle_1,particle_2] not in interaction_list:
@@ -341,67 +291,25 @@ class CGModel(object):
                      if [particle_2,particle_1] not in interaction_list:
                        if [particle_1,particle_2] not in interaction_list:
                          interaction_list.append([particle_2,particle_1])
-          return(interaction_list)
+             return(interaction_list)
 
 
-        def get_bond_angle_list(self):
-          """
-          Construct a list of bond angles for our coarse grained model
-          """
+        def get_dihedral_angles(self):
+          bead_index = 0
+          backbone_bead_indices = []
+          dihedrals = []
+          for monomer in range(self.polymer_length):
+           for backbone_bead in range(self.backbone_length):
+            backbone_bead_indices.append(bead_index)
+            if bead_index != 0:
+              bead_index = bead_index + 1
+            if backbone_bead in self.sidechain_positions:
+             for sidechain_bead in range(self.sidechain_length):
+               bead_index = bead_index + 1
 
-          bond_angles = []
-          for bond_1 in bond_list:
-            bond_angle = [bond_1[0],bond_1[1]]
-            for bond_2 in bond_list:
-             if bond_2 != bond_1 and [bond_2[1],bond_2[0]] != bond_1:
-              if bond_1[0] in bond_2 or bond_1[1] in bond_2:
-               if bond_2[0] not in bond_angle:
-                bond_angle.append(bond_2[0])
-               if bond_2[1] not in bond_angle:
-                bond_angle.append(bond_2[1])
-             if len(bond_angle) == 3:
-                 unique = True
-                 for existing_bond_angle in bond_angles:
-                  if all(bond_angle) in existing_bond_angle:
-                   unique = False
-                 if unique:
-                   bond_angles.append(bond_angle)
-                 bond_angle = bond_1
+          for index in range(4,len(backbone_bead_indices)):
 
-          return(bond_angles)
+            dihedrals.append(np.array(backbone_bead_indices[index-4:index]))
 
-
-        def get_torsion_list(self):
-          """
-          Construct a torsion list for our coarse grained model
-          """
-
-          torsions = []
-          for bond_1 in bond_list:
-            torsion = [bond_1[0],bond_1[1]]
-            for bond_2 in bond_list:
-             if bond_2 != bond_1 and [bond_2[1],bond_2[0]] != bond_1:
-              if bond_1[0] in bond_2 or bond_1[1] in bond_2:
-               if bond_2[0] not in bond_angle:
-                torsion.append(bond_2[0])
-               if bond_2[1] not in bond_angle:
-                bond_angle.append(bond_2[1])
-
-             for bond_3 in bond_list:
-              if bond_3 != bond_1 and [bond_3[1],bond_3[0]] != bond_1:
-                if bond_3 != bond_2 and [bond_3[1],bond_3[0]] != bond_2:
-                  if bond_3[0] in bond_2 or bond_1[1] in bond_2:
-                    if bond_2[0] not in bond_angle:
-                      torsion.append(bond_2[0])
-                    if bond_2[1] not in bond_angle:
-                      bond_angle.append(bond_2[1])
-             if len(bond_angle) == 3:
-                 unique = True
-                 for existing_bond_angle in bond_angles:
-                  if all(bond_angle) in existing_bond_angle:
-                   unique = False
-                 if unique:
-                   bond_angles.append(bond_angle)
-                 bond_angle = bond_1
-
+          dihedrals = np.array([dihedral for dihedral in dihedrals])
           return(dihedrals)
