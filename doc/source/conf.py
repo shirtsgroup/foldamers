@@ -15,13 +15,16 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))
+#sys.path.insert(1,os.path.abspath('../../src/cg_model'))
+#sys.path.insert(2,os.path.abspath('../../src/thermo'))
+#sys.path.insert(3,os.path.abspath('../../src/utilities'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'foldamers'
 copyright = '2019, Shirts research group'
-author = 'Shirts research group'
+author = "Shirts research group\\\ \\\Garrett A. Meek\\\Lenny T. Fobe\\\Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
 
 # The short X.Y version
 version = ''
@@ -122,7 +125,8 @@ latex_elements = {
 
     # The font size ('10pt', '11pt' or '12pt').
     #
-    # 'pointsize': '10pt',
+    'extraclassoptions': 'openany,oneside',
+    'pointsize': '12pt',
 
     # Additional stuff for the LaTeX preamble.
     #
@@ -138,7 +142,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'foldamers.tex', 'foldamers Documentation',
-     'Shirts research group', 'manual'),
+     author, 'manual'),
 ]
 
 

@@ -6,23 +6,14 @@
 Welcome to the foldamers documentation!
 =======================================
 
+This documentation is generated automatically using Sphinx, which reads all docstring-formatted comments from Python functions in the 'foldamers' repository.  (See foldamers/doc for Sphinx source files.)
+
 .. toctree::
    :maxdepth: 2
 
-.. autoclass:: cg_model.cgmodel
-    :members:
-
-.. automodule:: cg_model.cgmodel
-    :members:
-
-.. automodule:: utilities.util
-    :members:
-
-.. automodule:: utilities.iotools
-    :members:
-
-.. automodule:: thermo.heat_capacity
-    :members:
+   cg_model.rst
+   thermo.rst
+   utilities.rst
 
 Indices and tables
 ==================

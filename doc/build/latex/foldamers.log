@@ -1,17 +1,17 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.22)  29 APR 2019 10:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.5.12)  12 MAY 2019 17:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **foldamers.tex
 (./foldamers.tex
 LaTeX2e <2017-04-15>
-Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
+Babel <3.18> and hyphenation patterns for 3 language(s) loaded.
 (./sphinxmanual.cls
-Document Class: sphinxmanual 2018/12/22 v1.8.3 Document class (Sphinx manual)
+Document Class: sphinxmanual 2018/12/23 v2.0 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@chapter=\count80
@@ -446,6 +446,8 @@ File: babel.def 2018/02/14 3.18 Babel common definitions
 (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@dirlevel=\count101
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -830,12 +832,12 @@ Package etexcmds Info: Could not find \expanded.
 \sphinxshadowsize=\dimen140
 \sphinxshadowrule=\dimen141
 \spx@notice@border=\dimen142
-\spx@image@box=\box39
 \spx@image@maxheight=\dimen143
+\spx@image@box=\dimen144
 \c@literalblock=\count116
-\sphinxcontinuationbox=\box40
-\sphinxvisiblespacebox=\box41
-\sphinxVerbatim@TitleBox=\box42
+\sphinxcontinuationbox=\box39
+\sphinxvisiblespacebox=\box40
+\sphinxVerbatim@TitleBox=\box41
 \py@argswidth=\skip71
 \lineblockindentation=\skip72
 \DUlineblockindent=\skip73
@@ -856,14 +858,14 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@cnth=\count117
 \Gm@cntv=\count118
 \c@Gm@tempcnt=\count119
-\Gm@bindingoffset=\dimen144
-\Gm@wd@mp=\dimen145
-\Gm@odd@mp=\dimen146
-\Gm@even@mp=\dimen147
-\Gm@layoutwidth=\dimen148
-\Gm@layoutheight=\dimen149
-\Gm@layouthoffset=\dimen150
-\Gm@layoutvoffset=\dimen151
+\Gm@bindingoffset=\dimen145
+\Gm@wd@mp=\dimen146
+\Gm@odd@mp=\dimen147
+\Gm@even@mp=\dimen148
+\Gm@layoutwidth=\dimen149
+\Gm@layoutheight=\dimen150
+\Gm@layouthoffset=\dimen151
+\Gm@layoutvoffset=\dimen152
 \Gm@dimlist=\toks28
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
@@ -910,7 +912,7 @@ Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
 )
-\@linkdim=\dimen152
+\@linkdim=\dimen153
 \Hy@linkcounter=\count120
 \Hy@pagecounter=\count121
 
@@ -947,10 +949,10 @@ Package hyperref Info: Bookmarks ON on input line 4762.
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5115.
-\XeTeXLinkMargin=\dimen153
+\XeTeXLinkMargin=\dimen154
 \Fld@menulength=\count124
-\Field@Width=\dimen154
-\Fld@charsize=\dimen155
+\Field@Width=\dimen155
+\Fld@charsize=\dimen156
 Package hyperref Info: Hyper figures OFF on input line 6369.
 Package hyperref Info: Link nesting OFF on input line 6374.
 Package hyperref Info: Hyper index ON on input line 6377.
@@ -981,37 +983,44 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/hypcap.sty
 Package: hypcap 2016/05/16 v1.12 Adjusting the anchors of captions (HO)
 )
+(./sphinxmessages.sty
+Package: sphinxmessages 2019/01/04 v2.0 Localized LaTeX macros (Sphinx team)
+)
 \@indexfile=\write4
 \openout4 = `foldamers.idx'.
 
 
 Writing index file foldamers.idx
-(./foldamers.aux)
+(./foldamers.aux
+
+LaTeX Warning: Label `cg_model:module-cg_model.cgmodel' multiply defined.
+
+)
 \openout1 = `foldamers.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 67.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 80.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 80.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 67.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 80.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -1019,13 +1028,13 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count130
-\scratchdimen=\dimen156
-\scratchbox=\box43
+\scratchdimen=\dimen157
+\scratchbox=\box42
 \nofMPsegments=\count131
 \nofMParguments=\count132
 \everyMPshowfont=\toks29
 \MPscratchCnt=\count133
-\MPscratchDim=\dimen157
+\MPscratchDim=\dimen158
 \MPnumerator=\count134
 \makeMPintoPDFobject=\count135
 \everyMPtoPDFconversion=\toks30
@@ -1053,7 +1062,7 @@ e
 * paper: letterpaper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
+* modes: 
 * h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
 * v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
 * \paperwidth=614.295pt
@@ -1065,23 +1074,23 @@ e
 * \topmargin=-37.0pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=10.0pt
+* \topskip=12.0pt
 * \footskip=30.0pt
 * \marginparwidth=36.135pt
-* \marginparsep=11.0pt
+* \marginparsep=10.0pt
 * \columnsep=10.0pt
-* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
 * \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
+* \@twosidefalse
+* \@mparswitchfalse
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box44
-Package hyperref Info: Link coloring ON on input line 67.
+\AtBeginShipoutBox=\box43
+Package hyperref Info: Link coloring ON on input line 80.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
@@ -1090,198 +1099,397 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count136
 )
-LaTeX Info: Redefining \ref on input line 67.
-LaTeX Info: Redefining \pageref on input line 67.
-LaTeX Info: Redefining \nameref on input line 67.
+LaTeX Info: Redefining \ref on input line 80.
+LaTeX Info: Redefining \pageref on input line 80.
+LaTeX Info: Redefining \nameref on input line 80.
 
 (./foldamers.out) (./foldamers.out)
 \@outlinefile=\write5
 \openout5 = `foldamers.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 70.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 70.
+Package hyperref Info: Option `pageanchor' set `false' on input line 83.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 83.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 70.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 83.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 70.
-LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 70.
-LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 70.
-LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 70.
-LaTeX Font Info:    Font shape `T1/phv/b/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 70.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 70.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 83.
+LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <12> not available
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 83.
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <12> not available
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 83.
+LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <20.74> not available
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 83.
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <20.74> not available
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 83.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <20.74> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 83.
 <<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Try loading font information for U+msa on input line 70.
+LaTeX Font Info:    Try loading font information for U+msa on input line 83.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 70.
+LaTeX Font Info:    Try loading font information for U+msb on input line 83.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 70.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 83.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 84.
 
-]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 72.
- (./foldamers.toc
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 85.
+(./foldamers.toc
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
 )
 \tf@toc=\write6
 \openout6 = `foldamers.toc'.
 
- [1
 
-] [2
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 85.
+
+[1
+
+
 
 ]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 79.
 
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 86.
+
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 86.
+
+
+Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
+less on input line 86.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[1
+
+]
+Chapter 1.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 109.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 79.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <12> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 109.
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-[]\T1/ptm/m/it/10 positions=None, poly-mer_length=12, back-
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+[]\T1/ptm/m/it/12 positions=None, poly-mer_length=12,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 bone_length=1, sidechain_length=1,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 back-bone_length=1, sidechain_length=1,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 sidechain_positions=[0], mass=Quantity(value=12.0,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 sidechain_positions=[0],
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 unit=dalton), sigma=Quantity(value=8.4,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 ep-silon=Quantity(value=0.5,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 unit=angstrom), ep-silon=Quantity(value=0.5,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 unit=kilocalorie/mole),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 unit=kilocalorie/mole), bond_length=Quantity(value=1.0,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 bond_lengths=Quantity(value=1.0,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 unit=angstrom), bond_force_constant=990000.0,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 unit=angstrom),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 bb_bond_length=Quantity(value=1.0, unit=angstrom),
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 bond_force_constants=990000.0,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 bs_bond_length=Quantity(value=1.0, unit=angstrom),
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 charges=Quantity(value=0.0,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--79
-\T1/ptm/m/it/10 ss_bond_length=Quantity(value=1.0, unit=angstrom),
- []
-
-[1]
-Underfull \hbox (badness 10000) in paragraph at lines 191--191
-[]\T1/ptm/m/it/10 positions\T1/ptm/m/n/10 , \T1/ptm/m/it/10 monomer_start\T1/pt
-m/m/n/10 , \T1/ptm/m/it/10 back-bone_length\T1/ptm/m/n/10 ,
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 349--349
-[]\T1/ptm/m/it/10 trial_coordinates\T1/ptm/m/n/10 , \T1/ptm/m/it/10 move_direct
-ion\T1/ptm/m/n/10 , \T1/ptm/m/it/10 dis-tance\T1/ptm/m/n/10 , \T1/ptm/m/it/10 b
-ond_length\T1/ptm/m/n/10 , \T1/ptm/m/it/10 fin-
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 unit=elementary charge),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 396--396
-[]\T1/ptm/m/it/10 polymer_length\T1/ptm/m/n/10 , \T1/ptm/m/it/10 back-bone_leng
-th\T1/ptm/m/n/10 , \T1/ptm/m/it/10 sidechain_length\T1/ptm/m/n/10 ,
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 con-strain_bonds=False, in-
  []
 
-[3] [4]
-Chapter 1.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 509.
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 clude_bond_forces=True, in-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 clude_nonbonded_forces=True, in-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 clude_bond_angle_forces=True,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+\T1/ptm/m/it/12 in-clude_torsion_forces=True,
+ []
+
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 116.
+
+[2
+
+]
+Underfull \hbox (badness 7944) in paragraph at lines 135--138
+[]\T1/ptm/m/n/12 epsilon: Non-bonded Lennard-Jones equi-lib-rium in-ter-ac-tion
+ strength ( float *
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 202--225
+\T1/ptm/m/n/12 ep-silon bond_lengths bond_force_constants charges num_beads po-
+si-tions sys-tem
+ []
+
+
+Underfull \hbox (badness 5756) in paragraph at lines 202--225
+\T1/ptm/m/n/12 topol-ogy con-strain_bonds bond_list an-gle_list tor-sion_list i
+n-clude_bond_forces in-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 302--302
+[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 bead_index\T1/ptm/m/n
+/12 , \T1/ptm/m/it/12 back-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 302--302
+\T1/ptm/m/it/12 bone_bead_index=None\T1/ptm/m/n/12 ,
+ []
+
+[4] [5]
+Chapter 2.
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 349.
+
+[6
+
+]
+Chapter 3.
+
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
+[]\T1/ptm/m/it/12 CGModel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 file-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 395--395
+[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 po-si-tions\T1/ptm/m/
+n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 395--395
+\T1/ptm/m/it/12 dis-tance_cutoff\T1/ptm/m/n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 395--395
+\T1/ptm/m/it/12 bead_index\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-
+ []
+
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 404.
+
+[7
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 413--413
+[]\T1/ptm/m/it/12 parent_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 bond_lengt
+h\T1/ptm/m/n/12 ,
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 540--540
+[]\T1/ptm/m/it/12 trial_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 move_direct
+ion\T1/ptm/m/n/12 , \T1/ptm/m/it/12 dis-tance\T1/ptm/m/n/12 ,
+ []
+
+[9] [10]
+Chapter 4.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 626.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [5
+)
 
-] [6
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 639.
 
-] [7
-
-
-]
-(./foldamers.ind [8
-
+[11
 
 ]
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 647.
+
+[12
+
+
+
+] (./foldamers.ind
+Underfull \hbox (badness 10000) in paragraph at lines 8--9
+[]\T1/pcr/m/n/12 add_new_elements() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 9--10
-[]\T1/pcr/m/n/10 assign_backbone_beads() \T1/ptm/m/n/10 (\T1/ptm/m/it/10 in mod
--ule util-i-
+[]\T1/pcr/m/n/12 assign_position() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule u
+til-i-
  []
 
 
-Underfull \hbox (badness 6792) in paragraph at lines 11--12
-[]\T1/pcr/m/n/10 assign_sidechain_beads() \T1/ptm/m/n/10 (\T1/ptm/m/it/10 in mo
-d-ule util-i-
+Underfull \hbox (badness 10000) in paragraph at lines 10--12
+[]\T1/pcr/m/n/12 assign_position_lattice_style()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 36--37
-[]\T1/pcr/m/n/10 non_bonded_distances() \T1/ptm/m/n/10 (\T1/ptm/m/it/10 in mod-
-ule util-i-
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
+[]\T1/pcr/m/n/12 attempt_lattice_move() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-
+ule
  []
 
-[9
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--18
+[]\T1/pcr/m/n/12 build_system() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+ []
+
+
+Underfull \hbox (badness 7981) in paragraph at lines 23--24
+[]\T1/pcr/m/n/12 charges \T1/ptm/m/n/12 (\T1/ptm/m/it/12 cg_model.cgmodel.CGMod
+el at-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+[]\T1/pcr/m/n/12 constrain_bonds
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+\T1/ptm/m/n/12 (\T1/ptm/m/it/12 cg_model.cgmodel.CGModel at-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+[]\T1/pcr/m/n/12 distance_matrix() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule u
+til-i-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 39--41
+[]\T1/pcr/m/n/12 get_bond_angle_list()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+[]\T1/pcr/m/n/12 get_bond_list()
+ []
+
+
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 43--45
+[]\T1/pcr/m/n/12 get_nonbonded_interaction_list()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
+[]\T1/pcr/m/n/12 get_parent_bead() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
+[]\T1/pcr/m/n/12 get_particle_masses() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-u
+le
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
+[]\T1/pcr/m/n/12 get_torsion_list()
+ []
+
+
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 61--63
+[]\T1/pcr/m/n/12 write_pdbfile_without_topology()
+ []
+
+
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 64.
+
+[13
+
+
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 534.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 534.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 651.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 651.
  (./foldamers.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 534.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 534.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 651.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 651.
 Package rerunfilecheck Info: File `foldamers.out' has not changed.
-(rerunfilecheck)             Checksum: DD7FB1C719EFF7203885387916F78339;355.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 534.
+(rerunfilecheck)             Checksum: C39EFB4DC5BE28ABFCE8A0D6EB64ACB2;2607.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 651.
  ) 
 Here is how much of TeX's memory you used:
- 13602 strings out of 492982
- 188643 string characters out of 6134896
- 278489 words of memory out of 5000000
- 16841 multiletter control sequences out of 15000+600000
- 42303 words of font info for 57 fonts, out of 8000000 for 9000
- 1142 hyphenation exceptions out of 8191
- 37i,12n,45p,867b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 13702 strings out of 494923
+ 190524 string characters out of 6180742
+ 274779 words of memory out of 5000000
+ 16654 multiletter control sequences out of 15000+600000
+ 46541 words of font info for 73 fonts, out of 8000000 for 9000
+ 15 hyphenation exceptions out of 8191
+ 37i,12n,45p,877b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
@@ -1290,10 +1498,10 @@ uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on foldamers.pdf (13 pages, 105379 bytes).
+Output written on foldamers.pdf (15 pages, 114485 bytes).
 PDF statistics:
- 177 PDF objects out of 1000 (max. 8388607)
- 147 compressed objects within 2 object streams
- 40 named destinations out of 1000 (max. 500000)
- 45 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 236 PDF objects out of 1000 (max. 8388607)
+ 203 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 500000)
+ 109 words of extra memory for PDF output out of 10000 (max. 10000000)
 

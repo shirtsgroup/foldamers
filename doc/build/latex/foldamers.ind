@@ -5,58 +5,60 @@
 \let\spxextra \sphinxstyleindexextra
 
   \bigletter A
-  \item \spxentry{append\_position()}\spxextra{in module utilities.util}, \hyperpage{1}
-  \item \spxentry{assign\_backbone\_beads()}\spxextra{in module utilities.util}, \hyperpage{2}
-  \item \spxentry{assign\_position()}\spxextra{in module utilities.util}, \hyperpage{2}
-  \item \spxentry{assign\_sidechain\_beads()}\spxextra{in module utilities.util}, \hyperpage{2}
-  \item \spxentry{attempt\_move()}\spxextra{in module utilities.util}, \hyperpage{2}
+  \item \spxentry{add\_new\_elements()}\spxextra{in module cg\_model.cgmodel}, \hyperpage{4}
+  \item \spxentry{assign\_position()}\spxextra{in module utilities.util}, \hyperpage{7}
+  \item \spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}, 
+		\hyperpage{7}
+  \item \spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}, \hyperpage{8}
+  \item \spxentry{attempt\_move()}\spxextra{in module utilities.util}, \hyperpage{8}
+
+  \indexspace
+  \bigletter B
+  \item \spxentry{build\_system()}\spxextra{in module cg\_model.cgmodel}, \hyperpage{4}
 
   \indexspace
   \bigletter C
-  \item \spxentry{cg\_model.cgmodel}\spxextra{module}, \hyperpage{1}
-  \item \spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}, \hyperpage{1}
-  \item \spxentry{collisions()}\spxextra{in module utilities.util}, \hyperpage{2}
-  \item \spxentry{constrain\_bonds}\spxextra{cg\_model.cgmodel.CGModel attribute}, \hyperpage{1}
+  \item \spxentry{cg\_model.cgmodel}\spxextra{module}, \hyperpage{2}
+  \item \spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}, \hyperpage{2}
+  \item \spxentry{charges}\spxextra{cg\_model.cgmodel.CGModel attribute}, \hyperpage{4}
+  \item \spxentry{collisions()}\spxextra{in module utilities.util}, \hyperpage{8}
+  \item \spxentry{constrain\_bonds}\spxextra{cg\_model.cgmodel.CGModel attribute}, \hyperpage{4}
 
   \indexspace
   \bigletter D
-  \item \spxentry{distance()}\spxextra{in module utilities.util}, \hyperpage{3}
-  \item \spxentry{distance\_matrix()}\spxextra{in module utilities.util}, \hyperpage{3}
+  \item \spxentry{distance()}\spxextra{in module utilities.util}, \hyperpage{8}
+  \item \spxentry{distance\_matrix()}\spxextra{in module utilities.util}, \hyperpage{8}
+  \item \spxentry{distances()}\spxextra{in module utilities.util}, \hyperpage{9}
 
   \indexspace
   \bigletter F
-  \item \spxentry{first\_bead()}\spxextra{in module utilities.util}, \hyperpage{3}
+  \item \spxentry{first\_bead()}\spxextra{in module utilities.util}, \hyperpage{9}
 
   \indexspace
   \bigletter G
-  \item \spxentry{get\_move()}\spxextra{in module utilities.util}, \hyperpage{3}
-
-  \indexspace
-  \bigletter N
-  \item \spxentry{non\_bonded\_distances()}\spxextra{in module utilities.util}, \hyperpage{3}
-
-  \indexspace
-  \bigletter P
-  \item \spxentry{positions}\spxextra{cg\_model.cgmodel.CGModel attribute}, \hyperpage{1}
+  \item \spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
+		\hyperpage{4}
+  \item \spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{4}
+  \item \spxentry{get\_move()}\spxextra{in module utilities.util}, \hyperpage{9}
+  \item \spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
+		\hyperpage{4}
+  \item \spxentry{get\_parent\_bead()}\spxextra{in module cg\_model.cgmodel}, \hyperpage{4}
+  \item \spxentry{get\_particle\_masses()}\spxextra{in module cg\_model.cgmodel}, \hyperpage{5}
+  \item \spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{4}
 
   \indexspace
   \bigletter R
-  \item \spxentry{random\_positions()}\spxextra{in module utilities.util}, \hyperpage{3}
-  \item \spxentry{random\_sign()}\spxextra{in module utilities.util}, \hyperpage{4}
-
-  \indexspace
-  \bigletter S
-  \item \spxentry{single\_bead()}\spxextra{in module utilities.util}, \hyperpage{4}
+  \item \spxentry{random\_positions()}\spxextra{in module utilities.util}, \hyperpage{9}
+  \item \spxentry{random\_sign()}\spxextra{in module utilities.util}, \hyperpage{10}
 
   \indexspace
   \bigletter U
-  \item \spxentry{unit\_sqrt()}\spxextra{in module utilities.util}, \hyperpage{4}
-  \item \spxentry{update\_trial\_coordinates()}\spxextra{in module utilities.util}, \hyperpage{4}
-  \item \spxentry{utilities.iotools}\spxextra{module}, \hyperpage{4}
-  \item \spxentry{utilities.util}\spxextra{module}, \hyperpage{1}
+  \item \spxentry{utilities.iotools}\spxextra{module}, \hyperpage{7}
+  \item \spxentry{utilities.util}\spxextra{module}, \hyperpage{7}
 
   \indexspace
   \bigletter W
-  \item \spxentry{write\_pdbfile()}\spxextra{in module utilities.iotools}, \hyperpage{4}
+  \item \spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}, 
+		\hyperpage{7}
 
 \end{sphinxtheindex}
