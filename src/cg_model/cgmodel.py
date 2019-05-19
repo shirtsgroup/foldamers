@@ -185,11 +185,11 @@ class CGModel(object):
 
         polymer_length: Number of monomer units (integer), default = 8
       
-        backbone_length: Number of beads in the backbone 
-        portion of each (individual) monomer (integer), default = 1
+        backbone_lengths: List of integers defining the umber of beads in the backbone for each monomer type
+        portion of each (individual) monomer (integer), default = [1]
 
-        sidechain_length: Number of beads in the sidechain
-        portion of each (individual) monomer (integer), default = 1
+        sidechain_lengths: List of integers defining the umber of beads in the sidechain for each monomer type
+        portion of each (individual) monomer (integer), default = [1]
 
         sidechain_positions: List of integers defining the backbone
         bead indices upon which we will place the sidechains,
@@ -200,25 +200,25 @@ class CGModel(object):
         ( List ( [ [ Backbone masses ], [ Sidechain masses ] ] ) )
         default = [ [ 12.0 * unit.amu ], [ 12.0 * unit.amu ] ]
 
-        sigma: Non-bonded bead Lennard-Jones equilibrium interaction distance
-        ( float * simtk.unit.distance )
-        default = 8.4 * unit.angstrom
+        sigmas: Non-bonded bead Lennard-Jones equilibrium interaction distance
+        ( [ [ float * simtk.unit.distance ], [ float * simtk.unit.distance ], [ float * simtk.unit.distance ] ] )
+        default = [[8.4 * unit.angstrom],[8.4 * unit.angstrom],[8.4 * unit.angstrom]]
 
-        epsilon: Non-bonded Lennard-Jones equilibrium interaction strength
-        ( float * simtk.unit.energy )
-        default = 0.5 * unit.kilocalorie_per_mole
+        epsilons: Non-bonded Lennard-Jones equilibrium interaction strengths
+        ( [ [ float * simtk.unit.energy ], [ float * simtk.unit.energy ], [ float * simtk.unit.energy ] ] )
+        default = [[0.5 * unit.kilocalorie_per_mole],[0.5 * unit.kilocalorie_per_mole],[0.5 * unit.kilocalorie_per_mole]]
 
         bond_lengths: Bond lengths for all bond types
         ( float * simtk.unit.distance )
-        default = 1.0 * unit.angstrom
+        default = [[1.0 * unit.angstrom],[1.0 * unit.angstrom],[1.0 * unit.angstrom]]
 
         bond_force_constants: Bond force constants for all bond types
         ( float )
-        default = 9.9e5 kJ/mol/A^2
+        default = [[9.9e5 kJ/mol/A^2],[9.9e5 kJ/mol/A^2],[9.9e5 kJ/mol/A^2]]
 
         charges: Charges for all beads
         ( float * simtk.unit.charge )
-        default = 0.0 * unit.elementary_charge (for all beads)
+        default = [[0.0 * unit.elementary_charge],[0.0 * unit.elementary_charge]]
 
         num_beads: Total number of particles in the coarse grained model
         ( integer )
@@ -238,18 +238,6 @@ class CGModel(object):
         are applied during a molecular dynamics simulation of the system.
         ( Logical )
         default = False
-
-        bond_list: List of bonds in the coarse grained model
-        ( List( [ [ int, int ] for # bonds ] ) )
-        default = None
-
-        angle_list: List of bond angles that are defined for this coarse
-        grained model
-        ( List( [ [ int, int, int ] for # bond angles ] ) )
-
-        torsion_list: List of torsions that are defined for this coarse
-        grained model
-        List( [ [ int, int, int, int ] for # torsions ] ) )
 
         include_bond_forces: Include contributions from bond
         (harmonic) potentials when calculating the potential energy
@@ -275,23 +263,26 @@ class CGModel(object):
         ----------
 
         polymer_length
-        backbone_length
-        sidechain_length
+        backbone_lengths
+        sidechain_lengths
         sidechain_positions
         masses
-        sigma
-        epsilon
+        sigmas
+        epsilons
         bond_lengths
+        nonbonded_interaction_list
+        bond_list
+        bond_angle_list
+        torsion_list
         bond_force_constants
+        bond_angle_force_constants
+        torsion_force_constants
         charges
         num_beads
         positions
         system
         topology
         constrain_bonds
-        bond_list
-        angle_list
-        torsion_list
         include_bond_forces
         include_nonbonded_forces
         include_bond_angle_forces
@@ -303,32 +294,46 @@ class CGModel(object):
         """
 
         # Built in class attributes
-        _BUILT_IN_REGIONS = ('polymer_length','backbone_length','sidechain_length','sidechain_positions','masses','sigma','epsilon','bond_lengths','bond_force_constants','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
+        _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
 
-        def __init__(self, positions = None, polymer_length = 12, backbone_length = 1, sidechain_length = 1, sidechain_positions = [0], masses = 12.0 * unit.amu, sigma = 8.4 * unit.angstrom, epsilon = 0.5 * unit.kilocalorie_per_mole, bond_lengths = 1.0 * unit.angstrom, bond_force_constants = 9.9e5, charges = 0.0 * unit.elementary_charge, constrain_bonds = False,include_bond_forces=True,include_nonbonded_forces=True,include_bond_angle_forces=True,include_torsion_forces=True,check_energy_conservation=True):
+        def __init__(self, positions = None, polymer_length = 12, backbone_lengths = [1], sidechain_lengths = [1], sidechain_positions = [0], masses = [[12.0 * unit.amu],[12.0 * unit.amu]], sigmas = [[8.4 * unit.angstrom],[8.4 * unit.angstrom],[8.4 * unit.angstrom]], epsilons = [[0.5 * unit.kilocalorie_per_mole],[0.5 * unit.kilocalorie_per_mole],[0.5 * unit.kilocalorie_per_mole]], bond_lengths = [[1.0 * unit.angstrom],[1.0 * unit.angstrom],[1.0 * unit.angstrom]], bond_force_constants = [[9.9e5],[9.9e5],[9.9e5]], bond_angle_force_constants=[[200],[200],[200]],torsion_force_constants=[[200],[200],[200]], charges = [[0.0 * unit.elementary_charge],[0.0 * unit.elementary_charge]], constrain_bonds = False,include_bond_forces=True,include_nonbonded_forces=True,include_bond_angle_forces=True,include_torsion_forces=True,check_energy_conservation=True):
 
           """
           Initialize variables that were passed as input
           """
 
           self.polymer_length = polymer_length
-          self.backbone_length = backbone_length
-          self.sidechain_length = sidechain_length
+          self.backbone_lengths = backbone_lengths
+          self.sidechain_lengths = sidechain_lengths
           self.sidechain_positions = sidechain_positions
-          self.num_beads = polymer_length * ( backbone_length + sidechain_length )
+          self.monomer_types = self.get_monomer_types()
+          self.num_beads = self.get_num_beads()
           self.masses = masses
-          self.sigma = sigma
-          self.epsilon = epsilon
+          self.sigmas = sigmas
+          self.epsilons = epsilons
           self.bond_lengths = bond_lengths
           self.bond_force_constants = bond_force_constants
+          self.bond_angle_force_constants = bond_angle_force_constants
+          self.torsion_force_constants = torsion_force_constants
           self.charges = charges
+
+          if len(sigmas) != 0: include_nonbonded_forces = True
+          if len(bond_force_constants) != 0: include_bond_forces = True
+          if len(bond_angle_force_constants) != 0: include_bond_angle_forces = True
+          if len(torsion_force_constants) != 0: include_torsion_forces = True
+
+          self.include_bond_forces = include_bond_forces
+          self.include_bond_angle_forces = include_bond_angle_forces
+          self.include_nonbonded_forces = include_nonbonded_forces
+          self.include_torsion_forces = include_torsion_forces
+          self.check_energy_conservation = check_energy_conservation
 
           """
           Get bond, angle, and torsion lists.
           """
           self.bond_list = self.get_bond_list()
           self.nonbonded_interaction_list = self.get_nonbonded_interaction_list()
-          self.angle_list = self.get_angle_list()
+          self.bond_angle_list = self.get_bond_angle_list()
           self.torsion_list = self.get_torsion_list()
           self.constrain_bonds = constrain_bonds
 
@@ -346,6 +351,15 @@ class CGModel(object):
 
           if positions == None: self.positions = util.random_positions(self) 
           else: self.positions = positions
+
+        def get_num_beads(self):
+          """
+          Calculate the number of beads in our coarse grained model(s)
+          """
+          num_beads = []
+          for backbone_length,sidechain_length in zip(self.backbone_lengths,self.sidechain_lengths):
+           num_beads.append(self.polymer_length * ( backbone_length + sidechain_length ) )
+          return(num_beads)
 
         def get_bond_list(self):
           """
