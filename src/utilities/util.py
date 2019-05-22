@@ -7,7 +7,9 @@
 import numpy as np
 import math, random
 from simtk import unit
+#from foldamers.src.cg_model.cgmodel import get_bond_length
 from foldamers.src.cg_model.cgmodel import *
+
 # =============================================================================================
 # 2) ENVIRONMENT/JOB SETTINGS
 # =============================================================================================
@@ -373,7 +375,7 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,p
            success = True
            return(positions,success)
 
-        units = cgmodel.bond_length.unit       
+        units = cgmodel.bond_lengths['bb_bb_bond_length'].unit       
         if parent_index == -1:
                parent_index = bead_index - 1
 
@@ -400,8 +402,9 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,p
 #        print(best_distances)
         move_direction_list = []
         while len(move_direction_list) < 6 and not success:
-
-           new_coordinates,move_direction_list = attempt_lattice_move(parent_coordinates,cgmodel.bond_length,move_direction_list)
+           bond_length = cgmodel.bond_lengths['bb_bb_bond_length']
+#           bond_length = get_bond_length(cgmodel,parent_index,bead_index)
+           new_coordinates,move_direction_list = attempt_lattice_move(parent_coordinates,bond_length,move_direction_list)
 
            test_positions = positions.__deepcopy__(memo={})
            test_positions[bead_index-1] = new_coordinates
@@ -478,7 +481,7 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index):
 
         return(positions,success)
 
-def random_positions( cgmodel,max_attempts=100 ):
+def random_positions( cgmodel,max_attempts=1000 ):
         """
         Assign random positions for all beads in a coarse-grained polymer.
 
@@ -526,11 +529,12 @@ def random_positions( cgmodel,max_attempts=100 ):
 
         """
 
-        positions = np.zeros([cgmodel.num_beads,3]) * cgmodel.bond_length.unit
+        units = cgmodel.bond_lengths['bb_bb_bond_length'].unit
+        positions = np.zeros([cgmodel.num_beads,3]) * units
         bond_list = cgmodel.get_bond_list()
         bond_index = 0
         total_attempts = 0
-        distance_cutoff = 1.2 * cgmodel.bond_length
+        distance_cutoff = 1.2 * cgmodel.bond_lengths['bb_bb_bond_length']
 
         lattice_style = True
 
