@@ -23,10 +23,11 @@ def write_bonds(CGModel,pdb_object):
         pdb_object.write(str("END\n"))
         return
 
-def write_cg_pdb(cgmodel,topology,positions,file_name):
+def write_cg_pdb(cgmodel,file_name):
         file_obj = open(file_name,'w')
-        PDBFile.writeHeader(topology, file_obj)
-        PDBFile.writeModel(topology, positions, file_obj)
+        PDBFile.writeHeader(cgmodel.topology, file_obj)
+        print(cgmodel.positions)
+        PDBFile.writeModel(cgmodel.topology,cgmodel.positions, file_obj)
         write_bonds(cgmodel,file_obj)
         file_obj.close()
         return
@@ -51,8 +52,9 @@ def write_pdbfile_without_topology(CGModel,filename):
         coordinates = CGModel.positions
         bead_index = 1
         for monomer_index in range(CGModel.polymer_length):
+          monomer_type = CGModel.sequence[monomer_index]
           element_index = 1
-          for backbone_bead in range(CGModel.backbone_length):
+          for backbone_bead in range(monomer_type['backbone_length']):
 
             if monomer_index in list([0,CGModel.polymer_length-1]):
              pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   B"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
@@ -61,8 +63,8 @@ def write_pdbfile_without_topology(CGModel,filename):
             bead_index = bead_index + 1
             element_index = element_index + 1
 
-            if backbone_bead in CGModel.sidechain_positions:
-              for sidechain_bead in range(0,CGModel.sidechain_length):
+            if backbone_bead in [monomer_type['sidechain_positions']]:
+              for sidechain_bead in range(monomer_type['sidechain_length']):
                 if monomer_index in list([0,CGModel.polymer_length-1]):
                  pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   S"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
                 else:
