@@ -7,7 +7,7 @@ from simtk.openmm.app.topology import Residue
 import simtk.openmm.app.element as elem
 from itertools import chain, combinations, product
 
-def get_particle_type(cgmodel,particle_index):
+def get_particle_type(cgmodel,particle_index,particle_name=None):
         """
         Returns the name of a particle, given its index within the model
 
@@ -26,7 +26,7 @@ def get_particle_type(cgmodel,particle_index):
         Type: str()
 
         """
-        particle_name = cgmodel.particle_list[particle_index]
+        if particle_name == None: particle_name = cgmodel.particle_list[particle_index]
         if 'B' in particle_name: particle_type = 'backbone'
         if 'S' in particle_name: particle_type = 'sidechain'
 
@@ -72,9 +72,9 @@ def get_particle_charge(cgmodel,particle_index):
         if particle_type == 'sidechain': particle_charge = cgmodel.charges['sidechain_bead_charges']
         return(particle_charge)
 
-def get_sigma(cgmodel,particle_index):
+def get_sigma(cgmodel,particle_index,particle_type=None):
         """
-        Returns the sigma value for a particle, given its index.
+        Returns the sigma value for a particle, given its index within the coarse grained model.
 
         Parameters
         ----------
@@ -87,12 +87,13 @@ def get_sigma(cgmodel,particle_index):
         Sigma
 
         """
-        particle_type = get_particle_type(cgmodel,particle_index)
+
+        if particle_type == None: particle_type = get_particle_type(cgmodel,particle_index)
         if particle_type == 'backbone': sigma = cgmodel.sigmas['bb_bb_sigma']
         if particle_type == 'sidechain': sigma = cgmodel.sigmas['sc_sc_sigma']
         return(sigma)
 
-def get_epsilon(cgmodel,particle_index):
+def get_epsilon(cgmodel,particle_index,particle_type=None):
         """
         Returns the epsilon value for a particle, given its index.
 
@@ -107,7 +108,7 @@ def get_epsilon(cgmodel,particle_index):
         Epsilon
 
         """
-        particle_type = get_particle_type(cgmodel,particle_index)
+        if particle_type == None: particle_type = get_particle_type(cgmodel,particle_index)
         if particle_type == 'backbone': epsilon = cgmodel.epsilons['bb_bb_eps']
         if particle_type == 'sidechain': epsilon = cgmodel.epsilons['sc_sc_eps']
         return(epsilon)
@@ -173,6 +174,48 @@ def add_new_elements(cgmodel,list_of_masses):
              cg_particle_index = cg_particle_index + 1
              mass_index = mass_index + 1
         return(particle_list)
+
+def get_bond_length_from_names(cgmodel,particle_1_name,particle_2_name):
+        """
+        Determines the correct bond length for two particles, given their symbols.
+
+        Parameters
+        ----------
+
+        cgmodel: CGModel() class object
+
+        particle_1_name: Symbol for the first particle in the bond
+        ( string )
+        Default = None
+
+        particle_2_name: Symbol for the second particle in the bond
+        ( string )
+        Default = None
+
+        Returns
+        -------
+
+        bond_length: Bond length for the bond defined by these two particles.
+        ( simtk.unit.Quantity() )
+
+        """
+        if 'B' in particle_1_name: particle_1_type = 'backbone'
+        else: particle_1_type = 'sidechain'
+
+        if 'B' in particle_2_name: particle_2_type = 'backbone'
+        else: particle_2_type = 'sidechain'
+
+        if particle_1_type == 'backbone' and particle_2_type == 'backbone':
+         bond_length = cgmodel.bond_lengths['bb_bb_bond_length']
+
+        if particle_1_type == 'backbone' and particle_2_type == 'sidechain':
+         bond_length = cgmodel.bond_lengths['bb_sc_bond_length']
+
+        if particle_1_type == 'sidechain' and particle_2_type == 'sidechain':
+         bond_length = cgmodel.bond_lengths['bb_bb_bond_length']
+
+        return(bond_length)
+
 
 def get_bond_length(cgmodel,particle_1_index,particle_2_index):
         """
@@ -530,6 +573,79 @@ def build_system(cgmodel):
         
         return(system)
 
+
+def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=12.0 * unit.amu,charge=0.0 * unit.elementary_charge,bond_length=1.0 * unit.angstrom,sigma=2.5*unit.angstrom,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
+        """
+        Given a minimal set of model parameters, this function creates a cgmodel class object.
+
+        Parameters
+        ----------
+
+        polymer_length: Number of monomer units (integer)
+        default = 8
+
+        backbone_length: Integer defining the number of beads in the backbone
+        default = 1
+
+        sidechain_length: Integer defining the number of beads in the sidechain
+        default = 1
+
+        polymer_length: Number of monomer units (integer), default = 8
+
+        sidechain_positions: List of integers defining the backbone
+        bead indices upon which we will place the sidechains,
+        default = [0]
+
+        mass: Mass for all coarse grained beads.
+        default = 12.0 * unit.amu
+
+        bond_length: Bond length for all bond types
+        Default = 1.0 * unit.angstrom
+
+        sigma: Non-bonded bead Lennard-Jones equilibrium interaction distance.
+        default = 2.5 * bond_length
+
+        epsilon: Non-bonded Lennard-Jones equilibrium interaction energy
+        default = 0.5 * unit.kilocalorie_per_mole
+
+        charge: Charge for all particles
+        default = 0.0 * unit.elementary_charge
+
+        positions: Positions for coarse grained particles in the model.
+        default = None
+
+        Returns
+        -------
+
+        cgmodel: CGModel() class object
+
+        """
+        bond_force_constant = 9.9e5
+        torsion_force_constant = 200
+        equil_dihedral_angle = 180
+        bond_angle_force_constant = 200
+        backbone_lengths = [1] # Number of backbone beads in unique monomer types
+        sidechain_lengths = [1] # Number of sidechain beads in unique monomer types
+        sidechain_positions = [0] # Index of the backbone bead(s) to which sidechains are bonded
+        polymer_length = 8 # Number of monomers in the polymer
+        masses = {'backbone_bead_masses': mass, 'sidechain_bead_masses': mass} # List of bead masses
+        sigmas = {'bb_bb_sigma': sigma,'bb_sc_sigma': sigma,'sc_sc_sigma': sigma} # Lennard-Jones interaction distances.  List of unique interaction types
+        bond_lengths = {'bb_bb_bond_length': bond_length,'bb_sc_bond_length': bond_length,'sc_sc_bond_length': bond_length} # bond length
+        bond_force_constants = {'bb_bb_bond_k': bond_force_constant,'bb_sc_bond_k': bond_force_constant, 'sc_sc_bond_k': bond_force_constant} # Units = kJ/mol/A^2 List of bond force constants for unique bond types
+        epsilons = {'bb_bb_eps': epsilon,'bb_sc_eps': epsilon,'sc_sc_eps': epsilon} # Lennard-Jones interaction strength.  List of unique interaction types
+        charges = {'backbone_bead_charges': charge,'sidechain_bead_charges': charge} # Charge of beads.
+        torsion_force_constants = {'bb_bb_bb_bb_torsion_k': torsion_force_constant,'bb_bb_bb_sc_torsion_k': torsion_force_constant,'bb_bb_sc_sc_torsion_k': torsion_force_constant, 'bb_sc_sc_sc_torsion_k': torsion_force_constant, 'sc_bb_bb_sc_torsion_k': torsion_force_constant, 'bb_sc_sc_bb_torsion_k': torsion_force_constant, 'sc_sc_sc_sc_torsion_k': torsion_force_constant} # List of torsion force constants (k) for each of the torsions in our coarse grained model
+        bond_angle_force_constants = {'bb_bb_bb_angle_k': bond_angle_force_constant,'bb_bb_sc_angle_k': bond_angle_force_constant,'bb_sc_sc_angle_k': bond_angle_force_constant,'sc_sc_sc_angle_k': bond_angle_force_constant} # List of bond angle force constants (k) for each of the bond angles in our coarse grained model
+        if len(sigmas) != 0: include_nonbonded_forces = True
+        if len(bond_force_constants) != 0: include_bond_forces = True
+        # include_bond_forces = False
+        if len(bond_angle_force_constants) != 0: include_bond_angle_forces = True
+        if len(torsion_force_constants) != 0: include_torsion_forces = True
+        include_bond_angle_forces = False
+        cgmodel = CGModel(positions=positions,polymer_length=polymer_length,backbone_lengths=backbone_lengths, sidechain_lengths=sidechain_lengths, sidechain_positions = sidechain_positions, masses = masses, sigmas = sigmas, epsilons = epsilons, bond_lengths = bond_lengths, bond_force_constants = bond_force_constants, torsion_force_constants=torsion_force_constants, equil_dihedral_angle=equil_dihedral_angle,bond_angle_force_constants=bond_angle_force_constants, charges =charges,include_bond_forces=include_bond_forces,include_nonbonded_forces=include_nonbonded_forces,include_bond_angle_forces=include_bond_angle_forces,include_torsion_forces=include_torsion_forces,check_energy_conservation=False)
+        return(cgmodel)
+
+
 class CGModel(object):
         """
         Construct a coarse grained model.
@@ -663,6 +779,7 @@ class CGModel(object):
           self.backbone_lengths = backbone_lengths
           self.sidechain_lengths = sidechain_lengths
           self.sidechain_positions = sidechain_positions
+          self.bond_lengths = bond_lengths
           self.monomer_types = self.get_monomer_types()
 
           sequence = []
@@ -681,7 +798,6 @@ class CGModel(object):
           self.masses = masses
           self.sigmas = sigmas
           self.epsilons = epsilons
-          self.bond_lengths = bond_lengths
           self.bond_force_constants = bond_force_constants
           self.bond_angle_force_constants = bond_angle_force_constants
           self.torsion_force_constants = torsion_force_constants
@@ -722,26 +838,27 @@ class CGModel(object):
           
           self.topology = build_topology(self)
 
-          if positions == None: self.positions = util.random_positions(self) 
+          if positions == None: self.positions = util.random_positions(self,use_library=True) 
           else: self.positions = positions
 
         def get_monomer_types(self):
           """
           Get a list of monomer dictionary objects for each unique monomer type.
           """
-          monomer_names = ['A','B','C','D','E','F','G','H']
+          monomer_name_modifier = ['A','B','C','D','E','F','G','H']
           monomer_types = []
           monomer_type_index = 0
           for backbone_length,sidechain_length in zip(self.backbone_lengths,self.sidechain_lengths):
-#           lengths = range(1,len(self.sidechain_positions)+1)
-#           sidechain_position_combinations = product(*(combinations(range(), length) for length in lengths))
-#           for sidechain_position_combination in sidechain_position_combinations:
             num_beads = backbone_length
             for sidechain_position in self.sidechain_positions:
              num_beads = num_beads + sidechain_length
-            monomer_name = monomer_names[monomer_type_index]
-            monomer_type_index = monomer_type_index + 1
-            monomer_type = {'monomer_name': monomer_name, 'backbone_length': backbone_length, 'sidechain_length': sidechain_length, 'sidechain_positions': sidechain_position, 'num_beads': num_beads}
+            monomer_name = str('CG'+str(backbone_length)+str(sidechain_length))
+            if monomer_name in monomer_types:
+             modifier_index = 0
+             while monomer_name in monomer_types:
+              monomer_name = str('CG'+str(backbone_length)+str(sidechain_length)+str(modifier_index))
+              modifier_index = modifier_index + 1
+            monomer_type = {'monomer_name': monomer_name, 'backbone_length': backbone_length, 'sidechain_length': sidechain_length, 'sidechain_positions': sidechain_position, 'num_beads': num_beads, 'bond_lengths': self.bond_lengths}
             monomer_types.append(monomer_type)
           return(monomer_types)
 
