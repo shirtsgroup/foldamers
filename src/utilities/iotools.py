@@ -33,7 +33,7 @@ def write_cg_pdb(cgmodel,file_name):
         return
 
 
-def write_pdbfile_without_topology(CGModel,filename):
+def write_pdbfile_without_topology(CGModel,filename,energy=None):
         """
         Writes the positions in 'CGModel' to the file 'filename'.
 
@@ -47,7 +47,10 @@ def write_pdbfile_without_topology(CGModel,filename):
         """
 
         pdb_object = open(filename,"w")
-
+        if energy != None:
+          pdb_object.write("## The OpenMM potential energy for this structure is: "+str(energy)+"\n")
+          pdb_object.write("## with the following parameter settings:\n")
+          pdb_object.write("## sigma = "+str(CGModel.sigmas['bb_bb_sigma'])+", epsilon = "+str(CGModel.epsilons['bb_bb_eps'])+"\n")
 
         coordinates = CGModel.positions
         bead_index = 1
