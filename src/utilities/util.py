@@ -8,7 +8,7 @@ import numpy as np
 import math, random
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
-from cg_openmm.src.cg_mm_tools.cg_openmm import minimize_structure
+from cg_openmm.src.simulation.tools import minimize_structure
 from foldamers.src.cg_model.cgmodel import *
 from foldamers.src.utilities.iotools import *
 
