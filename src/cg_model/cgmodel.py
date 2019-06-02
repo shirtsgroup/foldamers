@@ -133,48 +133,6 @@ def get_all_particle_masses(cgmodel):
         list_of_masses.append(cgmodel.masses['sidechain_bead_masses'])
         return(list_of_masses)
 
-def add_new_elements(cgmodel,list_of_masses):
-        """
-        Adds new coarse grained particle types to OpenMM
-
-        Parameters
-        ----------
-
-        cgmodel: CGModel() class object
-
-        list_of_masses: List of masses for the particles we want to add to OpenMM
-
-        """
-        element_index = 117
-        mass_index = 0
-        cg_particle_index = 1
-        particle_list = []
-        for monomer_type in cgmodel.monomer_types:
-         for backbone_bead in range(monomer_type['backbone_length']):
-          particle_name = str("bb-"+str(cg_particle_index))
-          particle_symbol = str("B"+str(cg_particle_index))
-          if particle_symbol not in elem.Element._elements_by_symbol:
-           elem.Element(element_index,particle_name,particle_symbol,list_of_masses[mass_index])
-           particle_list.append(particle_symbol)
-           element_index = element_index + 1
-           cg_particle_index = cg_particle_index + 1
-           mass_index = mass_index + 1
-          if type(monomer_type['sidechain_positions']) == int:
-           sidechain_positions = [monomer_type['sidechain_positions']]
-          else:
-           sidechain_positions = monomer_type['sidechain_positions']
-          if backbone_bead in sidechain_positions:
-           for sidechain in range(monomer_type['sidechain_length']):
-            if particle_symbol not in elem.Element._elements_by_symbol:
-             particle_name = str("sc-"+str(cg_particle_index))
-             particle_symbol = str("S"+str(cg_particle_index))
-             elem.Element(element_index,particle_name,particle_symbol,list_of_masses[mass_index])
-             particle_list.append(particle_symbol)
-             element_index = element_index + 1
-             cg_particle_index = cg_particle_index + 1
-             mass_index = mass_index + 1
-        return(particle_list)
-
 def get_bond_length_from_names(cgmodel,particle_1_name,particle_2_name):
         """
         Determines the correct bond length for two particles, given their symbols.
@@ -433,147 +391,6 @@ def get_parent_bead(cgmodel,monomer_index,bead_index,backbone_bead_index=None,si
          exit()
         return(parent_bead)
 
-def build_topology(cgmodel):
-        """
-
-        Construct an OpenMM topology for our coarse grained model
-
-        Parameters
-        ----------
-
-        polymer_length: Number of monomers in our coarse grained model
-        ( integer )
-
-        backbone_length: Number of backbone beads on individual monomers
-        in our coarse grained model, ( integer )
-
-        sidechain_length: Number of sidechain beads on individual monomers
-        in our coarse grained model, ( integer )
-
-        """
-
-        topology = Topology()
-
-        chain = topology.addChain()
-        residue_index = 1
-        cg_particle_index = 1
-        for monomer_type in cgmodel.sequence:
-         residue = topology.addResidue(str(residue_index), chain)
-         for backbone_bead in range(monomer_type['backbone_length']): 
-          particle_name = str("bb-"+str(cg_particle_index))
-          particle_symbol = str("B"+str(cg_particle_index))
-          particle = topology.addAtom(particle_symbol, particle_name, residue)
-          if backbone_bead == 0 and residue_index != 1:
-           topology.addBond(particle,last_backbone_particle)
-          last_backbone_particle = particle
-          cg_particle_index = cg_particle_index + 1
-          if backbone_bead in [monomer_type['sidechain_positions']]:
-           for sidechain_bead in range(monomer_type['sidechain_length']):
-             particle_name = str("sc-"+str(cg_particle_index))
-             particle_symbol = str("S"+str(cg_particle_index))
-             particle = topology.addAtom(particle_symbol, particle_name, residue)
-             if sidechain_bead == 0:
-              topology.addBond(particle,last_backbone_particle)
-             if sidechain_bead != 0:
-              topology.addBond(particle,last_sidechain_particle)
-             last_sidechain_particle = particle
-             cg_particle_index = cg_particle_index + 1
-         residue_index = residue_index + 1
-        return(topology)
-
-
-
-def build_system(cgmodel):
-        """
-        Builds an OpenMM System() class object, given a CGModel() class object as input.
-
-        Parameters
-        ----------
-
-        cgmodel: CGModel() class object
-
-        Returns
-        -------
-
-        system: OpenMM System() class object
-
-        """
-#        sigma = cgmodel.sigma.in_units_of(unit.nanometer)._value
-#        charge = cgmodel.charge._value
-#        epsilon = cgmodel.epsilon.in_units_of(unit.kilojoule_per_mole)._value
-#        bond_length = cgmodel.bond_length.in_units_of(unit.nanometer)._value
-
-        # Create system
-        system = mm.System()
-
-        if cgmodel.include_bond_forces:
-         # Create bond (harmonic) potentials
-         bond_list = cgmodel.get_bond_list()
-         new_bond_list = []
-         bead_index = 1
-         bond_force = mm.HarmonicBondForce()
-         for bond in bond_list:
-              new_bond = [bond[0]-1,bond[1]-1]
-              new_bond_list.append(new_bond)
-              bond_force_constant = get_bond_force_constant(cgmodel,new_bond[0],new_bond[1])
-              bond_length = get_bond_length(cgmodel,new_bond[0],new_bond[1])
-              bond_length = bond_length.in_units_of(unit.nanometer)._value
-              bond_force.addBond(new_bond[0],new_bond[1],bond_length,bond_force_constant)
-              if cgmodel.constrain_bonds:
-               system.addConstraint(new_bond[0],new_bond[1], bond_length)
-         system.addForce(bond_force)
-
-        if cgmodel.include_nonbonded_forces:
-         # Create nonbonded forces
-         nonbonded_force = mm.NonbondedForce()
-         bead_index = 0
-         for monomer_type in cgmodel.sequence:
-          for backbone_bead in range(monomer_type['backbone_length']):
-            mass = get_particle_mass(cgmodel,bead_index)
-            charge = get_particle_charge(cgmodel,bead_index)
-            sigma = get_sigma(cgmodel,bead_index)
-            epsilon = get_epsilon(cgmodel,bead_index)
-            system.addParticle(mass)
-            bead_index = bead_index + 1
-            sigma = sigma.in_units_of(unit.nanometer)._value
-            charge = charge._value
-            epsilon = epsilon.in_units_of(unit.kilojoule_per_mole)._value
-            nonbonded_force.addParticle(charge,sigma,epsilon)
-            if backbone_bead in [monomer_type['sidechain_positions']]:
-              for sidechain_bead in range(monomer_type['sidechain_length']):
-                mass = get_particle_mass(cgmodel,bead_index)
-                charge = get_particle_charge(cgmodel,bead_index)
-                sigma = get_sigma(cgmodel,bead_index)
-                epsilon = get_epsilon(cgmodel,bead_index)
-                system.addParticle(mass)
-                bead_index = bead_index + 1
-                sigma = sigma.in_units_of(unit.nanometer)._value
-                charge = charge._value
-                epsilon = epsilon.in_units_of(unit.kilojoule_per_mole)._value
-                nonbonded_force.addParticle(charge,sigma,epsilon)
-         system.addForce(nonbonded_force)
-         nonbonded_force.createExceptionsFromBonds(new_bond_list,1.0,1.0)
-
-        if cgmodel.include_bond_angle_forces:
-         # Create bond angle potentials
-         angle_list = cgmodel.get_bond_angle_list()
-         angle_force = mm.HarmonicAngleForce()
-         for angle in angle_list:
-              angle_force.addAngle(angle[0],angle[1],angle[2],cgmodel.equil_bond_angle,cgmodel.bond_angle_force_constant)
-         system.addForce(angle_force)
-
-        if cgmodel.include_torsion_forces:
-         # Create torsion potentials
-         torsion_list = cgmodel.get_torsion_list()
-         torsion_force = mm.PeriodicTorsionForce()
-         for torsion in torsion_list:
-              torsion_force_constant = get_torsion_force_constant(cgmodel,torsion)
-              torsion_force.addTorsion(torsion[0],torsion[1],torsion[2],torsion[3],1,cgmodel.equil_dihedral_angle,torsion_force_constant)
-         system.addForce(torsion_force)
-        
-        return(system)
-
-
 def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=12.0 * unit.amu,charge=0.0 * unit.elementary_charge,bond_length=1.0 * unit.angstrom,sigma=2.5*unit.angstrom,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
         """
         Given a minimal set of model parameters, this function creates a cgmodel class object.
@@ -653,11 +470,13 @@ class CGModel(object):
         Parameters
         ----------
 
-        positions: Positions for all of the particles, default = None
+        :param positions: Positions for all of the particles, default = None
+        :type positions: np.array( float * unit ( shape = num_beads x 3 ) )
 
-        polymer_length: Number of monomer units (integer), default = 8
+        :param polymer_length: Length of the polymer, default = 8
+        :type polymer_length: integer
       
-        backbone_lengths: List of integers defining the umber of beads in the backbone for each monomer type
+        :param backbone_lengths: List of integers defining the umber of beads in the backbone for each monomer type
         portion of each (individual) monomer (integer), default = [1]
 
         sidechain_lengths: List of integers defining the umber of beads in the sidechain for each monomer type
@@ -769,7 +588,28 @@ class CGModel(object):
         # Built in class attributes
         _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','equil_dihedral_angle','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
 
-        def __init__(self, positions = None, polymer_length = 12, backbone_lengths = [1], sidechain_lengths = [1], sidechain_positions = [0], masses = {'backbone_bead_masses': 1.0 * unit.amu, 'sidechain_bead_masses': 1.0 * unit.amu}, sigmas = {'bb_bb_sigma': 2.5 * unit.angstrom,'bb_sc_sigma': 2.5 * unit.angstrom,'sc_sc_sigma': 2.5 * unit.angstrom}, epsilons = {'bb_bb_eps': 0.5 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.5 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.5 * unit.kilocalorie_per_mole}, bond_lengths = {'bb_bb_bond_length': 1.0 * unit.angstrom,'bb_sc_bond_length': 1.0 * unit.angstrom,'sc_sc_bond_length': 1.0 * unit.angstrom}, bond_force_constants = {'bb_bb_bond_k': 9.9e9,'bb_sc_bond_k': 9.9e9, 'sc_sc_bond_k': 9.9e9}, bond_angle_force_constants={'bb_bb_bb_angle_k': 200,'bb_bb_sc_angle_k': 200,'bb_sc_sc_angle_k': 200,'sc_sc_sc_angle_k': 200}, torsion_force_constants={'bb_bb_bb_bb_torsion_k': 200,'bb_bb_bb_sc_torsion_k': 200,'bb_bb_sc_sc_torsion_k': 200, 'bb_sc_sc_sc_torsion_k': 200, 'sc_bb_bb_sc_torsion_k': 200, 'bb_sc_sc_bb_torsion_k': 200, 'sc_sc_sc_sc_torsion_k': 200}, equil_dihedral_angle = 180, charges = {'backbone_bead_charges': 0.0 * unit.elementary_charge,'sidechain_bead_charges': 0.0 * unit.elementary_charge}, constrain_bonds = False,include_bond_forces=True,include_nonbonded_forces=True,include_bond_angle_forces=True,include_torsion_forces=True,check_energy_conservation=True,homopolymer=True):
+        def __init__(self,
+                     positions = None,
+                     polymer_length = 12,
+                     backbone_lengths = [1],
+                     sidechain_lengths = [1],
+                     sidechain_positions = [0],
+                     masses = {'backbone_bead_masses': 1.0 * unit.amu, 'sidechain_bead_masses': 1.0 * unit.amu}, 
+                     sigmas = {'bb_bb_sigma': 2.5 * unit.angstrom,'bb_sc_sigma': 2.5 * unit.angstrom,'sc_sc_sigma': 2.5 * unit.angstrom},
+                     epsilons = {'bb_bb_eps': 0.5 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.5 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.5 * unit.kilocalorie_per_mole}, 
+                     bond_lengths = {'bb_bb_bond_length': 1.0 * unit.angstrom,'bb_sc_bond_length': 1.0 * unit.angstrom,'sc_sc_bond_length': 1.0 * unit.angstrom}, 
+                     bond_force_constants = {'bb_bb_bond_k': 9.9e9,'bb_sc_bond_k': 9.9e9, 'sc_sc_bond_k': 9.9e9}, 
+                     bond_angle_force_constants={'bb_bb_bb_angle_k': 200,'bb_bb_sc_angle_k': 200,'bb_sc_sc_angle_k': 200,'sc_sc_sc_angle_k': 200}, 
+                     torsion_force_constants={'bb_bb_bb_bb_torsion_k': 200,'bb_bb_bb_sc_torsion_k': 200,'bb_bb_sc_sc_torsion_k': 200, 'bb_sc_sc_sc_torsion_k': 200, 'sc_bb_bb_sc_torsion_k': 200, 'bb_sc_sc_bb_torsion_k': 200, 'sc_sc_sc_sc_torsion_k': 200}, 
+                     equil_dihedral_angle = 180, 
+                     charges = {'backbone_bead_charges': 0.0 * unit.elementary_charge,'sidechain_bead_charges': 0.0 * unit.elementary_charge}, 
+                     constrain_bonds = False,
+                     include_bond_forces=True,
+                     include_nonbonded_forces=True,
+                     include_bond_angle_forces=True,
+                     include_torsion_forces=True,
+                     check_energy_conservation=True,
+                     homopolymer=True):
 
           """
           Initialize variables that were passed as input
