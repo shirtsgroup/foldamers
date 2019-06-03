@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.22)  31 MAY 2019 17:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.22)  3 JUN 2019 12:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1214,16 +1214,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--92
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 92--92
-\T1/ptm/m/it/12 charge=Quantity(value=0.0,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 92--92
-\T1/ptm/m/it/12 unit=elementary charge),
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 92--92
 \T1/ptm/m/it/12 bond_length=Quantity(value=1.0,
  []
 
@@ -1237,422 +1227,324 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--92
 \T1/ptm/m/it/12 silon=Quantity(value=0.5,
  []
 
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 94.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <12> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 95.
+
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 118.
+less on input line 106.
 
 [2
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 bone_lengths=[1], sidechain_lengths=[1],
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 sidechain_positions=[0],
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 masses={'backbone_bead_masses':
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 Quan-tity(value=1.0, unit=dalton),
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 Quan-tity(value=10.0, unit=dalton),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 'sidechain_bead_masses': Quan-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 tity(value=1.0, unit=dalton)}, sig-
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 tity(value=10.0, unit=dalton)}, sig-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 unit=angstrom), 'bb_sc_sigma':
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 Quan-tity(value=2.5, unit=angstrom),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 'sc_sc_sigma': Quan-tity(value=2.5,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 unit=angstrom)}, ep-silons={'bb_bb_eps':
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 'bb_sc_eps': Quan-tity(value=0.5,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 tity(value=0.5, unit=kilocalorie/mole)},
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 bond_lengths={'bb_bb_bond_length':
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 Quan-tity(value=1.0, unit=angstrom),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 unit=angstrom), 'sc_sc_bond_length':
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 Quan-tity(value=1.0, unit=angstrom)},
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 bond_force_constants={'bb_bb_bond_k':
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 bond_force_constants=None,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 9900000000.0, 'bb_sc_bond_k':
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 bond_angle_force_constants=None,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 9900000000.0, 'sc_sc_bond_k':
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 tor-sion_force_constants=None,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 9900000000.0},
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 equil_bond_angle=None,
  []
 
 
-Overfull \hbox (37.914pt too wide) in paragraph at lines 144--144
-\T1/ptm/m/it/12 bond_angle_force_constants={'bb_bb_bb_angle_k':
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 equil_dihedral_angle=None,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'bb_bb_sc_angle_k': 200,
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+\T1/ptm/m/it/12 charges=None, con-strain_bonds=True,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 'bb_sc_sc_angle_k': 200,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 'sc_sc_sc_angle_k': 200}, tor-
- []
-
-
-Overfull \hbox (26.47768pt too wide) in paragraph at lines 144--144
-\T1/ptm/m/it/12 sion_force_constants={'bb_bb_bb_bb_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'bb_bb_bb_sc_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'bb_bb_sc_sc_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'bb_sc_sc_bb_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'bb_sc_sc_sc_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'sc_bb_bb_sc_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200, 'sc_sc_sc_sc_torsion_k':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 200}, equil_dihedral_angle=180,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 charges={'backbone_bead_charges':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 Quan-tity(value=0.0, unit=elementary
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 charge), 'sidechain_bead_charges':
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 Quan-tity(value=0.0, unit=elementary
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-\T1/ptm/m/it/12 charge)}, con-strain_bonds=False,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 in-clude_bond_forces=True, in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 clude_nonbonded_forces=True, in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 clude_bond_angle_forces=True,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 in-clude_torsion_forces=True,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
 \T1/ptm/m/it/12 check_energy_conservation=True, ho-
  []
 
 [3] [4]
-Overfull \vbox (92.92618pt too high) has occurred while \output is active []
-
-
-[5]
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 148.
-
- (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 1.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
+File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 )
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <12> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 149.
+LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <12> not available
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 1.
 
-Underfull \hbox (badness 10000) in paragraph at lines 149--150
-[]\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
-it ( shape =
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 234--261
-\T1/ptm/m/n/12 sion_list bond_force_constants bond_angle_force_constants tor-si
-on_force_constants
+Underfull \hbox (badness 10000) in paragraph at lines 156--157
+[]\T1/pcr/b/n/12 masses \T1/ptm/m/n/12 ([][]\T1/pcr/m/sl/12 dict[][]( \TS1/pcr/
+m/sl/12 '\T1/pcr/m/sl/12 backbone_bead_masses\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 
+: float *
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 234--261
-\T1/ptm/m/n/12 in-clude_bond_forces in-clude_nonbonded_forces in-clude_bond_ang
-le_forces in-
+Underfull \hbox (badness 10000) in paragraph at lines 156--157
+\T1/pcr/m/sl/12 simtk.unit, \TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sidechain_bead_ma
+sses\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 : float *
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-[]\T1/ptm/m/it/12 polymer_length=8, back-
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
+[]\T1/pcr/b/n/12 sigmas \T1/ptm/m/n/12 ([][]\T1/pcr/m/sl/12 dict[][]( \TS1/pcr/
+m/sl/12 '\T1/pcr/m/sl/12 bb_bb_sigma\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 : float *
+ simtk.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 bone_length=1, sidechain_length=1,
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
+\T1/pcr/m/sl/12 unit,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 bb_sc_sigma\TS1/pcr/m/sl
+/12 '\T1/pcr/m/sl/12 : float * simtk.unit,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 sidechain_positions=[0],
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
+\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sc_sc_sigma\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 
+: float * simtk.unit}\T1/ptm/m/n/12 ) ^^U Non-bonded
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 mass=Quantity(value=12.0, unit=dalton),
+Underfull \hbox (badness 10000) in paragraph at lines 162--163
+\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 bb_sc_eps\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 : 
+float * simtk.unit,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sc_sc_eps\TS1/pcr/m/sl/12 
+'\T1/pcr/m/sl/12 :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 charge=Quantity(value=0.0,
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
+\T1/pcr/m/sl/12 simtk.unit,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 bb_sc_bond_length\
+TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 : float * simtk.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 unit=elementary charge),
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
+\T1/pcr/m/sl/12 unit,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sc_sc_bond_length\TS1/pc
+r/m/sl/12 '\T1/pcr/m/sl/12 : float * simtk.unit )\T1/ptm/m/n/12 )
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 bond_length=Quantity(value=1.0,
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+[]\T1/pcr/b/n/12 bond_force_constants \T1/ptm/m/n/12 ([][]\T1/pcr/m/sl/12 dict[
+][]( \TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 bb_bb_bond_k\TS1/pcr/m/sl/12 '\T1/pcr/m/
+sl/12 :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 unit=angstrom), ep-
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+\T1/pcr/m/sl/12 float,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 bb_sc_bond_k\TS1/pcr/m/
+sl/12 '\T1/pcr/m/sl/12 : float, \TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sc_sc_bond_k\
+TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--338
-\T1/ptm/m/it/12 silon=Quantity(value=0.5,
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 393--393
-[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-cle_1_index\T1
-/ptm/m/n/12 ,
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 414--414
-[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-cle_1_index\T1
-/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
+[]\T1/pcr/b/n/12 charges \T1/ptm/m/n/12 ([][]\T1/pcr/m/sl/12 dict[][]( \TS1/pcr
+/m/sl/12 '\T1/pcr/m/sl/12 backbone_bead_charges\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/1
+2 : float
  []
 
 
-Underfull \hbox (badness 5592) in paragraph at lines 427--429
-[]\T1/ptm/m/n/12 bond_length: Bond length for the bond de-fined by these two pa
-r-ti-cles. (
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
+\T1/pcr/m/sl/12 * simtk.unit,\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 sidechain_bead_c
+harges\TS1/pcr/m/sl/12 '\T1/pcr/m/sl/12 : float *
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 435--435
-[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 435--435
-\T1/ptm/m/it/12 cle_1_name\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-
- []
-
-
-Underfull \hbox (badness 5592) in paragraph at lines 448--450
-[]\T1/ptm/m/n/12 bond_length: Bond length for the bond de-fined by these two pa
-r-ti-cles. (
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 468--468
+[5] [6] [7] [8] [9]
+Underfull \hbox (badness 10000) in paragraph at lines 550--550
 \T1/ptm/m/it/12 back-bone_bead_index=None\T1/ptm/m/n/12 ,
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 521--521
-[]\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-ti-cle_index\T1/p
-tm/m/n/12 , \T1/ptm/m/it/12 par-ti-
  []
 
 [10]
 Chapter 2.
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 576.
+less on input line 589.
 
 [11
 
 ]
 Chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 589--589
+Underfull \hbox (badness 10000) in paragraph at lines 626--626
 []\T1/ptm/m/it/12 CGModel\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 589--589
+Underfull \hbox (badness 10000) in paragraph at lines 626--626
 \T1/ptm/m/it/12 file-name\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
+less on input line 646.
+
+[12
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 661--661
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 po-si-tions\T1/ptm/m/
 n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Underfull \hbox (badness 10000) in paragraph at lines 661--661
 \T1/ptm/m/it/12 dis-tance_cutoff\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Underfull \hbox (badness 10000) in paragraph at lines 661--661
 \T1/ptm/m/it/12 bead_index\T1/ptm/m/n/12 , \T1/ptm/m/it/12 par-
  []
 
 
-Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 628.
-
-[12
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 640--640
+Underfull \hbox (badness 10000) in paragraph at lines 679--679
 []\T1/ptm/m/it/12 parent_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 bond_lengt
 h\T1/ptm/m/n/12 ,
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 767--767
+Underfull \hbox (badness 10000) in paragraph at lines 806--806
 []\T1/ptm/m/it/12 trial_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 move_direct
 ion\T1/ptm/m/n/12 , \T1/ptm/m/it/12 dis-tance\T1/ptm/m/n/12 ,
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 797--803
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 836--842
 \T1/ptm/m/n/12 Given a coarse grained model class ob-ject, this func-tion re-tr
 ieves
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 797--803
+Underfull \hbox (badness 10000) in paragraph at lines 836--842
 \T1/ptm/m/n/12 a set of po-si-tions for the model from the en-sem-ble li-brary,
  in:
  []
 
 
-Overfull \hbox (4.13066pt too wide) in paragraph at lines 797--803
+Overfull \hbox (4.13066pt too wide) in paragraph at lines 836--842
 \T1/ptm/m/n/12 `../foldamers/ensembles/${backbone_length}_${sidechain_length}_$
 {sidechain_positions}'
  []
 
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 814--814
+
+Underfull \hbox (badness 10000) in paragraph at lines 853--853
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 max_attempts=1000\T1/
 ptm/m/n/12 ,
  []
 
 
-Overfull \hbox (4.13066pt too wide) in paragraph at lines 823--828
+Overfull \hbox (4.13066pt too wide) in paragraph at lines 862--867
 \T1/ptm/m/n/12 `../foldamers/ensembles/${backbone_length}_${sidechain_length}_$
 {sidechain_positions}'
  []
@@ -1661,14 +1553,14 @@ Overfull \hbox (4.13066pt too wide) in paragraph at lines 823--828
 Chapter 4.
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 868.
+less on input line 907.
 
 [16
 
 ]
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 876.
+less on input line 915.
 
 [17
 
@@ -1692,164 +1584,180 @@ ule
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 16--18
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
 []\T1/pcr/m/n/12 basic_cgmodel() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 23--25
+Underfull \hbox (badness 10000) in paragraph at lines 22--24
 []\T1/pcr/m/n/12 check_energy_conservation
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 23--25
+Underfull \hbox (badness 10000) in paragraph at lines 22--24
 \T1/ptm/m/n/12 (\T1/ptm/m/it/12 cg_model.cgmodel.CGModel at-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--27
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
 []\T1/pcr/m/n/12 constrain_bonds
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--27
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
 \T1/ptm/m/n/12 (\T1/ptm/m/it/12 cg_model.cgmodel.CGModel at-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31--32
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
 []\T1/pcr/m/n/12 distance_matrix() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule u
 til-i-
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 39--41
+[]\T1/pcr/m/n/12 get_all_particle_masses()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+[]\T1/pcr/m/n/12 get_bond_angle()
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 42--44
+[]\T1/pcr/m/n/12 get_bond_angle_force_constant()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--46
 []\T1/pcr/m/n/12 get_bond_angle_list()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--47
-[]\T1/pcr/m/n/12 get_bond_length() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+Underfull \hbox (badness 10000) in paragraph at lines 46--48
+[]\T1/pcr/m/n/12 get_bond_force_constant()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 47--49
-[]\T1/pcr/m/n/12 get_bond_length_from_names() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 i
-n
+Underfull \hbox (badness 10000) in paragraph at lines 48--49
+[]\T1/pcr/m/n/12 get_bond_length()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
-[]\T1/pcr/m/n/12 get_bond_list()
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
-[]\T1/pcr/m/n/12 get_epsilon() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
+[]\T1/pcr/m/n/12 get_bond_length_from_names()
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 51--52
+[]\T1/pcr/m/n/12 get_bond_list()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+[]\T1/pcr/m/n/12 get_epsilon()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 []\T1/pcr/m/n/12 get_monomer_types()
  []
 
 
-Overfull \hbox (0.5224pt too wide) in paragraph at lines 53--55
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 55--57
 []\T1/pcr/m/n/12 get_nonbonded_interaction_list()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--56
+Underfull \hbox (badness 10000) in paragraph at lines 57--58
 []\T1/pcr/m/n/12 get_num_beads()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 56--57
-[]\T1/pcr/m/n/12 get_parent_bead() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
-[]\T1/pcr/m/n/12 get_particle_charge() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-u
-le
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--59
-[]\T1/pcr/m/n/12 get_particle_list()
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 59--60
-[]\T1/pcr/m/n/12 get_particle_mass() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
-
- []
-
-
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 60.
+less on input line 58.
 
 [18
 
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 60--61
-[]\T1/pcr/m/n/12 get_particle_type() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+[]\T1/pcr/m/n/12 get_parent_bead() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+ []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--61
+[]\T1/pcr/m/n/12 get_particle_charge()
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 61--62
-[]\T1/pcr/m/n/12 get_sigma() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule
+[]\T1/pcr/m/n/12 get_particle_list()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--64
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
+[]\T1/pcr/m/n/12 get_particle_mass()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 63--64
+[]\T1/pcr/m/n/12 get_particle_type()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 65--67
 []\T1/pcr/m/n/12 get_structure_from_library() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 i
 n
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 64--66
-[]\T1/pcr/m/n/12 get_torsion_force_constant() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 i
-n
+Underfull \hbox (badness 10000) in paragraph at lines 67--69
+[]\T1/pcr/m/n/12 get_torsion_force_constant()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--67
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 []\T1/pcr/m/n/12 get_torsion_list()
  []
 
 
-Overfull \hbox (0.5224pt too wide) in paragraph at lines 80--82
+Underfull \hbox (badness 10000) in paragraph at lines 84--85
+[]\T1/pcr/m/n/12 write_cg_pdb() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule util
+-i-
+ []
+
+
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 85--87
 []\T1/pcr/m/n/12 write_pdbfile_without_topology()
  []
 
 [19
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 880.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 880.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 919.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 919.
  (./foldamers.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 880.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 880.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 919.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 919.
 Package rerunfilecheck Info: File `foldamers.out' has not changed.
-(rerunfilecheck)             Checksum: 4B8AA86F1F68182C667D04EB6B45B4BF;3118.
+(rerunfilecheck)             Checksum: F4B461CABACF5D2169F80B99B7A1E434;3126.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 880.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 919.
  ) 
 Here is how much of TeX's memory you used:
- 13728 strings out of 492982
- 191285 string characters out of 6134896
- 287623 words of memory out of 5000000
- 16910 multiletter control sequences out of 15000+600000
- 47278 words of font info for 75 fonts, out of 8000000 for 9000
+ 13762 strings out of 492982
+ 191993 string characters out of 6134896
+ 281829 words of memory out of 5000000
+ 16936 multiletter control sequences out of 15000+600000
+ 47590 words of font info for 76 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 37i,12n,45p,2027b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,45p,1489b,603s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
@@ -1859,10 +1767,10 @@ uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb>
 texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /urw/times/utmri8a.pfb>
-Output written on foldamers.pdf (21 pages, 134241 bytes).
+Output written on foldamers.pdf (21 pages, 141334 bytes).
 PDF statistics:
- 303 PDF objects out of 1000 (max. 8388607)
- 263 compressed objects within 3 object streams
- 74 named destinations out of 1000 (max. 500000)
+ 316 PDF objects out of 1000 (max. 8388607)
+ 276 compressed objects within 3 object streams
+ 78 named destinations out of 1000 (max. 500000)
  117 words of extra memory for PDF output out of 10000 (max. 10000000)
 
