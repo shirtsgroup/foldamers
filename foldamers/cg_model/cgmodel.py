@@ -1,11 +1,11 @@
 from simtk import unit
 import sys, os
-from foldamers.src.utilities import util
+import foldamers.utilities.util as util
 from simtk import openmm as mm
 from simtk.openmm.app.topology import Topology
 from simtk.openmm.app.topology import Residue
 import simtk.openmm.app.element as elem
-from cg_openmm.src.build.cg_build import add_new_elements, build_topology, build_system
+import cg_openmm
 from itertools import chain, combinations, product
 
 def get_parent_bead(cgmodel,monomer_index,bead_index,backbone_bead_index=None,sidechain_bead=False):
@@ -367,11 +367,11 @@ class CGModel(object):
           """
           Initialize new (coarse grained) particle types:
           """
-          self.particle_types = add_new_elements(self,list_of_masses)
+          self.particle_types = cg_openmm.build.cg_build .add_new_elements(self,list_of_masses)
 
-          self.system = build_system(self)
+          self.system = cg_openmm.build.cg_build .build_system(self)
           
-          self.topology = build_topology(self)
+          self.topology = cg_openmm.build.cg_build .build_topology(self)
 
           if positions == None: self.positions = util.random_positions(self,use_library=True) 
           else: self.positions = positions

@@ -8,9 +8,9 @@ import numpy as np
 import math, random
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
-from cg_openmm.src.simulation.tools import minimize_structure
-from foldamers.src.cg_model.cgmodel import *
-from foldamers.src.utilities.iotools import *
+import cg_openmm.simulation.tools
+from foldamers.cg_model.cgmodel import *
+from foldamers.utilities.iotools import *
 
 # =============================================================================================
 # 2) ENVIRONMENT/JOB SETTINGS
@@ -597,7 +597,7 @@ def get_structure_from_library( cgmodel ):
                #print("Minimizing the structure.")
                 positions_before = cgmodel.positions.__deepcopy__(memo={})
            
-                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                positions_after,energy = cg_openmm.simulation.tools.minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions)
                 cgmodel.positions = positions_after.in_units_of(unit.angstrom)
                 positions_after = cgmodel.positions.__deepcopy__(memo={})
                 if all([all(positions_before[i] == positions_after[i]) for i in range(0,len(positions_before))]):
