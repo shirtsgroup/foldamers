@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 from simtk import unit
 from foldamers.src.cg_model.cgmodel import basic_cgmodel
 from cg_openmm.src.build.cg_build import build_mm_simulation
@@ -23,8 +24,9 @@ epsilon = unit.Quantity(0.5,unit.kilocalorie_per_mole)
 cgmodel = basic_cgmodel(polymer_length=polymer_length,backbone_length=backbone_length,sidechain_length=sidechain_length,sidechain_positions=sidechain_positions,mass=mass,bond_length=bond_length,sigma=sigma,epsilon=epsilon)
 
 # Build an OpenMM simulation object
-output_pdb = 'simulation.pdb'
-output_data = 'simulation.dat'
+if not os.path.exists('basic_simulation'): os.mkdir('basic_simulation')
+output_pdb = 'basic_simulation/basic_simulation.pdb'
+output_data = 'basic_simulation/basic_simulation.dat'
 simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=temperature,output_pdb=output_pdb,output_data=output_data,print_frequency=print_frequency)
 
 # Run simulation
