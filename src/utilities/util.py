@@ -623,7 +623,7 @@ def get_structure_from_library( cgmodel ):
           if file.endswith('.pdb'):
             pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
         random_file = pdb_list[random.randint(0,len(pdb_list)-1)]
-        print("Using the positions found in:\n")
+        print("Using the positions found in:")
         print(str(random_file)+"\n")
         pdb_mm_obj = PDBFile(random_file)
         positions = pdb_mm_obj.getPositions()
@@ -660,7 +660,7 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True ):
         """
         total_attempts = 0
         if use_library:
-            print("Attempting to find a suitable random starting configuration in the foldamers structural database.\n")
+#            print("Attempting to find a suitable random starting configuration in the foldamers structural database.\n")
             positions = get_structure_from_library(cgmodel)
 #            print(positions)
 #            print(cgmodel.positions)
