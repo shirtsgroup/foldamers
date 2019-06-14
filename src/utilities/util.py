@@ -5,7 +5,7 @@
 
 # System packages
 import numpy as np
-import math, random
+import math, random, statistics
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
 from cg_openmm.src.simulation.tools import minimize_structure
@@ -265,11 +265,11 @@ def attempt_move(parent_coordinates,bond_length):
 
             move_direction_list.append(move_direction)
 
-            print("Parent coordinates are: "+str(ref))
-            print("Trial coordinates are: "+str(trial_coordinates))
+#            print("Parent coordinates are: "+str(ref))
+#            print("Trial coordinates are: "+str(trial_coordinates))
             dist = distance(ref,trial_coordinates)
-            print(direction)
-            print(dist)
+#            print(direction)
+#            print(dist)
 
         if round(dist._value,4) < round(bond_length._value,4):
 
@@ -375,7 +375,7 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,p
 
         """
         if bead_index == 0:
-           print("This is the first bead.  Using the origin for coordinates.")
+#           print("This is the first bead.  Using the origin for coordinates.")
            success = True
            return(positions,success)
 
@@ -518,7 +518,7 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index):
            if not collisions(distance_list,sigma): success = True
 
            if attempts > 100:
-            print([distance._value for distance in distance_list])
+#            print([distance._value for distance in distance_list])
             return(positions,success)
 
            attempts = attempts + 1
@@ -528,7 +528,7 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index):
         return(positions,success)
 
 
-def get_structure_from_library( cgmodel ):
+def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
         """
         Given a coarse grained model class object, this function retrieves
         a set of positions for the model from the ensemble library, in:
@@ -542,6 +542,12 @@ def get_structure_from_library( cgmodel ):
 
         cgmodel: CGModel() class object.
 
+        :param high_energy: If set to 'True', this function will generate an ensemble of high-energy structures, default = False
+        :type high_energy: Logical
+
+        :param low_energy: If set to 'True', this function will generate an ensemble of low-energy structures, default = False
+        :type low_energy: Logical
+
         Returns
         -------
         
@@ -549,7 +555,7 @@ def get_structure_from_library( cgmodel ):
         ( np.array( num_beads x 3 ) )
 
         """
-
+        ensemble_size = 100
         # In its current form this subroutine does not save the positions for random configurations we generate from heteropolymers.  It only saves the positions for homopolymers.
 
         if len(cgmodel.monomer_types) > 1:
@@ -571,26 +577,43 @@ def get_structure_from_library( cgmodel ):
 
           # We determine a suitable name for the ensemble directory by combining the 'bb_bb_bond_length', 'bb_sc_bond_length', and 'sc_sc_bond_length' into a single string:
           ens_str = [monomer_type['bond_lengths']['bb_bb_bond_length']._value,monomer_type['bond_lengths']['bb_sc_bond_length']._value,monomer_type['bond_lengths']['sc_sc_bond_length']._value]
-          ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2]))
+          if not high_energy and not low_energy:
+            ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2]))
+          if high_energy:
+            ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2])+"_high_energy")
+          if low_energy:
+            ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2])+"_low_energy")
+
           generate_ensemble = False
           if not os.path.exists(ensemble_directory):
             os.mkdir(ensemble_directory)
             generate_ensemble = True
 #            positions = random_positions(cgmodel,use_library=False)
           pdb_list = []
+          energy_list = {'energy': [],'file_index': []}
           for file in os.listdir(ensemble_directory):
             if file.endswith('.pdb'):
               pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
-          if len(pdb_list) < 100:
+              file_obj = open(str(str(ensemble_directory)+"/"+file),"r")
+              energy = float(file_obj.readlines()[0].split(": ")[1].split(' ')[0])
+              energy_list['energy'].append(float(energy))
+              file_index = int(file.split('cg')[1].split('.pdb')[0])
+              energy_list['file_index'].append(file_index)
+          if len(pdb_list) < ensemble_size:
             generate_ensemble = True
 
           if generate_ensemble:
-            print("The foldamers ensemble library only contains "+str(len(pdb_list))+" structures with these settings.\n")
-            print("The 'random_positions()' subroutine will be called instead, with 'use_library'=False,")
-            print("in order to generate a total of "+str(100)+" configurations for the database,")
-            print("before a specific configuration is chosen to assign random positions for this model.")
+#            print("The foldamers ensemble library only contains "+str(len(pdb_list))+" structures with these settings.\n")
+#            print("The 'random_positions()' subroutine will be called instead, with 'use_library'=False,")
+#            print("in order to generate a total of "+str(100)+" configurations for the database,")
+#            print("before a specific configuration is chosen to assign random positions for this model.")
+            if low_energy:
+              total_iterations = 1000
+            else:
+              total_iterations = ensemble_size
             index = 1
-            while index <= 100:
+            while index <= total_iterations:
+              print(index)
               file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
               if not os.path.exists(file_name):
                 cgmodel.positions = random_positions(cgmodel,use_library=False)
@@ -601,18 +624,36 @@ def get_structure_from_library( cgmodel ):
                 cgmodel.positions = positions_after.in_units_of(unit.angstrom)
                 positions_after = cgmodel.positions.__deepcopy__(memo={})
                 if all([all(positions_before[i] == positions_after[i]) for i in range(0,len(positions_before))]):
-                  print("ERROR: these random positions were not suitable for an initial minimization attempt.")
-                  print("NOTE: this routine will run continuously, unless the user interrupts with the keyboard.")
-                  print("If we are attempting to build a file with the same name index, repeatedly, then there is probably")
-                  print("something wrong with our model/parameter settings.")
+#                  print("ERROR: these random positions were not suitable for an initial minimization attempt.")
+#                  print("NOTE: this routine will run continuously, unless the user interrupts with the keyboard.")
+#                  print("If we are attempting to build a file with the same name index, repeatedly, then there is probably")
+#                  print("something wrong with our model/parameter settings.")
                   continue
 
                 else:
 
-                  print("Adding a configuration to the ensemble library:")
-                  print(file_name)
-                  write_pdbfile_without_topology(cgmodel,file_name,energy=energy)
-                  index = index + 1
+                  if low_energy and any(energy._value < energy_list['energy'][i] for i in range(len(energy_list['energy']))) and len(energy_list['energy']) <= ensemble_size:
+                    highest_energy_index = energy_list['energy'].index(max(energy_list['energy']))
+                    print("Replacing the structure in "+str(str(ensemble_directory+"/cg"+str(energy_list['file_index'][highest_energy_index])+".pdb")))
+                    print("Which had an energy of: "+str(energy_list['energy'][highest_energy_index]))
+                    print("with a new structure that has an energy of: "+str(energy._value)) 
+                    energy_list['energy'][highest_energy_index] = energy._value
+                    write_pdbfile_without_topology(cgmodel,str(ensemble_directory+"/cg"+str(energy_list['file_index'][highest_energy_index])+".pdb"),energy=energy)
+
+                  else:
+
+#                    print("Adding a configuration to the ensemble library:")
+#                    print(file_name)
+                    if len(energy_list['energy']) <= ensemble_size:
+                      for index in range(len(energy_list['energy'])):
+                        file_name = str(ensemble_directory+"/cg"+str(index+1)+".pdb")
+                        if not os.path.exists(file_name):
+                          energy_list['energy'].append(float(energy._value))
+                          energy_list['file_index'].append(index+1)
+                      write_pdbfile_without_topology(cgmodel,file_name,energy=energy)
+                  print("The average energy for the new ensemble is: "+str(statistics.mean(energy_list['energy'])))
+
+                index = index + 1
 
               else:
                 
@@ -623,14 +664,14 @@ def get_structure_from_library( cgmodel ):
           if file.endswith('.pdb'):
             pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
         random_file = pdb_list[random.randint(0,len(pdb_list)-1)]
-        print("Using the positions found in:")
-        print(str(random_file)+"\n")
+#        print("Using the positions found in:")
+#        print(str(random_file)+"\n")
         pdb_mm_obj = PDBFile(random_file)
         positions = pdb_mm_obj.getPositions()
 
         return(positions)
 
-def random_positions( cgmodel,max_attempts=1000,use_library=True ):
+def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=False,low_energy=False ):
         """
         Assign random positions for all beads in a coarse-grained polymer.
 
@@ -651,6 +692,12 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True ):
           ensemble library for the relevant coarse grained model.  If that model does not
           have an ensemble library, one will be created. )
 
+        :param high_energy: If set to 'True', this function will generate an ensemble of high-energy structures, default = False
+        :type high_energy: Logical
+
+        :param low_energy: If set to 'True', this function will generate an ensemble of low-energy structures, default = False
+        :type low_energy: Logical
+
         Returns
         -------
         
@@ -658,10 +705,16 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True ):
         ( np.array( num_beads x 3 ) )
 
         """
+
+        if high_energy and low_energy:
+            print("ERROR: Both 'high_energy' and 'low_energy' ensembles were requested in 'get_ensemble()'.  Please set only one of these variables to 'True', and call the function again.")
+            exit()
+
+
         total_attempts = 0
         if use_library:
 #            print("Attempting to find a suitable random starting configuration in the foldamers structural database.\n")
-            positions = get_structure_from_library(cgmodel)
+            positions = get_structure_from_library(cgmodel,high_energy=high_energy,low_energy=low_energy)
 #            print(positions)
 #            print(cgmodel.positions)
 #            if all([all(positions[i] == cgmodel.positions[i]) for i in range(0,len(positions))]): break
@@ -738,8 +791,8 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True ):
            
            break
 #          print("The stored positions are:"+str(stored_positions))
-        print("Successfully built a random structure with the following positions:\n")
-        print(positions)
+#        print("Successfully built a random structure with the following positions:\n")
+#        print(positions)
 #        print("Double-checking that this structure has no particle collisions...\n")
         full_nonbonded_list = []
         for i in range(cgmodel.num_beads):
@@ -750,23 +803,23 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True ):
 #           print(distance_list)
         if not collisions(distance_list,distance_cutoff):
 #          print("No collisions found.")
-          print("The shortest nonbonded particle distance is:\n")
-          print(str(min(distance_list))+"\n")
-          print("A nonbonded particle cutoff distance of "+str(distance_cutoff))
-          print("was applied as criteria for successful structure generation.\n")
+#          print("The shortest nonbonded particle distance is:\n")
+#          print(str(min(distance_list))+"\n")
+#          print("A nonbonded particle cutoff distance of "+str(distance_cutoff))
+#          print("was applied as criteria for successful structure generation.\n")
           return(positions)
         else:
-          print("Error: A model was successfully built, however,")
-          print("particle collisions were detected.\n")
-          print("The shortest nonbonded particle distance is:")
-          print(str(min(distance_list)))
+#          print("Error: A model was successfully built, however,")
+#          print("particle collisions were detected.\n")
+#          print("The shortest nonbonded particle distance is:")
+#          print(str(min(distance_list)))
           collision = full_nonbonded_list[distance_list.index(min(distance_list))]
-          print("(between particles "+str(collision[0])+" and "+str(collision[1])+")")
-          print("The nonbonded particle cutoff distance used for")
-          print("random structure generation is set to:"+str(distance_cutoff))
+#          print("(between particles "+str(collision[0])+" and "+str(collision[1])+")")
+#          print("The nonbonded particle cutoff distance used for")
+#          print("random structure generation is set to:"+str(distance_cutoff))
 #          exit()
-          print("Going to attempt to generate another random structure.")
-          print("This will continue until the user issues a disruption command with the keyboard. (Ctrl + c)")
+#          print("Going to attempt to generate another random structure.")
+#          print("This will continue until the user issues a disruption command with the keyboard. (Ctrl + c)")
           random_positions(cgmodel,max_attempts=1000,use_library=False)
         return(positions)
 

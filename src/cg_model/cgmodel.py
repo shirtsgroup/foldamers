@@ -115,6 +115,10 @@ def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechai
 
 class CGModel(object):
         """
+        Returns
+        -------
+
+        cgmodel class object, detailing all of the properties for the coarse grained model.
 
         Parameters
         ----------
