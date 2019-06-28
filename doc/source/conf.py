@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'foldamers'
 copyright = '2019, Shirts research group'
-author = "Garrett A. Meek\\\Lenny T. Fobe\\\ \\\Research group of Professor Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
+author = "Garrett A. Meek\\\Theodore L. Fobe\\\Connor M. Vogel\\\Research group of Professor Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
 
 # The short X.Y version
 version = ''
