@@ -8,7 +8,7 @@ import numpy as np
 import math, random, statistics
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
-from cg_openmm.src.simulation.tools import minimize_structure
+from cg_openmm.src.simulation.tools import *
 from foldamers.src.cg_model.cgmodel import *
 from foldamers.src.utilities.iotools import *
 
@@ -571,7 +571,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
           ensembles_directory = str(str(__file__.split('src/utilities/util.py')[0])+"ensembles")
           if not os.path.exists(ensembles_directory):
             os.mkdir(ensembles_directory)
-          model_directory = str(str(ensembles_directory)+"/"+str(monomer_type['backbone_length'])+"_"+str(monomer_type['sidechain_length'])+"_"+str(monomer_type['sidechain_positions']))
+          model_directory = str(str(ensembles_directory)+"/"+str(cgmodel.polymer_length)+"_"+str(monomer_type['backbone_length'])+"_"+str(monomer_type['sidechain_length'])+"_"+str(monomer_type['sidechain_positions']))
           if not os.path.exists(model_directory):
             os.mkdir(model_directory)
 
@@ -619,12 +619,12 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
                 cgmodel.positions = random_positions(cgmodel,use_library=False)
                #print("Minimizing the structure.")
                 positions_before = cgmodel.positions.__deepcopy__(memo={})
-           
-                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                simulation_time_step,tolerance = get_simulation_time_step(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,total_simulation_time=1.0 * unit.picosecond,time_step_list=[i * 0.1 * unit.femtosecond for i in [200,150,100,50,10,5,4,3,2,1]])
+                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=simulation_time_step,total_simulation_time=1.0 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
                 cgmodel.positions = positions_after.in_units_of(unit.angstrom)
                 positions_after = cgmodel.positions.__deepcopy__(memo={})
                 if all([all(positions_before[i] == positions_after[i]) for i in range(0,len(positions_before))]):
-#                  print("ERROR: these random positions were not suitable for an initial minimization attempt.")
+                  print("ERROR: these random positions were not suitable for an initial minimization attempt.")
 #                  print("NOTE: this routine will run continuously, unless the user interrupts with the keyboard.")
 #                  print("If we are attempting to build a file with the same name index, repeatedly, then there is probably")
 #                  print("something wrong with our model/parameter settings.")
@@ -651,7 +651,8 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
                           energy_list['energy'].append(float(energy._value))
                           energy_list['file_index'].append(index+1)
                       write_pdbfile_without_topology(cgmodel,file_name,energy=energy)
-                  print("The average energy for the new ensemble is: "+str(statistics.mean(energy_list['energy'])))
+                  if len(energy_list['energy']) > 1:
+                    print("The average energy for the new ensemble is: "+str(statistics.mean(energy_list['energy'])))
 
                 index = index + 1
 

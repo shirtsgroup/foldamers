@@ -101,10 +101,8 @@ def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechai
         cgmodel: CGModel() class object
 
         """
-        backbone_lengths = [1] # Number of backbone beads in unique monomer types
-        sidechain_lengths = [1] # Number of sidechain beads in unique monomer types
-        sidechain_positions = [0] # Index of the backbone bead(s) to which sidechains are bonded
-        polymer_length = 8 # Number of monomers in the polymer
+        backbone_lengths = [backbone_length] # Number of backbone beads in unique monomer types
+        sidechain_lengths = [sidechain_length] # Number of sidechain beads in unique monomer types
         masses = {'backbone_bead_masses': mass, 'sidechain_bead_masses': mass} # List of bead masses
         sigmas = {'bb_bb_sigma': sigma,'bb_sc_sigma': sigma,'sc_sc_sigma': sigma} # Lennard-Jones interaction distances.  List of unique interaction types
         bond_lengths = {'bb_bb_bond_length': bond_length,'bb_sc_bond_length': bond_length,'sc_sc_bond_length': bond_length} # bond length
