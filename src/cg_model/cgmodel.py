@@ -1,5 +1,6 @@
 from simtk import unit
 import sys, os
+from collections import Counter
 from foldamers.src.utilities import util
 from simtk import openmm as mm
 from simtk.openmm.app.topology import Topology
@@ -265,7 +266,7 @@ class CGModel(object):
         """
 
         # Built in class attributes
-        _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','equil_dihedral_angle','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
+        _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','equil_torsion_angles','equil_bond_angles','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
 
         def __init__(self,
                      positions = None,
@@ -280,8 +281,8 @@ class CGModel(object):
                      bond_force_constants = None, 
                      bond_angle_force_constants=None, 
                      torsion_force_constants=None, 
-                     equil_bond_angle = None,
-                     equil_dihedral_angle = None, 
+                     equil_bond_angles = None,
+                     equil_torsion_angles = None, 
                      charges = None, 
                      constrain_bonds = True,
                      include_bond_forces=True,
@@ -295,15 +296,15 @@ class CGModel(object):
           Initialize variables that weren't provided
           """
           if bond_force_constants == None:
-            bond_force_constants = {'bb_bb_bond_k': 9.9e9,'bb_sc_bond_k': 9.9e9, 'sc_sc_bond_k': 9.9e9}
+            bond_force_constants = {'bb_bb_bond_k': 1250,'bb_sc_bond_k': 1250, 'sc_sc_bond_k': 1250}
           if bond_angle_force_constants == None:
             bond_angle_force_constants={'bb_bb_bb_angle_k': 200,'bb_bb_sc_angle_k': 200,'bb_sc_sc_angle_k': 200,'sc_sc_sc_angle_k': 200}
           if torsion_force_constants == None:
             torsion_force_constants={'bb_bb_bb_bb_torsion_k': 200,'bb_bb_bb_sc_torsion_k': 200,'bb_bb_sc_sc_torsion_k': 200, 'bb_sc_sc_sc_torsion_k': 200, 'sc_bb_bb_sc_torsion_k': 200, 'bb_sc_sc_bb_torsion_k': 200, 'sc_sc_sc_sc_torsion_k': 200}
-          if equil_bond_angle == None:
-            equil_bond_angle = 120
-          if equil_dihedral_angle == None:
-            equil_dihedral_angle = 180
+          if equil_bond_angles == None:
+            equil_bond_angles = {'bb_bb_bb_angle_0': 120,'bb_bb_sc_angle_0': 120,'bb_sc_sc_angle_0': 120,'sc_sc_sc_angle_0': 120}
+          if equil_torsion_angles == None:
+            equil_torsion_angles = {'bb_bb_bb_bb_torsion_0': 0,'bb_bb_bb_sc_torsion_0': 0,'bb_bb_sc_sc_torsion_0': 0, 'bb_sc_sc_sc_torsion_0': 0, 'sc_bb_bb_sc_torsion_0': 0, 'bb_sc_sc_bb_torsion_0': 0, 'sc_sc_sc_sc_torsion_0': 0}
           if charges == None:
             charges = {'backbone_bead_charges': 0.0 * unit.elementary_charge,'sidechain_bead_charges': 0.0 * unit.elementary_charge}
 
@@ -336,9 +337,9 @@ class CGModel(object):
           self.epsilons = epsilons
           self.bond_force_constants = bond_force_constants
           self.bond_angle_force_constants = bond_angle_force_constants
-          self.equil_bond_angle = equil_bond_angle
+          self.equil_bond_angles = equil_bond_angles
           self.torsion_force_constants = torsion_force_constants
-          self.equil_dihedral_angle = equil_dihedral_angle
+          self.equil_torsion_angles = equil_torsion_angles
           self.charges = charges
 
           if len(sigmas) != 0: include_nonbonded_forces = True
@@ -502,24 +503,35 @@ class CGModel(object):
 
           bond_list = self.bond_list
           bond_angles = []
+          # Choose the first bond we will use to define a bond angle
           for bond_1 in bond_list:
-            bond_angle = [bond_1[0],bond_1[1]]
+            # Choose a second bond with which to attempt a bond angle
+            # definition.
             for bond_2 in bond_list:
+             bond_angle = [bond_1[0],bond_1[1]]
+             # Make sure the bonds are different
              if bond_2 != bond_1 and [bond_2[1],bond_2[0]] != bond_1:
-              if bond_1[0] in bond_2 or bond_1[1] in bond_2:
-               if bond_2[0] not in bond_angle:
-                bond_angle.append(bond_2[0])
-               if bond_2[1] not in bond_angle:
+              # Make sure the bonds share a common atom
+              if bond_2[0] in bond_1 or bond_2[1] in bond_1:
+               if bond_2[0] == bond_angle[1]:
                 bond_angle.append(bond_2[1])
-             if len(bond_angle) == 3:
-                 unique = True
-                 for existing_bond_angle in bond_angles:
-                  if all(bond_angle) in existing_bond_angle:
-                   unique = False
-                 if unique:
-                   bond_angles.append(bond_angle)
-                 bond_angle = bond_1
+               if bond_2[0] == bond_angle[0]:
+                bond_angle.insert(0,bond_2[1])
+               if bond_2[1] == bond_angle[0]:
+                bond_angle.insert(0,bond_2[0])
+               if bond_2[1] == bond_angle[1]:
+                bond_angle.append(bond_2[0])
 
+             if len(bond_angle) == 3:
+                 # Determine if this bond angle is already in the list of bond angle definitions.
+                 if len(bond_angles) == 0:
+                   bond_angles.append(bond_angle)
+                 else:
+                   unique = True
+                   for existing_bond_angle in bond_angles:
+                     if Counter(bond_angle) == Counter(existing_bond_angle):
+                       unique = False
+                   if unique: bond_angles.append(bond_angle)
           return(bond_angles)
 
 
@@ -530,32 +542,43 @@ class CGModel(object):
 
           bond_list = self.bond_list
           torsions = []
+          # Choose the first bond in the torsion
           for bond_1 in bond_list:
-            torsion = [bond_1[0],bond_1[1]]
+            # Choose a second bond with which to attempt to define a torsion.
+            torsion = []
             for bond_2 in bond_list:
+             # Make sure bonds 1 and 2 are different
              if bond_2 != bond_1 and [bond_2[1],bond_2[0]] != bond_1:
-              if bond_1[0] in bond_2 or bond_1[1] in bond_2:
-               if bond_2[0] not in torsion:
-                torsion.append(bond_2[0])
-               if bond_2[1] not in torsion:
-                torsion.append(bond_2[1])
-
-             for bond_3 in bond_list:
-              if bond_3 != bond_1 and [bond_3[1],bond_3[0]] != bond_1:
-                if bond_3 != bond_2 and [bond_3[1],bond_3[0]] != bond_2:
-                  if bond_3[0] in bond_2 or bond_1[1] in bond_2:
-                    if bond_2[0] not in torsion:
-                      torsion.append(bond_2[0])
-                    if bond_2[1] not in torsion:
-                      torsion.append(bond_2[1])
+              if bond_1[0] == bond_2[1]:
+                torsion = [bond_2[0],bond_2[1],bond_1[1]]
+              if bond_1[1] == bond_2[0]:
+                torsion = [bond_1[0],bond_1[1],bond_2[1]]
 
              if len(torsion) == 3:
-                 unique = True
-                 for existing_torsion in torsions:
-                  if all(torsion) in existing_torsion:
-                   unique = False
-                 if unique:
-                   torsions.append(torsion)
+               # Choose a third bond with which to attempt a torsion definition
+               for bond_3 in bond_list:
+                 # Make sure the third bond is different from the first two bonds.
+                 if bond_3 != bond_1 and [bond_3[1],bond_3[0]] != bond_1 and bond_3 != bond_2 and [bond_3[1],bond_3[0]] != bond_2:
+                   if bond_3[0] in torsion or bond_3[1] in torsion:
+                     if bond_3[0] == torsion[0] and len(torsion) < 4:
+                       torsion.insert(0,bond_3[1])
+                     if bond_3[1] == torsion[0] and len(torsion) < 4:
+                       torsion.insert(0,bond_3[0])
+                     if bond_3[0] == torsion[2] and len(torsion) < 4:
+                       torsion.append(bond_3[1])
+                     if bond_3[1] == torsion[2] and len(torsion) < 4:
+                       torsion.append(bond_3[0])
+
+                 if len(torsion) == 4:
+                   # Determine if the particles defining this torsion are suitable.
+                   if len(torsions) == 0:
+                     torsions.append(torsion)
+                   else:
+                     unique = True
+                     for existing_torsion in torsions:
+                       if Counter(torsion) == Counter(existing_torsion):
+                         unique = False
+                     if unique: torsions.append(torsion)
 
           return(torsions)
 
@@ -799,7 +822,7 @@ class CGModel(object):
 
           return(bond_force_constant)
 
-        def get_bond_angle(self,particle_1_index,particle_2_index,particle_3_index):
+        def get_equil_bond_angle(self,particle_1_index,particle_2_index,particle_3_index):
           """
           Determines the correct equilibrium bond angle between three particles
 
@@ -819,10 +842,25 @@ class CGModel(object):
 
           bond_angle: Bond angle for the two bonds defined by these three particles.
           """
+          particle_1_type = self.get_particle_type(particle_1_index)
+          particle_2_type = self.get_particle_type(particle_2_index)
+          particle_3_type = self.get_particle_type(particle_3_index)
 
-          bond_angle = cgmodel.equil_bond_angle
+          if particle_1_type == 'backbone' and particle_2_type == 'backbone' and particle_3_type == 'backbone':
+           equil_bond_angle = self.equil_bond_angles['bb_bb_bb_angle_0']
+          if particle_1_type == 'backbone' and particle_2_type == 'backbone' and particle_3_type == 'sidechain':
+           equil_bond_angle = self.equil_bond_angles['bb_bb_sc_angle_0']
+          if particle_1_type == 'backbone' and particle_2_type == 'sidechain' and particle_3_type == 'sidechain':
+           equil_bond_angle = self.equil_bond_angles['bb_sc_sc_angle_0']
+          if particle_1_type == 'sidechain' and particle_2_type == 'backbone' and particle_3_type == 'sidechain':
+           equil_bond_angle = self.equil_bond_angles['sc_bb_sc_angle_0']
+          if particle_1_type == 'sidechain' and particle_2_type == 'sidechain' and particle_3_type == 'sidechain':
+           equil_bond_angle = self.equil_bond_angles['sc_sc_sc_angle_0']
+          if particle_1_type == 'sidechain' and particle_2_type == 'sidechain' and particle_3_type == 'backbone':
+           equil_bond_angle = self.equil_bond_angles['sc_sc_bb_angle_0']
 
-          return(bond_angle)
+
+          return(equil_bond_angle)
 
         def get_bond_angle_force_constant(self,particle_1_index,particle_2_index,particle_3_index):
           """
@@ -848,7 +886,20 @@ class CGModel(object):
           particle_2_type = self.get_particle_type(particle_2_index)
           particle_3_type = self.get_particle_type(particle_3_index)
 
-          bond_angle_force_constant = 200
+
+          if particle_1_type == 'backbone' and particle_2_type == 'backbone' and particle_3_type == 'backbone':
+           bond_angle_force_constant = self.bond_angle_force_constants['bb_bb_bb_angle_k']
+          if particle_1_type == 'backbone' and particle_2_type == 'backbone' and particle_3_type == 'sidechain':
+           bond_angle_force_constant = self.bond_angle_force_constants['bb_bb_sc_angle_k']
+          if particle_1_type == 'backbone' and particle_2_type == 'sidechain' and particle_3_type == 'sidechain':
+           bond_angle_force_constant = self.bond_angle_force_constants['bb_sc_sc_angle_k']
+          if particle_1_type == 'sidechain' and particle_2_type == 'backbone' and particle_3_type == 'sidechain':
+           bond_angle_force_constant = self.bond_angle_force_constants['sc_bb_sc_angle_k']
+          if particle_1_type == 'sidechain' and particle_2_type == 'sidechain' and particle_3_type == 'sidechain':
+           bond_angle_force_constant = self.bond_angle_force_constants['sc_sc_sc_angle_k']
+          if particle_1_type == 'sidechain' and particle_2_type == 'sidechain' and particle_3_type == 'backbone':
+           bond_angle_force_constant = self.bond_angle_force_constants['sc_sc_bb_angle_k']
+
 
           return(bond_angle_force_constant)
 
@@ -932,4 +983,85 @@ class CGModel(object):
              if particle_types[3] == 'sidechain':
               torsion_force_constant = self.torsion_force_constants['bb_sc_sc_sc_torsion_k']
           return(torsion_force_constant)
+
+        def get_equil_torsion_angle(self,torsion):
+          """         
+          Determines the torsion force constant given a list of particle indices
+
+          Parameters
+          ----------
+
+          cgmodel: CGModel() class object
+
+          torsion: Indices of the particles in the torsion
+          ( integer )
+          Default = None
+
+          Returns
+          -------
+
+          torsion_force_constant: Force constant for the torsion defined by the input particles.
+          ( Integer )
+
+          """
+          particle_types = ['','','','']
+          if 'B' in self.particle_list[torsion[0]]: particle_types[0] = 'backbone'
+          else: particle_types[0] = 'sidechain'
+
+          if 'B' in self.particle_list[torsion[1]]: particle_types[1] = 'backbone'
+          else: particle_types[1] = 'sidechain'
+
+          if 'B' in self.particle_list[torsion[2]]: particle_types[2] = 'backbone'
+          else: particle_types[2] = 'sidechain'
+
+          if 'B' in self.particle_list[torsion[3]]: particle_types[3] = 'backbone'
+          else: particle_types[3] = 'sidechain'
+
+          if particle_types[0] == 'sidechain':
+           if particle_types[1] == 'backbone':
+            if particle_types[2] == 'backbone':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['sc_bb_bb_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['sc_bb_bb_sc_torsion_0']
+            if particle_types[2] == 'sidechain':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['bb_sc_sc_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['sc_bb_sc_sc_torsion_0']
+           if particle_types[1] == 'sidechain':
+            if particle_types[2] == 'backbone':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['sc_sc_bb_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['sc_sc_bb_sc_torsion_0']
+            if particle_types[2] == 'sidechain':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['sc_sc_sc_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['sc_sc_sc_sc_torsion_0']
+          if particle_types[0] == 'backbone':
+           if particle_types[1] == 'backbone':
+            if particle_types[2] == 'backbone':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['bb_bb_bb_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['bb_bb_bb_sc_torsion_0']
+            if particle_types[2] == 'sidechain':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['bb_bb_sc_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['bb_bb_sc_sc_torsion_0']
+           if particle_types[1] == 'sidechain':
+            if particle_types[2] == 'backbone':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['bb_sc_bb_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['bb_sc_bb_sc_torsion_0']
+            if particle_types[2] == 'sidechain':
+             if particle_types[3] == 'backbone':
+              equil_torsion_angle = self.equil_torsion_angles['bb_sc_sc_bb_torsion_0']
+             if particle_types[3] == 'sidechain':
+              equil_torsion_angle = self.equil_torsion_angles['bb_sc_sc_sc_torsion_0']
+          return(equil_torsion_angle)
 
