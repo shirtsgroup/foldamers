@@ -8,6 +8,7 @@ from simtk import unit
 # foldamers utilities
 from foldamers.src.cg_model.cgmodel import basic_cgmodel
 from foldamers.src.ensembles.ens_build import 
+from cg_openmm.src.simulation.tools import *
 
 def optimize_lj(cgmodel,base_epsilon=cgmodel.epsilons['bb_bb_eps'],sigma_attempts=3,epsilon_attempts=3):
         """
@@ -52,4 +53,18 @@ def optimize_lj(cgmodel,base_epsilon=cgmodel.epsilons['bb_bb_eps'],sigma_attempt
 
         return(cgmodel)
 
+def optimize_parameter(cgmodel,optimization_parameter,optimization_range_min,optimization_range_max,steps=None):
+        """
+        """
+        if steps == None: steps = 100
+        step_size = ( optimization_range_max - optimization_range_min ) / 100
+        parameter_values = [step*step_size for step in range(1,steps)]
+        potential_energies = []
+        for parameter in parameter_values:
+          cgmodel.optimization_parameter = parameter
+          positions,potential_energy,time_step =  minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=None,total_simulation_time=1.0 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=1)
+          potential_energies.append(potential_energy)
 
+        best_value = min(potential_energies)
+
+        return(best_value,potential_energies,parameter_values)

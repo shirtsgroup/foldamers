@@ -613,14 +613,14 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
               total_iterations = ensemble_size
             index = 1
             while index <= total_iterations:
-              print(index)
               file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
               if not os.path.exists(file_name):
+                print(index)
                 cgmodel.positions = random_positions(cgmodel,use_library=False)
                #print("Minimizing the structure.")
                 positions_before = cgmodel.positions.__deepcopy__(memo={})
                 simulation_time_step,tolerance = get_simulation_time_step(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,total_simulation_time=1.0 * unit.picosecond,time_step_list=[i * 0.1 * unit.femtosecond for i in [200,150,100,50,10,5,4,3,2,1]])
-                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=simulation_time_step,total_simulation_time=1.0 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+                positions_after,energy,simulation_time_step = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=simulation_time_step,total_simulation_time=1.0 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
                 cgmodel.positions = positions_after.in_units_of(unit.angstrom)
                 positions_after = cgmodel.positions.__deepcopy__(memo={})
                 if all([all(positions_before[i] == positions_after[i]) for i in range(0,len(positions_before))]):
