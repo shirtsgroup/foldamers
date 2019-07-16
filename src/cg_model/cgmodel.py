@@ -376,8 +376,8 @@ class CGModel(object):
           
           self.topology = build_topology(self)
 
-          if positions == None: self.positions = util.random_positions(self,use_library=True) 
-          else: self.positions = positions
+          #if positions == None: self.positions = util.random_positions(self,use_library=True) 
+          self.positions = positions
 
         def get_monomer_types(self):
           """
