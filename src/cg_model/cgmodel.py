@@ -342,10 +342,10 @@ class CGModel(object):
           self.equil_torsion_angles = equil_torsion_angles
           self.charges = charges
 
-          if len(sigmas) != 0: include_nonbonded_forces = True
-          if len(bond_force_constants) != 0: include_bond_forces = True
+          if len(sigmas) != 0 and include_bond_forces != False: include_nonbonded_forces = True
+          if len(bond_force_constants) != 0 and include_bond_forces != False: include_bond_forces = True 
           if len(bond_angle_force_constants) != 0 and include_bond_angle_forces != False: include_bond_angle_forces = True
-          if len(torsion_force_constants) != 0: include_torsion_forces = True
+          if len(torsion_force_constants) and include_torsion_forces != False: include_torsion_forces = True
 
           self.include_bond_forces = include_bond_forces
           self.include_bond_angle_forces = include_bond_angle_forces
