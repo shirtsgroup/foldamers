@@ -28,9 +28,9 @@ def write_bonds(CGModel,pdb_object):
         bond_list = CGModel.bond_list
         for bond in bond_list:
          if int(bond[0]) < int(bond[1]):
-          pdb_object.write("CONECT"+str("{:>5}".format(bond[0]))+str("{:>5}".format(bond[1]))+"\n")      
+          pdb_object.write("CONECT"+str("{:>5}".format(bond[0]+1))+str("{:>5}".format(bond[1]+1))+"\n")      
          else:
-          pdb_object.write("CONECT"+str("{:>5}".format(bond[1]))+str("{:>5}".format(bond[0]))+"\n")
+          pdb_object.write("CONECT"+str("{:>5}".format(bond[1]+1))+str("{:>5}".format(bond[0]+1))+"\n")
         pdb_object.write(str("END\n"))
         return
 
@@ -84,18 +84,18 @@ def write_pdbfile_without_topology(CGModel,filename,energy=None):
           for backbone_bead in range(monomer_type['backbone_length']):
 
             if monomer_index in list([0,CGModel.polymer_length-1]):
-             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   B"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   X"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
             else:
-             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   B"+str(element_index)+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+             pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   X"+str(element_index)+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
             bead_index = bead_index + 1
             element_index = element_index + 1
 
             if backbone_bead in [monomer_type['sidechain_positions']]:
               for sidechain_bead in range(monomer_type['sidechain_length']):
                 if monomer_index in list([0,CGModel.polymer_length-1]):
-                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   S"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   A"+str(element_index)+str("{:>4}".format(str("MT")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
                 else:
-                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   S"+str(element_index)+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
+                 pdb_object.write(str("ATOM"+str("{:>7}".format(bead_index))+"   A"+str(element_index)+str("{:>4}".format(str("M")))+" A"+str("{:>4}".format(monomer_index+1))+"     "+str("{:>7}".format(round(coordinates[bead_index-1][0]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][1]._value,3)))+" "+str("{:>7}".format(round(coordinates[bead_index-1][2]._value,3)))+"  1.00  0.00\n"))
                 bead_index = bead_index + 1
                 element_index = element_index + 1
         pdb_object.write(str("TER\n"))

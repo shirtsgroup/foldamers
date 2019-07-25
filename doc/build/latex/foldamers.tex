@@ -52,9 +52,9 @@
 
 
 \title{foldamers Documentation}
-\date{Jun 15, 2019}
+\date{Jul 22, 2019}
 \release{0.0}
-\author{Garrett A. Meek\\Lenny T. Fobe\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
+\author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
 \makeindex
@@ -83,7 +83,7 @@ Shown below is the ‘basic\_cgmodel’ function, which requires only a minimal 
 \phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{basic\_cgmodel() (in module cg\_model.cgmodel)@\spxentry{basic\_cgmodel()}\spxextra{in module cg\_model.cgmodel}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.basic_cgmodel}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{basic\_cgmodel}}}{\emph{polymer\_length=8, backbone\_length=1, sidechain\_length=1, sidechain\_positions={[}0{]}, mass=Quantity(value=12.0, unit=dalton), bond\_length=Quantity(value=1.0, unit=angstrom), sigma=Quantity(value=2.5, unit=angstrom), epsilon=Quantity(value=0.5, unit=kilocalorie/mole), positions=None}}{}~\begin{quote}\begin{description}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.basic_cgmodel}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{basic\_cgmodel}}}{\emph{polymer\_length=8, backbone\_length=1, sidechain\_length=1, sidechain\_positions={[}0{]}, mass=Quantity(value=100.0, unit=dalton), bond\_length=Quantity(value=7.5, unit=angstrom), sigma=Quantity(value=18.5, unit=angstrom), epsilon=Quantity(value=0.5, unit=kilocalorie/mole), positions=None}}{}~\begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{polymer\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Number of monomer units, default = 8
@@ -98,13 +98,13 @@ Shown below is the ‘basic\_cgmodel’ function, which requires only a minimal 
 \sphinxstyleliteralstrong{\sphinxupquote{sidechain\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{integer}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Defines the backbone bead indices upon which we will place the sidechains, default = {[}0{]}
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{mass}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Mass for all coarse grained beads, default = 12.0 * unit.amu
+\sphinxstyleliteralstrong{\sphinxupquote{mass}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Mass for all coarse grained beads, default = 100.0 * unit.amu
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Defines the length for all bond types, default = 1.0 * unit.angstrom
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Defines the length for all bond types, default = 7.5 * unit.angstrom
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{sigma}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Non-bonded bead Lennard-Jones equilibrium interaction distance, default = 2.5 * bond\_length (for all particle interactions)
+\sphinxstyleliteralstrong{\sphinxupquote{sigma}} (\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}) \textendash{} Non-bonded bead Lennard-Jones equilibrium interaction distance, default = 18.5 * bond\_length (for all particle interactions)
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{epsilon}} \textendash{} Non-bonded Lennard-Jones equilibrium interaction energy, default = 0.5 * unit.kilocalorie\_per\_mole
@@ -114,9 +114,10 @@ Shown below is the ‘basic\_cgmodel’ function, which requires only a minimal 
 
 \end{itemize}
 
-\end{description}\end{quote}
-
+\item[{Returns}] \leavevmode
 cgmodel: CGModel() class object
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -129,148 +130,150 @@ Shown below is a detailed description of the full ‘cgmodel’ class object.
 \phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{CGModel (class in cg\_model.cgmodel)@\spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=8, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=\{'backbone\_bead\_masses': Quantity(value=10.0, unit=dalton), 'sidechain\_bead\_masses': Quantity(value=10.0, unit=dalton)\}, sigmas=\{'bb\_bb\_sigma': Quantity(value=2.5, unit=angstrom), 'bb\_sc\_sigma': Quantity(value=2.5, unit=angstrom), 'sc\_sc\_sigma': Quantity(value=2.5, unit=angstrom)\}, epsilons=\{'bb\_bb\_eps': Quantity(value=0.5, unit=kilocalorie/mole), 'bb\_sc\_eps': Quantity(value=0.5, unit=kilocalorie/mole), 'sc\_sc\_eps': Quantity(value=0.5, unit=kilocalorie/mole)\}, bond\_lengths=\{'bb\_bb\_bond\_length': Quantity(value=1.0, unit=angstrom), 'bb\_sc\_bond\_length': Quantity(value=1.0, unit=angstrom), 'sc\_sc\_bond\_length': Quantity(value=1.0, unit=angstrom)\}, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, equil\_bond\_angle=None, equil\_dihedral\_angle=None, charges=None, constrain\_bonds=True, include\_bond\_forces=True, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, check\_energy\_conservation=True, homopolymer=True}}{}~\begin{quote}\begin{description}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=8, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=\{'backbone\_bead\_masses': Quantity(value=100.0, unit=dalton), 'sidechain\_bead\_masses': Quantity(value=100.0, unit=dalton)\}, sigmas=\{'bb\_bb\_sigma': Quantity(value=18.5, unit=angstrom), 'bb\_sc\_sigma': Quantity(value=18.5, unit=angstrom), 'sc\_sc\_sigma': Quantity(value=18.5, unit=angstrom)\}, epsilons=\{'bb\_bb\_eps': Quantity(value=0.5, unit=kilocalorie/mole), 'bb\_sc\_eps': Quantity(value=0.5, unit=kilocalorie/mole), 'sc\_sc\_eps': Quantity(value=0.5, unit=kilocalorie/mole)\}, bond\_lengths=\{'bb\_bb\_bond\_length': Quantity(value=7.5, unit=angstrom), 'bb\_sc\_bond\_length': Quantity(value=7.5, unit=angstrom), 'sc\_sc\_bond\_length': Quantity(value=7.5, unit=angstrom)\}, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, equil\_bond\_angles=None, equil\_torsion\_angles=None, charges=None, constrain\_bonds=True, include\_bond\_forces=True, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, check\_energy\_conservation=True, homopolymer=True}}{}~\begin{quote}
+\begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for all of the particles, default = None
+\item {}
+\sphinxstyleliteralstrong{\sphinxupquote{polymer\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Number of monomer units, default = 8
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{polymer\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Length of the polymer, default = 8
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {}
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array( float * simtk.unit ( shape = num\_beads x 3 ) )}}) \textendash{} Positions for all of the particles, default = None
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{backbone\_lengths}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{integer}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Defines the number of beads in the backbone for each monomer type, default = {[}1{]}
+\item[{param backbone\_lengths}] \leavevmode
+Defines the number of beads in the backbone for each monomer type, default = {[}1{]}
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_lengths}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{integer}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Defines the number of beads in the sidechain for each monomer type, default = {[}1{]}
+\item[{type backbone\_lengths}] \leavevmode
+List( integer )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{integer}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Defines the backbone bead indices where sidechains are positioned, default = {[}0{]} (Place a sidechain on the first backbone bead in each monomer.)
+\item[{param sidechain\_lengths}] \leavevmode
+Defines the number of beads in the sidechain for each monomer type, default = {[}1{]}
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{masses}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'backbone\_bead\_masses': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{'sidechain\_bead\_masses': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Masses of all particle types, default = 10.0 * unit.amu (for all particles)
+\item[{type sidechain\_lengths}] \leavevmode
+List( integer )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{sigmas}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_bb\_sigma': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_sc\_sigma': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'sc\_sc\_sigma': float * simtk.unit\}}}) \textendash{} Non-bonded bead Lennard-Jones equilibrium interaction distances, default = 2.5 unit.angstrom (for all particles)
+\item[{param sidechain\_positions}] \leavevmode
+Defines the backbone bead indices where sidechains are positioned, 
+default = {[}0{]} (Place a sidechain on the first backbone bead in each monomer.)
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{epsilons}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_bb\_eps': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_sc\_eps': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'sc\_sc\_eps': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Non-bonded Lennard-Jones equilibrium interaction strengths, default = 0.5 * unit.kilocalorie\_per\_mole (for all particle interactions types)
+\item[{type sidechain\_positions}] \leavevmode
+List( integer )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{bond\_lengths}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_bb\_bond\_length': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_sc\_bond\_length': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'sc\_sc\_bond\_length': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Bond lengths for all bonds, default = 1.0 unit.angstrom
+\item[{param masses}] \leavevmode
+Masses of all particle types, default = 100.0 * unit.amu (for all particles)
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{bond\_force\_constants}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_bb\_bond\_k': float}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'bb\_sc\_bond\_k': float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{'sc\_sc\_bond\_k': float}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Bond force constants for all bond types, default = 9.9e9 ( implied units are: kJ/mol/A\textasciicircum{}2 )
+\item[{type masses}] \leavevmode
+dict( ‘backbone\_bead\_masses’: float * simtk.unit, ‘sidechain\_bead\_masses’: float * simtk.unit )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{charges}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#dict}{\sphinxstyleliteralemphasis{\sphinxupquote{dict}}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{'backbone\_bead\_charges': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{,}}\sphinxstyleliteralemphasis{\sphinxupquote{'sidechain\_bead\_charges': float * simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Charges for all particles, default = 0.0 (for all particles)
+\item[{param sigmas}] \leavevmode
+Non-bonded bead Lennard-Jones equilibrium interaction distances, default = 18.5 unit.angstrom (for all particles)
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{num\_beads}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Total number of particles in the coarse grained model, default = 16 (The total number of particles in a length=8 1-1 coarse-grained model)
+\item[{type sigmas}] \leavevmode
+dict( ‘bb\_bb\_sigma’: float * simtk.unit,’bb\_sc\_sigma’: float * simtk.unit,’sc\_sc\_sigma’: float * simtk.unit\}
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{system}} (\sphinxstyleliteralemphasis{\sphinxupquote{OpenMM System}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{) }}\sphinxstyleliteralemphasis{\sphinxupquote{class object}}) \textendash{} OpenMM System() object, which stores the forces for the coarse grained model, default = None
+\item[{param epsilons}] \leavevmode
+Non-bonded Lennard-Jones equilibrium interaction strengths, default = 0.5 * unit.kilocalorie\_per\_mole (for all particle interactions types)
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{topology}} (\sphinxstyleliteralemphasis{\sphinxupquote{OpenMM Topology}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{) }}\sphinxstyleliteralemphasis{\sphinxupquote{class object}}) \textendash{} OpenMM Topology() object, which stores bonds, angles, and other structural attributes of the coarse grained model, default = None
+\item[{type epsilons}] \leavevmode
+dict( ‘bb\_bb\_eps’: float * simtk.unit,’bb\_sc\_eps’: float * simtk.unit,’sc\_sc\_eps’: float * simtk.unit )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{constrain\_bonds}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Logical variable determining whether bond constraints are applied during a simulation of the energy for the system, default = True
+\item[{param bond\_lengths}] \leavevmode
+Bond lengths for all bonds, default = 7.5 unit.angstrom
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{include\_bond\_forces}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Include contributions from bond potentials when calculating the potential energy, default = True
+\item[{type bond\_lengths}] \leavevmode
+dict( ‘bb\_bb\_bond\_length’: float * simtk.unit,’bb\_sc\_bond\_length’: float * simtk.unit,’sc\_sc\_bond\_length’: float * simtk.unit )
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{include\_nonbonded\_forces}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Include contributions from nonbonded interactions when calculating the potential energy, default = True
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{include\_bond\_angle\_forces}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Include contributions from bond angle forces when calculating the potential energy, default = True
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{include\_torsion\_forces}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Include contributions from torsions when calculating the potential energy, default = True
+\item[{param bond\_angle\_force\_constants}] \leavevmode
+Bond angle force constants
 
 \end{itemize}
 
 \end{description}\end{quote}
-
-\sphinxstylestrong{Attributes:}
+\end{quote}
 \begin{description}
-\item[{polymer\_length}] \leavevmode{[}integer{]}
-Returns the number of monomers in the polymer/oligomer
+\item[{for all bond types, default = 200 * kJ/mol/rad\textasciicircum{}2}] \leavevmode\begin{quote}\begin{description}
+\item[{type bond\_angle\_force\_constants}] \leavevmode
+dict( ‘bb\_bb\_\_bb\_angle\_k’: float,’bb\_bb\_sc\_angle\_k’: float, ‘bb\_sc\_sc\_angle\_k’: float, ‘sc\_sc\_sc\_angle\_k’: float, ‘sc\_bb\_sc\_angle\_k’: float, ‘sc\_sc\_bb\_angle\_k’: float)
 
-\item[{backbone\_lengths}] \leavevmode{[}List( integers ){]}
-Returns a list of all unique backbone legnths (for individual monomers) in this model
+\item[{param bond\_force\_constants}] \leavevmode
+Bond force constants for all bond types, default = 1250 kJ/mol/nm\textasciicircum{}2
 
-\item[{sidechain\_lengths}] \leavevmode{[}List( integers ){]}
-Returns a list of all unique sidechain lengths (for individual monomers) in this model
+\item[{type bond\_force\_constants}] \leavevmode
+dict( ‘bb\_bb\_bond\_k’: float,’bb\_sc\_bond\_k’: float, ‘sc\_sc\_bond\_k’: float )
 
-\item[{sidechain\_positions}] \leavevmode{[}List( integers ){]}
-Returns a list of integers for all uniqye sidechain positions (along the backbone, for individual monomers) in this model
+\item[{param equil\_bond\_angles}] \leavevmode
+Equilibrium bond angle for all bond angle types, default = 120
 
-\item[{masses}] \leavevmode{[}dict( float * simtk.unit ){]}
-Returns a list of the particle masses for all unique particle definitions in this model
+\item[{type equil\_bond\_angles}] \leavevmode
+dict(‘bb\_bb\_bb\_angle\_0’: float,’bb\_bb\_sc\_angle\_0’: float,’bb\_sc\_sc\_angle\_0’: float,’sc\_sc\_sc\_angle\_0’: float, ‘sc\_bb\_sc\_angle\_0’: float,’sc\_sc\_bb\_angle\_0’: float )
 
-\item[{sigmas}] \leavevmode{[}dict( float * simtk.unit ){]}
-Returns a list of the Lennard-Jones nonbonded interaction distances for all unique particle interaction types
+\item[{param torsion\_force\_constants}] \leavevmode
+Torsion force constants for all unique torsion definitions, default = 200
 
-\item[{epsilons}] \leavevmode{[}dict ( float * simtk.unit ){]}
-Returns a list of the Lennard-Jones nonbonded interaction strengths (well-depth) for all unique particle interaction types
+\item[{type torsion\_force\_constants}] \leavevmode
+dict( ‘bb\_bb\_bb\_bb\_torsion\_k’: float,’bb\_bb\_bb\_sc\_torsion\_k’: float,’bb\_bb\_sc\_sc\_torsion\_k’: float, ‘bb\_sc\_sc\_sc\_torsion\_k’: float, ‘sc\_bb\_bb\_sc\_torsion\_k’: float, ‘bb\_sc\_sc\_bb\_torsion\_k’: float, ‘sc\_sc\_sc\_sc\_torsion\_k’: float,  ‘sc\_bb\_bb\_bb\_torsion\_k’: float )
 
-\item[{bond\_lengths}] \leavevmode{[}dict ( float * simtk.unit ){]}
-Returns a list of the bond lengths for all unique bond definitions in the model
+\item[{param equil\_torsion\_angles}] \leavevmode
+Equilibrium torsion angle for all unique torsion angle definitions, default = 0
 
-\item[{nonbonded\_interaction\_list}] \leavevmode{[}List( List( integer, integer ) ){]}
-Returns a list of the indices for particles that exhibit nonbonded interactions in this model
+\item[{type equil\_torsion\_angles}] \leavevmode
+dict( ‘bb\_bb\_bb\_bb\_torsion\_0’: float,’bb\_bb\_bb\_sc\_torsion\_0’: float,’bb\_bb\_sc\_sc\_torsion\_0’: float, ‘bb\_sc\_sc\_sc\_torsion\_0’: float, ‘sc\_bb\_bb\_sc\_torsion\_0’: float, ‘bb\_sc\_sc\_bb\_torsion\_0’: float, ‘sc\_sc\_sc\_sc\_torsion\_0’: float, ‘sc\_bb\_bb\_bb\_torsion\_0’: float )
 
-\item[{bond\_list}] \leavevmode{[}List( List( integer, integer ) ){]}
-Returns a list of paired indices for particles that are bonded in this model
+\item[{param charges}] \leavevmode
+Charges for all particles, default = 0.0 (for all particles)
 
-\item[{bond\_angle\_list}] \leavevmode{[}List( List( integer, integer, integer ) ){]}
-Returns a unique list of indices for all combinations of three particles that share a set of two bonds
+\item[{type charges}] \leavevmode
+dict( ‘backbone\_bead\_charges’: float * simtk.unit,’sidechain\_bead\_charges’: float * simtk.unit )
 
-\item[{torsion\_list: List( List( integer, integer, integer, integer ) )}] \leavevmode
-Returns a unique list of indices for all ocmbinations of four particles that define a torsion (minimum requirement is that they share a set of three bonds)
+\item[{param num\_beads}] \leavevmode
+Total number of particles in the coarse grained model, default = 16 (The total number of particles in a length=8 1-1 coarse-grained model)
 
-\item[{bond\_force\_constants}] \leavevmode{[}Dict( float ){]}
-Returns a dictionary with definitions for the bond force constants for all unique bond definitions
+\item[{type num\_beads}] \leavevmode
+integer
 
-\item[{bond\_angle\_force\_constants: Dict( float )}] \leavevmode
-Returns a dictionary with definitions for the bond angle force constants for all unique bond angle definitions
+\item[{param system}] \leavevmode
+OpenMM System() object, which stores the forces for the coarse grained model, default = None
 
-\item[{torsion\_force\_constants: Dict( float )}] \leavevmode
-Returns a dictionary with definitions for the torsion force constants for all unique torsion definitions
+\item[{type system}] \leavevmode
+OpenMM System() class object
 
-\item[{equil\_dihedral\_angle}] \leavevmode{[}Dict( float ){]}
-Returns the equilibrium dihedral angle for all unique torsion definitions
+\item[{param topology}] \leavevmode
+OpenMM Topology() object, which stores bonds, angles, and other structural attributes of the coarse grained model, default = None
 
-\item[{charges}] \leavevmode{[}Dict( float * simtk.unit ){]}
-Returns the charges for all unique particle definitions in this model
+\item[{type topology}] \leavevmode
+OpenMM Topology() class object
 
-\item[{num\_beads}] \leavevmode{[}integer{]}
-Returns the number of particles in this model
+\item[{param constrain\_bonds}] \leavevmode
+Logical variable determining whether bond constraints are applied during a simulation of the energy for the system, default = False
 
-\item[{positions}] \leavevmode{[}np.array( float * simtk.unit ( shape = num\_beads x 3 ) ){]}
-Returns the currently-stored positions for this model (if any)
+\item[{type constrain\_bonds}] \leavevmode
+Logical
 
-\item[{system}] \leavevmode{[}System() class object{]}
-Returns the currently-stored OpenMM System() object for this model (if any)
+\item[{param include\_bond\_forces}] \leavevmode
+Include contributions from bond potentials when calculating the potential energy, default = True
 
-\item[{topology}] \leavevmode{[}Topology() class object{]}
-Returns the currently-stored OpenMM Topology() object for this model (if any)
+\item[{type include\_bond\_forces}] \leavevmode
+Logical
 
-\item[{constrain\_bonds}] \leavevmode{[}Logical{]}
-Returns the current setting for bond constraints in the model
+\item[{param include\_nonbonded\_forces}] \leavevmode
+Include contributions from nonbonded interactions when calculating the potential energy, default = True
 
-\item[{include\_bond\_forces}] \leavevmode{[}Logical{]}
-Indicates if bond forces are currently included when calculating the energy
+\item[{type include\_nonbonded\_forces}] \leavevmode
+Logical
 
-\item[{include\_nonbonded\_forces}] \leavevmode{[}Logical{]}
-Indicates if nonbonded interactions are currently included when calculating the energy
+\item[{param include\_bond\_angle\_forces}] \leavevmode
+Include contributions from bond angle forces when calculating the potential energy, default = True
 
-\item[{include\_bond\_angle\_forces}] \leavevmode{[}Logical{]}
-Indicates if bond angle forces are currently included when calculating the energy
+\item[{type include\_bond\_angle\_forces}] \leavevmode
+Logical
 
-\item[{include\_torsion\_forces}] \leavevmode{[}Logical{]}
-Indicates if torsion potentials are currently included when calculating the energy
+\item[{param include\_torsion\_forces}] \leavevmode
+Include contributions from torsions when calculating the potential energy, default = True
+
+\item[{type include\_torsion\_forces}] \leavevmode
+Logical
+
+\end{description}\end{quote}
 
 \end{description}
 \index{check\_energy\_conservation (cg\_model.cgmodel.CGModel attribute)@\spxentry{check\_energy\_conservation}\spxextra{cg\_model.cgmodel.CGModel attribute}}
@@ -301,24 +304,6 @@ List( unique particle masses )
 
 \end{fulllineitems}
 
-\index{get\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
-Determines the correct equilibrium bond angle between three particles
-
-self: CGModel() class object
-
-particle\_1\_index: Index of the first particle in the bond, default = None
-
-particle\_2\_index: Index of the second particle in the bond angle, default = None
-
-particle\_3\_index: Index of the third particle in the bond angle, default = None
-
-bond\_angle: Bond angle for the two bonds defined by these three particles.
-
-\end{fulllineitems}
-
 \index{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
@@ -341,7 +326,7 @@ bond\_angle: Bond angle for the two bonds defined by these three particles.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_list}}}{}{}
-Construct a list of indices for particles that define bond angles in our coarse grained model
+Construct a list of particle indices for the bond angle definitions in our coarse grained model
 
 \end{fulllineitems}
 
@@ -420,6 +405,41 @@ Returns the epsilon value for a particle, given its index.
 self: CGModel() class object
 
 Epsilon
+
+\end{fulllineitems}
+
+\index{get\_equil\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_bond_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_bond\_angle}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+Determines the correct equilibrium bond angle between three particles
+
+self: CGModel() class object
+
+particle\_1\_index: Index of the first particle in the bond, default = None
+
+particle\_2\_index: Index of the second particle in the bond angle, default = None
+
+particle\_3\_index: Index of the third particle in the bond angle, default = None
+
+bond\_angle: Bond angle for the two bonds defined by these three particles.
+
+\end{fulllineitems}
+
+\index{get\_equil\_torsion\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_torsion_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_torsion\_angle}}}{\emph{torsion}}{}
+Determines the torsion force constant given a list of particle indices
+
+cgmodel: CGModel() class object
+
+torsion: Indices of the particles in the torsion
+( integer )
+Default = None
+
+torsion\_force\_constant: Force constant for the torsion defined by the input particles.
+( Integer )
 
 \end{fulllineitems}
 
@@ -826,7 +846,7 @@ trial\_coordinates: Updated positions for the particle
 \index{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.get_structure_from_library}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_structure\_from\_library}}}{\emph{cgmodel}}{}
+\phantomsection\label{\detokenize{utilities:utilities.util.get_structure_from_library}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_structure\_from\_library}}}{\emph{cgmodel}, \emph{high\_energy=False}, \emph{low\_energy=False}}{}
 Given a coarse grained model class object, this function retrieves
 a set of positions for the model from the ensemble library, in:
 ‘../foldamers/ensembles/\$\{backbone\_length\}\_\$\{sidechain\_length\}\_\$\{sidechain\_positions\}’
@@ -835,6 +855,17 @@ error message will be returned and we will attempt to assign
 positions at random with ‘random\_positions()’.
 
 cgmodel: CGModel() class object.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
+
+\end{itemize}
+
+\end{description}\end{quote}
 
 positions: Positions for all beads in the coarse-grained model.
 ( np.array( num\_beads x 3 ) )
@@ -844,7 +875,7 @@ positions: Positions for all beads in the coarse-grained model.
 \index{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.random_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{random\_positions}}}{\emph{cgmodel}, \emph{max\_attempts=1000}, \emph{use\_library=True}}{}
+\phantomsection\label{\detokenize{utilities:utilities.util.random_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{random\_positions}}}{\emph{cgmodel}, \emph{max\_attempts=1000}, \emph{use\_library=False}, \emph{high\_energy=False}, \emph{low\_energy=False}, \emph{generate\_library=False}}{}
 Assign random positions for all beads in a coarse-grained polymer.
 
 cgmodel: CGModel() class object.
@@ -863,6 +894,17 @@ default = True
 ensemble library for the relevant coarse grained model.  If that model does not
 have an ensemble library, one will be created. )
 \end{quote}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
+
+\end{itemize}
+
+\end{description}\end{quote}
 
 positions: Positions for all beads in the coarse-grained model.
 ( np.array( num\_beads x 3 ) )

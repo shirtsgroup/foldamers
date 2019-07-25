@@ -8,6 +8,7 @@ import numpy as np
 import math, random, statistics
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
+from cg_openmm.src.build.cg_build import build_system
 from cg_openmm.src.simulation.tools import *
 from foldamers.src.cg_model.cgmodel import *
 from foldamers.src.utilities.iotools import *
@@ -169,9 +170,11 @@ def attempt_lattice_move(parent_coordinates,bond_length,move_direction_list):
         where: x=0,y=1,z=2. """
 
         # Assign the parent coordinates as the initial coordinates for a trial particle
-
-        trial_coordinates = parent_coordinates.__deepcopy__(memo={})
-        ref = parent_coordinates.__deepcopy__(memo={})
+        trial_coordinates = np.zeros([3]) * units
+        try:
+          parent_coordinates.unit
+        except:
+          parent_coordinates = parent_coordinates * units
 
         move_direction = random.randint(1,3)
         move_sign = random_sign(move_direction)
@@ -183,14 +186,11 @@ def attempt_lattice_move(parent_coordinates,bond_length,move_direction_list):
          move_sign = -bond_length
         else:
          move_sign = bond_length
-#        print(move_direction)
-#        print(trial_coordinates[move_direction-1])
-#        print(move_sign)
-#        exit()
-        trial_coordinates[move_direction-1] = trial_coordinates[move_direction-1].__add__(move_sign)
-
-        dist = distance(ref,trial_coordinates)
-
+        #print("The trial coordinates are: "+str(trial_coordinates))
+        #print("The parent coordinates are: "+str(parent_coordinates))
+        trial_coordinates[:] = parent_coordinates[:]
+        trial_coordinates[move_direction-1] = parent_coordinates[move_direction-1].__add__(move_sign)
+        dist = distance(parent_coordinates,trial_coordinates)
         if round(dist._value,4) < round(bond_length._value,4):
 
            print("Error: particles are being placed at a distance different from the bond length")
@@ -316,7 +316,7 @@ def distances(interaction_list,positions):
 
         return(distance_list)
 
-def collisions(distance_list,distance_cutoff):
+def collisions(positions,distance_list,distance_cutoff):
         """
         Determine whether there are any collisions between non-bonded
         particles, where a "collision" is defined as a distance shorter
@@ -343,18 +343,26 @@ def collisions(distance_list,distance_cutoff):
 
         collision = False
 
-#        print("The nonbonded cutoff distance is: "+str(sigma._value))
+        #print("The nonbonded cutoff distance is: "+str(distance_cutoff._value))
         if len(distance_list) > 0:
-
+          #print(distance_list)
           for distance in distance_list:
 
             if round(distance._value,4) < round(distance_cutoff._value,4):
 
               collision = True
 
+        if positions.shape != '(3,)':
+         for position_1_index in range(len(positions)):
+          for position_2_index in range(len(positions)):
+           if position_1_index != position_2_index:
+            if all([positions[position_1_index][i] == positions[position_2_index][i] for i in range(len(positions[position_1_index]))]):
+             #print("Detected a collision between particles "+str(position_1_index)+" and "+str(position_2_index))
+             collision = True
+
         return(collision)
 
-def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,parent_index):
+def assign_position_lattice_style(cgmodel,positions,distance_cutoff,parent_bead_index,bead_index):
         """
         Assign random position for a bead
 
@@ -375,105 +383,66 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,bead_index,p
         ( np.array( num_beads x 3 ) )
 
         """
-        if bead_index == 0:
-#           print("This is the first bead.  Using the origin for coordinates.")
-           success = True
-           return(positions,success)
+        #print("The first line positions are: "+str(positions))
+        #print("The index for the bead we are trying to place is: "+str(bead_index))
+        saved_positions = positions
 
-        units = cgmodel.bond_lengths['bb_bb_bond_length'].unit       
-        if parent_index == -1:
-               parent_index = bead_index - 1
+        bond_list = cgmodel.get_bond_list()
+        nonbonded_list = cgmodel.nonbonded_interaction_list
 
-        positions_before = positions.__deepcopy__(memo={})
-#        print("Assigning coordinates for bead #"+str(bead_index))
-#        print("(Indexing starts at: '1')")
-#        print("Parent bead index is: "+str(parent_index-1))
-#        print("Parent coordinates are: "+str(positions[parent_index-1]))
-#        print("Child bead index is: "+str(bead_index-1))
-#        print("Child coordinates are: "+str(positions[bead_index-1]))
+        if str(positions.shape) == '(3,)':
+          parent_coordinates = positions
+        else:
+          #print(parent_bead_index)
+          #print(positions)
+          parent_coordinates = positions[parent_bead_index].__deepcopy__(memo={})
 
-#        print("Before assigning new coordinates the positions are: "+str(positions))
-        bond_list = [[bond[0]-1,bond[1]-1] for bond in cgmodel.get_bond_list()]
-       
-#        print("The bond list is: "+str(bond_list))
-        exclusion_list = []
-        for i in range(cgmodel.num_beads):
-          for j in range(i+1,cgmodel.num_beads):
-            for bond_1 in range(len(bond_list)):
-              if i in bond_list[bond_1]:
-                if bond_list[bond_1][0] == i:
-                  k = bond_list[bond_1][1]
-                else:
-                  k = bond_list[bond_1][0]
-                for bond_2 in range(bond_1+1,len(bond_list)):
-                  if j in bond_list[bond_2] and k in bond_list[bond_2]:
-                    
-                    if [i,j] not in exclusion_list and [j,i] not in exclusion_list:
-                      if [i,j] not in bond_list and [j,i] not in bond_list:
-                        exclusion_list.append([i,j])
-#        print("The exclusion list is:"+str(exclusion_list))
-
-        full_nonbonded_list = []
-        for i in range(cgmodel.num_beads):
-          for j in range(i+1,cgmodel.num_beads):
-            if [i,j] not in bond_list and [j,i] not in bond_list:
-              if [i,j] not in exclusion_list and [j,i] not in exclusion_list:
-                full_nonbonded_list.append([i,j])
-        
-#        print("The list of non-bonded interactions is:"+str(full_nonbonded_list))
-#        exit()
-
-        parent_coordinates = positions[parent_index].__deepcopy__(memo={})
-#        exit()
-        new_coordinates = parent_coordinates.__deepcopy__(memo={})
         success = False
-#        best_attempt = parent_coordinates.__deepcopy__(memo={})
-#        best_distances = distances(full_nonbonded_list,positions[0:bead_index-1])
-#        print(best_distances)
         move_direction_list = []
         while len(move_direction_list) < 6 and not success:
-#           print(move_direction_list)
-           bond_length = cgmodel.bond_lengths['bb_bb_bond_length']
-#           bond_length = get_bond_length(cgmodel,parent_index,bead_index)
-#           print("Before calling 'attempt_lattice_move' the value for new coordinates is:")
-#           print(new_coordinates)
+           #print(len(move_direction_list))
+           bond_length = cgmodel.get_bond_length(parent_bead_index,bead_index)
+           #print("Calling attempt lattice move.")
+           #print(move_direction_list)
            new_coordinates,move_direction_list = attempt_lattice_move(parent_coordinates,bond_length,move_direction_list)
-#           exit()
-#           print("After calling 'attempt_lattice_move' the value for new coordinates is:")
-#           print(new_coordinates)
-
-           test_positions = positions[0:bead_index+1].__deepcopy__(memo={})
+           if str(positions.shape) == '(3,)':
+             test_positions = np.zeros([2,3]) * bond_length.unit
+             test_positions[0] = positions
+           else:
+             test_positions = np.zeros([len(positions)+1,3]) * bond_length.unit
+             test_positions[0:len(positions)] = positions[0:bead_index+2].__deepcopy__(memo={})
+           #print("The provided positions were: "+str(positions))
+           #print("The test positions before adding the trial coordinates are: "+str(test_positions))
+           #print("The new coordinates are: "+str(new_coordinates))
+           #print("The index for the bead we are trying to place is: "+str(bead_index))
            test_positions[bead_index] = new_coordinates
-#           print("Getting the non-bonded distances for these trial positions: ")
-#           print(new_coordinates)
-#           print(test_positions)
-#           exit()
-#           print(test_positions)
-#           print("and this interaction list:")
-#           print(full_nonbonded_list)
-           distance_list = distances(full_nonbonded_list,test_positions)
-#           print(full_nonbonded_list)
-#           print("The distances are:"+str([distance._value for distance in distance_list]))
-#           exit()
+           #print("The test positions after adding the trial coordinates are: "+str(test_positions))
+           #if len(test_positions) > 4: exit()
+           interaction_list = [nonbond for nonbond in nonbonded_list]
+           interaction_list = nonbonded_list + bond_list
+           distance_list = distances(interaction_list,test_positions)
+           #print(nonbonded_list)
+           #print(distance_list)
            if len(distance_list) == 0:
              success = True
              break
-           if not collisions(distance_list,distance_cutoff) and len(distance_list) > 0: 
+           if len(distance_list) > 0: 
+            if not collisions(test_positions,distance_list,distance_cutoff):
              success = True
-#             print("The current list of nonbonded particle distances is: "+str(distance_list))
              break 
-
-#           if collisions(distance_list,distance_cutoff) and len(distance
-#             if min(distance_list) > min(best_distances):
-#               best_attempt = test_positions.__deepcopy__(memo={})
-#               best_distances = distance_list.__deepcopy__(memo={})
-               
+        #print("Exited while loop in assign position lattice style.")       
         if success:
-          positions[bead_index] = new_coordinates
-          if all(positions[bead_index] == positions_before[bead_index]):
+         if str(saved_positions.shape) != '(3,)':
+          if all([test_positions[atom][index] == saved_positions[atom][index] for index in range(3) for atom in range(len(saved_positions))]) and len(test_positions) == len(saved_positions):
             print("ERROR: the input coordinates are the same as the output coordinates in 'assign_position_lattice_style()'.")
+            print("The positions at the beginning of this function call were:"+str(saved_positions))
+            print("The positions at the end of this function call are:"+str(positions))
             exit()
-        return(positions,success)
+          else:
+            positions = test_positions
+            #print("Returing this set of positions: "+str(positions))
+        #print(test_positions)
+        return(test_positions,success)
 
 def assign_position(positions,bond_length,sigma,bead_index,parent_index):
         """
@@ -516,7 +485,7 @@ def assign_position(positions,bond_length,sigma,bead_index,parent_index):
 
            distance_list = distances(new_coordinates,positions)
 
-           if not collisions(distance_list,sigma): success = True
+           if not collisions(new_coordinates,distance_list,sigma): success = True
 
            if attempts > 100:
 #            print([distance._value for distance in distance_list])
@@ -556,7 +525,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
         ( np.array( num_beads x 3 ) )
 
         """
-        ensemble_size = 1
+        ensemble_size = 10
         # In its current form this subroutine does not save the positions for random configurations we generate from heteropolymers.  It only saves the positions for homopolymers.
 
         if len(cgmodel.monomer_types) > 1:
@@ -596,7 +565,14 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
             if file.endswith('.pdb'):
               pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
               file_obj = open(str(str(ensemble_directory)+"/"+file),"r")
-              energy = float(file_obj.readlines()[0].split(": ")[1].split(' ')[0])
+              #print(file_obj.readlines())
+              if str('The OpenMM potential energy for this structure is:') in str(file_obj.readlines()):
+                try:
+                  energy = float(file_obj.readlines()[0].split(": ")[1].split(' ')[0])
+                except:
+                  energy = 9.9e9
+              else:
+                energy = 9.9e9
               energy_list['energy'].append(float(energy))
               file_index = int(file.split('cg')[1].split('.pdb')[0])
               energy_list['file_index'].append(file_index)
@@ -617,16 +593,19 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
             while index <= total_iterations and current_size < ensemble_size:
               file_name = str(ensemble_directory+"/cg"+str(current_size)+".pdb")
               if not os.path.exists(file_name):
-                print(current_size)
                 cgmodel.positions = random_positions(cgmodel,use_library=False)
-               #print("Minimizing the structure.")
-                positions = cgmodel.positions.__deepcopy__(memo={})
+                write_pdbfile_without_topology(cgmodel,file_name)
+                pdb_mm_obj = PDBFile(file_name)
+                cgmodel.topology = pdb_mm_obj.getTopology()
+                cgmodel.system = build_system(cgmodel)
+                #print("Minimizing the structure.")
                 simulation_time_step = 5.0 * unit.femtosecond
-#                print(positions_before)
                #,tolerance = get_simulation_time_step(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,total_simulation_time=0.1 * unit.picosecond,time_step_list=[ 5.0 * unit.femtosecond ])
-#                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=simulation_time_step,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
-#                cgmodel.positions = positions_after.in_units_of(unit.angstrom)
-#                positions_after = cgmodel.positions.__deepcopy__(memo={})
+                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+                cgmodel.positions = positions_after
+                write_pdbfile_without_topology(cgmodel,file_name)
+                #print(positions_after)
+                #cgmodel.positions = positions_after.in_units_of(unit.angstrom)
 #                if all([all(positions_before[i] == positions_after[i]) for i in range(0,len(positions_before))]):
 #                  print("ERROR: these random positions were not suitable for an initial minimization attempt.")
 #                  print("NOTE: this routine will run continuously, unless the user interrupts with the keyboard.")
@@ -669,7 +648,8 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
         for file in os.listdir(ensemble_directory):
           if file.endswith('.pdb'):
             pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
-        random_file = pdb_list[random.randint(0,len(pdb_list)-1)]
+        if len(pdb_list) > 0:
+          random_file = pdb_list[random.randint(0,len(pdb_list)-1)]
 #        print("Using the positions found in:")
 #        print(str(random_file)+"\n")
         pdb_mm_obj = PDBFile(random_file)
@@ -721,113 +701,85 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=Fal
         if use_library:
 #            print("Attempting to find a suitable random starting configuration in the foldamers structural database.\n")
             positions = get_structure_from_library(cgmodel,high_energy=high_energy,low_energy=low_energy)
-#            print(positions)
-#            print(cgmodel.positions)
-#            if all([all(positions[i] == cgmodel.positions[i]) for i in range(0,len(positions))]): break
             return(positions)
 
         units = cgmodel.bond_lengths['bb_bb_bond_length'].unit
-        positions = np.array([[100.0,100.0,100.0] for bead in range(cgmodel.num_beads)]) * units
-        bond_list = [[bond[0]-1,bond[1]-1] for bond in cgmodel.get_bond_list()]
+        positions = np.array([[0.0,0.0,0.0] for bead in range(cgmodel.num_beads)]) * units
+        bond_list = cgmodel.get_bond_list()
+        #print(bond_list)
         total_attempts = 0
-        distance_cutoff = 1.4 * cgmodel.bond_lengths['bb_bb_bond_length']
-
+        distance_cutoff = 0.9 * cgmodel.bond_lengths['bb_bb_bond_length']
+        nonbonded_list = cgmodel.nonbonded_interaction_list
         lattice_style = True
-        bond_index = 0
         stored_positions = positions[0].__deepcopy__(memo={})
         while total_attempts < max_attempts and len(stored_positions) != len(positions):
-         print("Beginning build attempt #"+str(total_attempts+1)+".")
-         index = bond_index
-         while index in range(bond_index,len(bond_list)):
-          particle_index = bond_list[index][1]
-#          print("using the bond between particles "+str(bond_list[index][0])+" and "+str(bond_list[index][1]))
-#          print("to assign coordinates for particle "+str(particle_index))
-          bond = bond_list[index]
-          positions = np.array([[100.0,100.0,100.0] for bead in range(cgmodel.num_beads)]) * units
-          shape = stored_positions.shape
-          if shape == '(3,)':
-            positions[0] = stored_positions.__deepcopy__(memo={})
-          else:
-            positions[0:len(stored_positions)] = stored_positions.__deepcopy__(memo={})
-          if lattice_style:
-#            print("BEFORE assigning new coordinates the positions are:"+str(positions))
-#            print("Assigning positions using bond between particles:")
-#            print(str(bond[0])+" and "+str(bond[1]))
-            positions,placement = assign_position_lattice_style(cgmodel,positions,distance_cutoff,bond[1],bond[0])
+         #print("Beginning build attempt #"+str(total_attempts+1)+".",flush=True)
+         if str(positions.shape) == '(3,)':
+           stored_positions = positions
+         else:
+           stored_positions = positions[0].__deepcopy__(memo={})
+         for bond_index in range(len(bond_list)):
+           bond = bond_list[bond_index]
+#          if (bond[0] in range(len(stored_positions)+1) and bond[1] in range(len(stored_positions)+1) and min(bond) in range(len(stored_positions)) and max(bond) not in range(len(stored_positions))) or str(stored_positions.shape) == '(3,)':
+           #print(bond)
+           if lattice_style:
+            #print("Before calling assign position lattice style.")
+            if bond[1] > bond[0]:
+              positions,placement = assign_position_lattice_style(cgmodel,stored_positions,distance_cutoff,bond[0],bond[1])
+            if bond[0] > bond[1]:
+              positions,placement = assign_position_lattice_style(cgmodel,stored_positions,distance_cutoff,bond[1],bond[0])
+            #print("After calling assign position lattice style.")
 #            print("AFTER assigning new coordinates the positions are:"+str(positions))
-          else:
+           else:
             positions,placement = assign_position(positions,cgmodel.bond_length,distance_cutoff,bond[1],bond[0])
-          if not placement:
-            if particle_index < 3:
+           if not placement and total_attempts > 100:
+            if len(positions) < 3:
               print("ERROR: having difficulty assigning random coordinates for this model,")
               print("even with a small number of particles ( <= 4 ).")
               print("The current positions are: "+str(positions))
               print("Please check the parameter values and other settings for your coarse grained model.")
               print("Then check the 'random_positions()' subroutine for errors.")
               exit()
-            if index > 5: start = index - 4
+            if bond_index > 4: start = bond_index - 2
             else: start = 2
-            bond_index = round(random.triangular(start,index,index))
-            print("Restarting random configuration build from bond #"+str(bond_index)) 
+            #print("Restarting random configuration build from bond #"+str(start)) 
+            #print("This attempt produced a model with length= "+str(len(positions)))
             total_attempts = total_attempts + 1
-            bond = bond_list[bond_index]
-            particle_index = min(bond) + 1
-
-            stored_positions = positions[0:particle_index].__deepcopy__(memo={})
-#            print("The new positions are:"+str(stored_positions)+"\n")
-            index = len(bond_list) + 1
-          if placement:
-            positions_before_appension = stored_positions.__deepcopy__(memo={})
-            length_positions_before_appension = len(stored_positions)
-            if particle_index > 0:
-             stored_positions = positions[0:particle_index+1].__deepcopy__(memo={})
-            else:
-             stored_positions = np.zeros([1,3]) * units
-             stored_positions[0] = positions[0].__deepcopy__(memo={})
-            positions_after_appension = stored_positions
-            length_positions_after_appension = len(stored_positions)
-            shape = str(stored_positions.shape)
-            if str(positions_after_appension.shape) not in ['(3,)','(1, 3)','(2, 3)']:
-             if length_positions_before_appension != length_positions_after_appension - 1:
+            stored_positions = positions[0:min(bond_list[start])].__deepcopy__(memo={})
+            #print("The new positions are:"+str(stored_positions)+"\n")
+            break
+           if placement:
+            if str(stored_positions.shape) != '(3,)':
+             if int(len(stored_positions)) != int(len(positions)-1):
               print("ERROR: coordinates are not being added correctly in the 'random_positions()' subroutine.")
-              print("The positions before appension are:"+str(positions_before_appension))
-              print("The positions after appension are:"+str(positions_after_appension))
+              print("The positions before appension are:"+str(stored_positions))
+              print("The positions after appension are:"+str(positions))
               exit()
-            index = index + 1
+             #print(positions)
+             #print(max(bond_list[bond_index])+1)
+             stored_positions = positions[0:max(bond_list[bond_index])+1].__deepcopy__(memo={})
+            else:
+             #print(stored_positions)
+             #print(positions)
+             stored_positions = positions
 #            bond_index = index + 1
-          if len(stored_positions) == len(positions):
-           
-           break
-#          print("The stored positions are:"+str(stored_positions))
-#        print("Successfully built a random structure with the following positions:\n")
-#        print(positions)
-#        print("Double-checking that this structure has no particle collisions...\n")
-        full_nonbonded_list = []
-        for i in range(cgmodel.num_beads):
-          for j in range(i+1,cgmodel.num_beads):
-            if [i,j] not in bond_list:
-              full_nonbonded_list.append([i,j])
-        distance_list = distances(full_nonbonded_list,positions)
-#           print(distance_list)
-        if not collisions(distance_list,distance_cutoff):
-          print("No collisions found.")
-          #print("The shortest nonbonded particle distance is:\n")
-          #print(str(min(distance_list))+"\n")
-#          print("A nonbonded particle cutoff distance of "+str(distance_cutoff))
-#          print("was applied as criteria for successful structure generation.\n")
-          print(positions)
+          #if int(len(stored_positions)) == int(len(positions)): break
+
+        distance_list = distances(nonbonded_list,positions)
+        if not collisions(positions,distance_list,distance_cutoff):
+          #positions,energy = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+          #print("No collisions detected.")
           return(positions)
+
         else:
+
           print("Error: A model was successfully built, however,")
           print("particle collisions were detected.\n")
           print("The shortest nonbonded particle distance is:")
           print(str(min(distance_list)))
-          collision = full_nonbonded_list[distance_list.index(min(distance_list))]
-#          print("(between particles "+str(collision[0])+" and "+str(collision[1])+")")
+          collision = nonbonded_list[distance_list.index(min(distance_list))]
           print("The nonbonded particle cutoff distance used for")
           print("random structure generation is set to:"+str(distance_cutoff))
-#          exit()
-#          print("Going to attempt to generate another random structure.")
 #          print("This will continue until the user issues a disruption command with the keyboard. (Ctrl + c)")
           random_positions(cgmodel,max_attempts=1000,use_library=False)
         return(positions)

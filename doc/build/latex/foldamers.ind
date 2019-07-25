@@ -38,18 +38,21 @@
   \bigletter G
   \item \spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}, 
 		\hyperpage{7}
-  \item \spxentry{get\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{7}
   \item \spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{8}
+		\hyperpage{7}
   \item \spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{8}
+		\hyperpage{7}
   \item \spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{8}
+		\hyperpage{7}
   \item \spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{8}
   \item \spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}, 
 		\hyperpage{8}
-  \item \spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
-  \item \spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
+  \item \spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{8}
+  \item \spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{8}
+  \item \spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}, 
+		\hyperpage{8}
+  \item \spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}, 
+		\hyperpage{8}
   \item \spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
   \item \spxentry{get\_move()}\spxextra{in module utilities.util}, \hyperpage{14}
   \item \spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
@@ -65,13 +68,13 @@
   \item \spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}, 
 		\hyperpage{15}
   \item \spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{10}
+		\hyperpage{9}
   \item \spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{10}
 
   \indexspace
   \bigletter R
   \item \spxentry{random\_positions()}\spxextra{in module utilities.util}, \hyperpage{15}
-  \item \spxentry{random\_sign()}\spxextra{in module utilities.util}, \hyperpage{15}
+  \item \spxentry{random\_sign()}\spxextra{in module utilities.util}, \hyperpage{16}
 
   \indexspace
   \bigletter U

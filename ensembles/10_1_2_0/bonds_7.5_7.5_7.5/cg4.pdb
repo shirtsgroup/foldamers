@@ -1,0 +1,64 @@
+## The OpenMM potential energy for this structure is: -2.7441205376496214 kJ/mol
+## with the following parameter settings:
+## sigma = 18.5 A, epsilon = 0.5 kcal/mol
+ATOM      1   X1  MT A   1       0.041   1.048   0.144  1.00  0.00
+ATOM      2   A2  MT A   1      -0.657   1.231   0.349  1.00  0.00
+ATOM      3   A3  MT A   1      -1.191   1.285  -0.175  1.00  0.00
+ATOM      4   X1   M A   2       0.595   0.749    0.55  1.00  0.00
+ATOM      5   A2   M A   2       1.066   1.323   0.654  1.00  0.00
+ATOM      6   A3   M A   2       1.715   1.478    0.31  1.00  0.00
+ATOM      7   X1   M A   3       0.656   0.034   0.769  1.00  0.00
+ATOM      8   A2   M A   3       1.315  -0.266   0.964  1.00  0.00
+ATOM      9   A3   M A   3       1.968   -0.38   0.613  1.00  0.00
+ATOM     10   X1   M A   4       0.102   -0.47   0.803  1.00  0.00
+ATOM     11   A2   M A   4      -0.225  -0.544   1.474  1.00  0.00
+ATOM     12   A3   M A   4      -0.184  -1.101   1.974  1.00  0.00
+ATOM     13   X1   M A   5      -0.212  -0.774   0.193  1.00  0.00
+ATOM     14   A2   M A   5      -0.912  -0.602  -0.014  1.00  0.00
+ATOM     15   A3   M A   5      -1.548  -0.941   0.194  1.00  0.00
+ATOM     16   X1   M A   6       0.158   -1.19  -0.309  1.00  0.00
+ATOM     17   A2   M A   6        0.57  -0.821  -0.815  1.00  0.00
+ATOM     18   A3   M A   6       1.293  -0.854  -1.013  1.00  0.00
+ATOM     19   X1   M A   7       0.095  -1.937  -0.346  1.00  0.00
+ATOM     20   A2   M A   7      -0.296  -2.229  -0.915  1.00  0.00
+ATOM     21   A3   M A   7      -0.034  -2.491  -1.568  1.00  0.00
+ATOM     22   X1   M A   8       0.389   -2.39   0.175  1.00  0.00
+ATOM     23   A2   M A   8      -0.025  -2.866   0.581  1.00  0.00
+ATOM     24   A3   M A   8       -0.55  -2.722   1.097  1.00  0.00
+ATOM     25   X1   M A   9       1.124  -2.471   0.298  1.00  0.00
+ATOM     26   A2   M A   9       1.635  -2.673  -0.213  1.00  0.00
+ATOM     27   A3   M A   9       1.702  -3.322  -0.583  1.00  0.00
+ATOM     28   X1  MT A  10       1.511  -2.167   0.864  1.00  0.00
+ATOM     29   A2  MT A  10       1.376   -2.07   1.596  1.00  0.00
+ATOM     30   A3  MT A  10       1.273  -2.616   2.099  1.00  0.00
+TER
+CONECT    1    2
+CONECT    2    3
+CONECT    1    4
+CONECT    4    5
+CONECT    5    6
+CONECT    4    7
+CONECT    7    8
+CONECT    8    9
+CONECT    7   10
+CONECT   10   11
+CONECT   11   12
+CONECT   10   13
+CONECT   13   14
+CONECT   14   15
+CONECT   13   16
+CONECT   16   17
+CONECT   17   18
+CONECT   16   19
+CONECT   19   20
+CONECT   20   21
+CONECT   19   22
+CONECT   22   23
+CONECT   23   24
+CONECT   22   25
+CONECT   25   26
+CONECT   26   27
+CONECT   25   28
+CONECT   28   29
+CONECT   29   30
+END
