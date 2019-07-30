@@ -722,7 +722,7 @@ def random_positions( cgmodel,max_attempts=1000,use_library=False,high_energy=Fa
         bond_list = cgmodel.get_bond_list()
         #print(bond_list)
         total_attempts = 0
-        distance_cutoff =  0.6 * cgmodel.sigmas['bb_bb_sigma']
+        distance_cutoff =  0.99 * cgmodel.bond_lengths['bb_bb_bond_length']
         nonbonded_list = cgmodel.nonbonded_interaction_list
         lattice_style = True
         stored_positions = positions[0].__deepcopy__(memo={})
