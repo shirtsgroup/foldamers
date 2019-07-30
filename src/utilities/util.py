@@ -390,12 +390,12 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,parent_bead_
         bond_list = cgmodel.get_bond_list()
         nonbonded_list = cgmodel.nonbonded_interaction_list
 
-        if str(positions.shape) == '(3,)':
-          parent_coordinates = positions
-        else:
+        #if str(positions.shape) == '(3,)':
+          #parent_coordinates = positions
+        #else:
           #print(parent_bead_index)
           #print(positions)
-          parent_coordinates = positions[parent_bead_index].__deepcopy__(memo={})
+          #parent_coordinates = positions[parent_bead_index].__deepcopy__(memo={})
 
         success = False
         move_direction_list = []
@@ -404,7 +404,13 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,parent_bead_
            bond_length = cgmodel.get_bond_length(parent_bead_index,bead_index)
            #print("Calling attempt lattice move.")
            #print(move_direction_list)
-           new_coordinates,move_direction_list = attempt_lattice_move(parent_coordinates,bond_length,move_direction_list)
+           if str(positions.shape) == '(3,)':
+            new_coordinates,move_direction_list = attempt_lattice_move(positions,bond_length,move_direction_list)
+           else:
+            #print(positions)
+            #print(len(positions))
+            #print(parent_bead_index)
+            new_coordinates,move_direction_list = attempt_lattice_move(positions[parent_bead_index],bond_length,move_direction_list)
            if str(positions.shape) == '(3,)':
              test_positions = np.zeros([2,3]) * bond_length.unit
              test_positions[0] = positions
@@ -418,16 +424,15 @@ def assign_position_lattice_style(cgmodel,positions,distance_cutoff,parent_bead_
            test_positions[bead_index] = new_coordinates
            #print("The test positions after adding the trial coordinates are: "+str(test_positions))
            #if len(test_positions) > 4: exit()
-           interaction_list = [nonbond for nonbond in nonbonded_list]
-           interaction_list = nonbonded_list + bond_list
-           distance_list = distances(interaction_list,test_positions)
+           nonbonded_distance_list = distances(nonbonded_list,test_positions)
+           bonded_distance_list = distances(bond_list,test_positions)
            #print(nonbonded_list)
            #print(distance_list)
-           if len(distance_list) == 0:
+           if len(nonbonded_distance_list) == 0:
              success = True
              break
-           if len(distance_list) > 0: 
-            if not collisions(test_positions,distance_list,distance_cutoff):
+           if len(nonbonded_distance_list) > 0: 
+            if not collisions(test_positions,nonbonded_distance_list,distance_cutoff) and not collisions(test_positions,bonded_distance_list,cgmodel.bond_lengths['bb_bb_bond_length']):
              success = True
              break 
         #print("Exited while loop in assign position lattice style.")       
@@ -593,7 +598,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
             while index <= total_iterations and current_size < ensemble_size:
               file_name = str(ensemble_directory+"/cg"+str(current_size)+".pdb")
               if not os.path.exists(file_name):
-                cgmodel.positions = random_positions(cgmodel,use_library=False)
+                cgmodel.positions,cgmodel.simulation = random_positions(cgmodel,use_library=False)
                 write_pdbfile_without_topology(cgmodel,file_name)
                 pdb_mm_obj = PDBFile(file_name)
                 cgmodel.topology = pdb_mm_obj.getTopology()
@@ -601,7 +606,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
                 #print("Minimizing the structure.")
                 simulation_time_step = 5.0 * unit.femtosecond
                #,tolerance = get_simulation_time_step(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,total_simulation_time=0.1 * unit.picosecond,time_step_list=[ 5.0 * unit.femtosecond ])
-                positions_after,energy = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+                positions_after,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
                 cgmodel.positions = positions_after
                 write_pdbfile_without_topology(cgmodel,file_name)
                 #print(positions_after)
@@ -654,8 +659,14 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
 #        print(str(random_file)+"\n")
         pdb_mm_obj = PDBFile(random_file)
         positions = pdb_mm_obj.getPositions()
+        cgmodel.positions = positions
+        try:
+         cgmodel.simulation = simulation
+        except:
+         cgmodel.system = build_system(cgmodel)
+         positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
 
-        return(positions)
+        return(positions,simulation)
 
 def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=False,low_energy=False,generate_library=False):
         """
@@ -700,15 +711,15 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=Fal
         total_attempts = 0
         if use_library:
 #            print("Attempting to find a suitable random starting configuration in the foldamers structural database.\n")
-            positions = get_structure_from_library(cgmodel,high_energy=high_energy,low_energy=low_energy)
-            return(positions)
+            positions,simulation = get_structure_from_library(cgmodel,high_energy=high_energy,low_energy=low_energy)
+            return(positions,simulation)
 
         units = cgmodel.bond_lengths['bb_bb_bond_length'].unit
         positions = np.array([[0.0,0.0,0.0] for bead in range(cgmodel.num_beads)]) * units
         bond_list = cgmodel.get_bond_list()
         #print(bond_list)
         total_attempts = 0
-        distance_cutoff = 0.9 * cgmodel.bond_lengths['bb_bb_bond_length']
+        distance_cutoff =  0.6 * cgmodel.sigmas['bb_bb_sigma']
         nonbonded_list = cgmodel.nonbonded_interaction_list
         lattice_style = True
         stored_positions = positions[0].__deepcopy__(memo={})
@@ -732,7 +743,7 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=Fal
 #            print("AFTER assigning new coordinates the positions are:"+str(positions))
            else:
             positions,placement = assign_position(positions,cgmodel.bond_length,distance_cutoff,bond[1],bond[0])
-           if not placement and total_attempts > 100:
+           if not placement:
             if len(positions) < 3:
               print("ERROR: having difficulty assigning random coordinates for this model,")
               print("even with a small number of particles ( <= 4 ).")
@@ -766,23 +777,25 @@ def random_positions( cgmodel,max_attempts=1000,use_library=True,high_energy=Fal
           #if int(len(stored_positions)) == int(len(positions)): break
 
         distance_list = distances(nonbonded_list,positions)
-        if not collisions(positions,distance_list,distance_cutoff):
-          #positions,energy = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+        if len(distance_list) == 0 or not collisions(positions,distance_list,distance_cutoff):
+          cgmodel.positions = positions
+          cgmodel.system = build_system(cgmodel)
+          positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
           #print("No collisions detected.")
-          return(positions)
+          return(positions,simulation)
 
         else:
 
           print("Error: A model was successfully built, however,")
           print("particle collisions were detected.\n")
-          print("The shortest nonbonded particle distance is:")
-          print(str(min(distance_list)))
-          collision = nonbonded_list[distance_list.index(min(distance_list))]
+          #print("The shortest nonbonded particle distance is:")
+          #print(str(min(distance_list)))
+          #collision = nonbonded_list[distance_list.index(min(distance_list))]
           print("The nonbonded particle cutoff distance used for")
           print("random structure generation is set to:"+str(distance_cutoff))
 #          print("This will continue until the user issues a disruption command with the keyboard. (Ctrl + c)")
-          random_positions(cgmodel,max_attempts=1000,use_library=False)
-        return(positions)
+          positions,simulation = random_positions(cgmodel,max_attempts=1000,use_library=False)
+        return(positions,simulation)
 
 def distance(positions_1,positions_2):
         """

@@ -45,10 +45,7 @@ def get_parent_bead(cgmodel,monomer_index,bead_index,backbone_bead_index=None,si
         parent_bead = -1
         if bead_index != 1:
                if sidechain_bead == True:
-#                print("Detecting type as sidechain when identifying parent.")
-#                print(bead_index)
                 parent_bead = bead_index - 1
-#                print(parent_bead)
                 return(parent_bead)
                else:
                  monomer_type = cgmodel.sequence[monomer_index]
@@ -62,7 +59,7 @@ def get_parent_bead(cgmodel,monomer_index,bead_index,backbone_bead_index=None,si
          exit()
         return(parent_bead)
 
-def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=100.0 * unit.amu,bond_length=7.5 * unit.angstrom,sigma=18.5*unit.angstrom,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
+def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=100.0 * unit.amu,bond_length=0.75 * unit.nanometer,sigma=1.85*unit.nanometer,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
 
         """
         :param polymer_length: Number of monomer units, default = 8
@@ -264,7 +261,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
         #"""
 
         # Built in class attributes
-        _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','equil_torsion_angles','equil_bond_angles','charges','num_beads','positions','system','topology','constrain_bonds','bond_list','nonbonded_interaction_list','nonbonded_exclusion_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces')
+        _BUILT_IN_REGIONS = ('polymer_length','backbone_lengths','sidechain_lengths','sidechain_positions','masses','sigmas','epsilons','bond_lengths','bond_force_constants','bond_angle_force_constants','torsion_force_constants','equil_torsion_angles','equil_bond_angles','charges','num_beads','positions','system','topology','simulation','constrain_bonds','bond_list','nonbonded_interaction_list','nonbonded_exclusion_list','bond_angle_list','torsion_list','include_bond_forces','include_nonbonded_forces','include_bond_angle_forces','include_torsion_forces','use_structure_library')
 
         def __init__(self,
                      positions = None,
@@ -274,9 +271,9 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      sidechain_lengths = [1],
                      sidechain_positions = [0],
                      masses = {'backbone_bead_masses': 100.0 * unit.amu, 'sidechain_bead_masses': 100.0 * unit.amu}, 
-                     sigmas = {'bb_bb_sigma': 18.5 * unit.angstrom,'bb_sc_sigma': 18.5 * unit.angstrom,'sc_sc_sigma': 18.5 * unit.angstrom},
+                     sigmas = {'bb_bb_sigma': 0.9 * unit.nanometer,'bb_sc_sigma': 0.9 * unit.nanometer,'sc_sc_sigma': 0.9 * unit.nanometer},
                      epsilons = {'bb_bb_eps': 0.5 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.5 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.5 * unit.kilocalorie_per_mole}, 
-                     bond_lengths = {'bb_bb_bond_length': 7.5 * unit.angstrom,'bb_sc_bond_length': 7.5 * unit.angstrom,'sc_sc_bond_length': 7.5 * unit.angstrom}, 
+                     bond_lengths = {'bb_bb_bond_length': 0.75 * unit.nanometer,'bb_sc_bond_length': 0.75 * unit.nanometer,'sc_sc_bond_length': 0.75 * unit.nanometer}, 
                      bond_force_constants = None, 
                      bond_angle_force_constants=None, 
                      torsion_force_constants=None, 
@@ -284,11 +281,12 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      equil_torsion_angles = None, 
                      charges = None, 
                      constrain_bonds = True,
-                     include_bond_forces=True,
+                     include_bond_forces=False,
                      include_nonbonded_forces=True,
                      include_bond_angle_forces=True,
                      include_torsion_forces=False,
                      check_energy_conservation=True,
+                     use_structure_library=True,
                      homopolymer=True):
 
           """
@@ -341,14 +339,6 @@ for all bond types, default = 200 * kJ/mol/rad^2
           self.equil_torsion_angles = equil_torsion_angles
           self.charges = charges
 
-<<<<<<< HEAD
-=======
-          if len(sigmas) != 0 and include_bond_forces != False: include_nonbonded_forces = True
-          if len(bond_force_constants) != 0 and include_bond_forces != False: include_bond_forces = True 
-          if len(bond_angle_force_constants) != 0 and include_bond_angle_forces != False: include_bond_angle_forces = True
-          if len(torsion_force_constants) and include_torsion_forces != False: include_torsion_forces = True
-
->>>>>>> 017c15ef7477c79faf980ac8bbc9e3f115d21a65
           self.include_bond_forces = include_bond_forces
           self.include_bond_angle_forces = include_bond_angle_forces
           self.include_nonbonded_forces = include_nonbonded_forces
@@ -358,23 +348,28 @@ for all bond types, default = 200 * kJ/mol/rad^2
           """
           Get bond, angle, and torsion lists.
           """
+          self.constrain_bonds = constrain_bonds
           self.bond_list = self.get_bond_list()
-          self.nonbonded_exclusion_list = self.get_nonbonded_exclusion_list()
-          self.nonbonded_interaction_list = self.get_nonbonded_interaction_list()
           self.bond_angle_list = self.get_bond_angle_list()
           self.torsion_list = self.get_torsion_list()
-          self.constrain_bonds = constrain_bonds
+          self.nonbonded_exclusion_list = self.get_nonbonded_exclusion_list()
+          self.nonbonded_interaction_list = self.get_nonbonded_interaction_list()
 
           """
           Initialize new (coarse grained) particle types:
           """
           self.particle_types = add_new_elements(self)
 
-          self.topology = build_topology(self)
+          self.topology = None #build_topology(self)
 
-          if positions == None: self.positions = util.random_positions(self) 
+          if positions == None: 
+           if use_structure_library:
+            self.positions,self.simulation = util.random_positions(self,use_library=True)
+           else:
+            self.positions,self.simulation = util.random_positions(self,use_library=False)
+          self.simulation = None
 
-          self.system = build_system(self)
+          self.system = None #build_system(self)
 
         def get_monomer_types(self):
           """
@@ -437,14 +432,11 @@ for all bond types, default = 200 * kJ/mol/rad^2
           bead_index = 0
           for monomer in range(len(self.sequence)):
             monomer_type = self.sequence[monomer]
-            #print("Monomer = "+str(monomer))
             for backbone_bead in range(monomer_type['backbone_length']):
-             #print("Adding a backbone bead")
              if (int(monomer) != 0 and backbone_bead == 0 and monomer_type['backbone_length']-1 in [monomer_type['sidechain_positions']]) or (backbone_bead != 0 and backbone_bead-1 in [monomer_type['sidechain_positions']]):
                parent_index = bead_index - monomer_type['sidechain_length'] - 1
              else: 
                parent_index = bead_index - 1
-             #print([parent_index,bead_index])
              if bead_index != 0:
               if parent_index < bead_index:
                bond_list.append([parent_index,bead_index])
@@ -454,9 +446,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
              
              if int(backbone_bead) in [monomer_type['sidechain_positions']]:
                 for sidechain_bead in range(monomer_type['sidechain_length']):
-                  #print("Adding a side chain bead")
                   parent_index = bead_index - 1
-                  #print([parent_index,bead_index])
                   if parent_index < bead_index:
                    bond_list.append([parent_index,bead_index])
                   else:
@@ -470,10 +460,10 @@ for all bond types, default = 200 * kJ/mol/rad^2
           """
 
           interaction_list = []
+          exclusion_list = self.nonbonded_exclusion_list
           bond_list = self.get_bond_list()
           for particle_1 in range(self.num_beads):
                for particle_2 in range(self.num_beads):
-                 if particle_1 != particle_2 and abs(particle_1 - particle_2) >= 3:
                    if [particle_1,particle_2] not in bond_list and [particle_2,particle_1] not in bond_list:
                      if [particle_1,particle_2] not in interaction_list:
                        if [particle_2,particle_1] not in interaction_list:
@@ -485,25 +475,21 @@ for all bond types, default = 200 * kJ/mol/rad^2
           for interaction in interaction_list:
             if interaction in exclusion_list or [interaction[1],interaction[0]] in exclusion_list:
               interaction_list.remove(interaction)
+          #interaction_list = [[0,1]]
           return(interaction_list)
 
         def get_nonbonded_exclusion_list(self):
           bond_list = self.bond_list
           exclusion_list = []
           for i in range(self.num_beads):
-           for j in range(i+1,self.num_beads):
-            for bond_1 in range(len(bond_list)):
-              if i in bond_list[bond_1]:
-                if bond_list[bond_1][0] == i:
-                  k = bond_list[bond_1][1]
-                else:
-                  k = bond_list[bond_1][0]
-                for bond_2 in range(bond_1+1,len(bond_list)):
-                  if j in bond_list[bond_2] and k in bond_list[bond_2]:
-
-                    if [i,j] not in exclusion_list and [j,i] not in exclusion_list:
-                      if [i,j] not in bond_list and [j,i] not in bond_list:
-                        exclusion_list.append([i,j])
+            for j in range(i+1,self.num_beads):
+              if [i,j] in bond_list or [j,i] in bond_list:
+                if [i,j] not in exclusion_list:
+                  exclusion_list.append([i,j])
+              for angle in self.bond_angle_list:
+                if i in angle and j in angle:
+                  if [i,j] not in exclusion_list:
+                    exclusion_list.append([i,j]) 
           return(exclusion_list)
 
         def get_bond_angle_list(self):
@@ -523,7 +509,6 @@ for all bond types, default = 200 * kJ/mol/rad^2
               # Make sure the bonds share a common atom
               bond_angle = []
               if bond_2[0] in bond_1 or bond_2[1] in bond_1:
-               #print(bond_1,bond_2)
                if bond_2[0] == bond_1[1]:
                 bond_angle = [bond_1[0],bond_1[1],bond_2[1]]
                if bond_2[0] == bond_1[0]:
@@ -536,17 +521,13 @@ for all bond types, default = 200 * kJ/mol/rad^2
                unique = True
                bond_angle_set = set(tuple(angle) for angle in bond_angles)
                bond_angles_temp = [ list(angle) for angle in bond_angle_set ]
-               #print(bond_angle)
-               #print(bond_angles_temp)
                bond_angle_reverse = [bond_angle[2],bond_angle[1],bond_angle[0]]
                if any([bond_angle in bond_angles_temp, bond_angle_reverse in bond_angles_temp]):
                  unique = False
                if unique: bond_angles.append(bond_angle)
               if len(bond_angles) == 0 and len(bond_angle) != 0:
                bond_angles.append(bond_angle)
-          #print(bond_angles)
           return(bond_angles)
-
 
         def get_torsion_list(self):
           """
@@ -602,7 +583,6 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      if unique: torsions.append(torsion)
           torsion_set = set(tuple(torsion) for torsion in torsions)
           torsions = [ list(torsion) for torsion in torsion_set ]            
-          #print(torsions)
           return(torsions)
 
         def get_particle_name(self,particle_index):

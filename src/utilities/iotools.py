@@ -49,7 +49,7 @@ def write_cg_pdb(cgmodel,file_name):
 
         file_obj = open(file_name,'w')
         PDBFile.writeHeader(cgmodel.topology, file_obj)
-        print(cgmodel.positions)
+        #print(cgmodel.positions)
         PDBFile.writeModel(cgmodel.topology,cgmodel.positions, file_obj)
         write_bonds(cgmodel,file_obj)
         file_obj.close()
