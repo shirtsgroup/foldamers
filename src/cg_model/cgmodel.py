@@ -283,10 +283,10 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      constrain_bonds = True,
                      include_bond_forces=False,
                      include_nonbonded_forces=True,
-                     include_bond_angle_forces=True,
+                     include_bond_angle_forces=False,
                      include_torsion_forces=False,
                      check_energy_conservation=True,
-                     use_structure_library=True,
+                     use_structure_library=False,
                      homopolymer=True):
 
           """
@@ -349,6 +349,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
           Get bond, angle, and torsion lists.
           """
           self.constrain_bonds = constrain_bonds
+          self.no_bonds = True
           self.bond_list = self.get_bond_list()
           self.bond_angle_list = self.get_bond_angle_list()
           self.torsion_list = self.get_torsion_list()
@@ -360,16 +361,16 @@ for all bond types, default = 200 * kJ/mol/rad^2
           """
           self.particle_types = add_new_elements(self)
 
-          self.topology = None #build_topology(self)
+          self.topology = build_topology(self)
 
           if positions == None: 
            if use_structure_library:
-            self.positions,self.simulation = util.random_positions(self,use_library=True)
+            self.positions = util.random_positions(self,use_library=True)
            else:
-            self.positions,self.simulation = util.random_positions(self,use_library=False)
+            self.positions = util.random_positions(self,use_library=False)
           self.simulation = None
-
-          self.system = None #build_system(self)
+          
+          self.system = build_system(self)
 
         def get_monomer_types(self):
           """
@@ -463,7 +464,12 @@ for all bond types, default = 200 * kJ/mol/rad^2
           exclusion_list = self.nonbonded_exclusion_list
           bond_list = self.get_bond_list()
           for particle_1 in range(self.num_beads):
-               for particle_2 in range(self.num_beads):
+               for particle_2 in range(particle_1+1,self.num_beads):
+                 if self.no_bonds:
+                   if [particle_1,particle_2] not in interaction_list:
+                       if [particle_2,particle_1] not in interaction_list:
+                         interaction_list.append([particle_1,particle_2])
+                 else:
                    if [particle_1,particle_2] not in bond_list and [particle_2,particle_1] not in bond_list:
                      if [particle_1,particle_2] not in interaction_list:
                        if [particle_2,particle_1] not in interaction_list:
