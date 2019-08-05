@@ -757,11 +757,11 @@ def random_positions( cgmodel,max_attempts=1000,use_library=False,high_energy=Fa
               exit()
             if bond_index > 4: start = bond_index - 2
             else: start = 2
-            print("Restarting random configuration build from bond #"+str(start)) 
+            #print("Restarting random configuration build from bond #"+str(start)) 
             #print("This attempt produced a model with length= "+str(len(positions)))
             total_attempts = total_attempts + 1
             stored_positions = positions[0:min(bond_list[start])].__deepcopy__(memo={})
-            print("The new positions are:"+str(stored_positions)+"\n")
+            #print("The new positions are:"+str(stored_positions)+"\n")
             break
            if placement:
             if str(stored_positions.shape) != '(3,)':

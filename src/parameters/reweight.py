@@ -16,51 +16,26 @@ def get_free_energy_differences(mbar):
         ddf_ij = results['dDelta_f']
         return(df_ij,ddf_ij)
 
-def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,NumIterations=1000,nBoots=0,dertype='temperature',output=None,state_dependent=False):
+def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
         """
         """
-
-        NumTemps = len(temperature_list) # Last TEMP # + 1 (start counting at 1)
-
-        if (dertype == 'temperature'): # if the temperatures are equally spaced
-          types = ['var','dT','ddT']
-        elif (dertype == 'beta'): # if the inverse temperatures are equally spaced.
-          types = ['var','dbeta','ddbeta']
-        else:
-          print('type of finite difference not recognized must be \'beta\' or \'temperature\'')
-          quit()
-        ntypes = len(types)
-
-        kB = 0.008314462  #Boltzmann constant (Gas constant) in kJ/(mol*K)
-        T_from_file = np.array([temperature._value for temperature in temperature_list])
-        E_from_file = E_kln
-        K = len(T_from_file)
-        N_k = np.zeros(K,np.int32)
-        g = np.zeros(K,np.float64)
-
-        #for k in range(K):  # subsample the energies
-#          g[k] = pymbar.timeseries.statisticalInefficiency(E_from_file[k][k])
-#          indices = np.array(pymbar.timeseries.subsampleCorrelatedData(E_from_file[k][k],g=g[k])) # indices of uncorrelated samples
-          #N_k[k] = len(indices) # number of uncorrelated samples
-          #E_from_file[k,0:N_k[k]] = E_from_file[k,indices]
-
         #------------------------------------------------------------------------
         # Insert Intermediate T's and corresponding blank U's and E's
         #------------------------------------------------------------------------
-        Temp_k = T_from_file
         minT = T_from_file[0]
         maxT = T_from_file[len(T_from_file) - 1]
         #beta = 1/(k*BT)
         #T = 1/(kB*beta)
         if dertype == 'temperature':
-          minv = minT
-          maxv = maxT
+           minv = minT
+           maxv = maxT
         elif dertype == 'beta':   # actually going in the opposite direction as beta for logistical reasons
-          minv = 1/(kB*minT)
-          maxv = 1/(kB*maxT)
-        delta = (maxv-minv)/(NumIntermediates-1)
-        originalK = len(Temp_k)
+           minv = 1/(kB*minT)
+           maxv = 1/(kB*maxT)
+        delta = (T_from_file[1]-T_from_file[0])/(NumIntermediates+1)
+        originalK = len(T_from_file)
 
+        Temp_k = []
         val_k = []
         currentv = minv
         if dertype == 'temperature':
@@ -76,86 +51,118 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,NumIterations=1
               currentv = currentv + delta
            Temp_k = np.concatenate((Temp_k,(1/(kB*np.array(val_k)))))
 
-        # Update number of states
-        K = len(Temp_k)
-        # Loop, inserting E's into blank matrix (leaving blanks only where new Ts are inserted)
 
-        Nall_k = np.zeros([K], np.int32) # Number of samples (n) for each state (k) = number of iterations/energies
-        E_kn = np.zeros([K, NumIterations], np.float64)
+        return(Temp_k)
 
-        for k in range(originalK):
-            E_kn[k,0:N_k[k]] = E_from_file[k,k,0:N_k[k]]
-            Nall_k[k] = N_k[k]
+def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temperature',output=None,mbar=None):
+        """
+        """
 
-        #------------------------------------------------------------------------
-        # Compute inverse temperatures
-        #------------------------------------------------------------------------
-        beta_k = 1 / (kB * Temp_k)
+        if mbar == None:
+         NumTemps = len(temperature_list) # Last TEMP # + 1 (start counting at 1)
 
-        #------------------------------------------------------------------------
-        # Compute reduced potential energies
-        #------------------------------------------------------------------------
+         if (dertype == 'temperature'): # if the temperatures are equally spaced
+          types = ['var','dT','ddT']
+         elif (dertype == 'beta'): # if the inverse temperatures are equally spaced.
+          types = ['var','dbeta','ddbeta']
+         else:
+          print('type of finite difference not recognized must be \'beta\' or \'temperature\'')
+          quit()
+         ntypes = len(types)
 
-        u_kln = np.zeros([K,K,NumIterations], np.float64) # u_kln is reduced pot. ener. of segment n of temp k evaluated at temp l
-        E_kn_samp = np.zeros([K,NumIterations], np.float64) # u_kln is reduced pot. ener. of segment n of temp k evaluated at temp l
+         kB = 0.008314462  #Boltzmann constant (Gas constant) in kJ/(mol*K)
+         T_from_file = np.array([temperature._value for temperature in temperature_list])
+         E_from_file = E_kln
+         originalK = len(T_from_file)
+         N_k = np.zeros(originalK,np.int32)
 
-        nBoots_work = nBoots + 1 # we add +1 to the bootstrap number, as the zeroth bootstrap sample is the original
+         #g = np.zeros(K,np.float64)
+         for k in range(originalK):  # subsample the energies
+#          g[k] = pymbar.timeseries.statisticalInefficiency(E_from_file[k][k])
+#          indices = np.array(pymbar.timeseries.subsampleCorrelatedData(E_from_file[k][k],g=g[k])) # indices of uncorrelated samples
+          try:
+            N_k[k] = len(E_from_file[k][k]) # number of uncorrelated samples
+          except:
+            N_k[k] = len(E_from_file[k])
+          #E_from_file[k,0:N_k[k]] = E_from_file[k,indices]
 
-        allE_expect = np.zeros([K,nBoots_work], np.float64)
-        allE2_expect = np.zeros([K,nBoots_work], np.float64)
-        dE_expect = np.zeros([K],np.float64)
+         Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype)
+
+         # Update number of states
+         K = len(Temp_k)
+         # Loop, inserting E's into blank matrix (leaving blanks only where new Ts are inserted)
+
+         Nall_k = np.zeros([K], np.int32) # Number of samples (n) for each state (k) = number of iterations/energies
+
+         try:
+          E_kn = np.zeros([K,len(E_from_file[0][0])], np.float64)
+          for k in range(originalK):
+            #if k != 0: 
+              E_kn[k+k*NumIntermediates,0:N_k[k]] = E_from_file[k,k,0:N_k[k]]
+                
+            #else:
+              #E_kn[k,0:N_k[k]] = E_from_file[k,k,0:N_k[k]]
+              Nall_k[k+k*NumIntermediates] = N_k[k]
+         except:
+          E_kn = np.zeros([K,len(E_from_file[0])], np.float64)
+          for k in range(originalK):
+              E_kn[k+k*NumIntermediates,0:N_k[k]] = E_from_file[k,0:N_k[k]]
+              Nall_k[k+k*NumIntermediates] = N_k[k]
 
 
-        for n in range(nBoots_work):
-           if (n > 0):
-              print("Bootstrap: %d/%d" % (n,nBoots))
-           for k in range(K):
-           # resample the results:
-               if Nall_k[k] > 0:
-                  if (n == 0):  # don't randomize the first one
-                     booti = np.array(range(N_k[k]))
-                  else:
-                     booti=np.random.randint(Nall_k[k],size=Nall_k[k])
-                  E_kn_samp[k,0:Nall_k[k]] = E_kn[k,booti]
+         #------------------------------------------------------------------------
+         # Compute inverse temperatures
+         #------------------------------------------------------------------------
+         beta_k = 1 / (kB * Temp_k)
 
-           for k in range(K):
-               for l in range(K):
-                   u_kln[k,l,0:Nall_k[k]] = beta_k[l] * E_kn_samp[k,0:Nall_k[k]]
+         #------------------------------------------------------------------------
+         # Compute reduced potential energies
+         #------------------------------------------------------------------------
 
-        #------------------------------------------------------------------------
-        # Initialize MBAR
-        #------------------------------------------------------------------------
+         allE_expect = np.zeros([K], np.float64)
+         allE2_expect = np.zeros([K], np.float64)
+         dE_expect = np.zeros([K],np.float64)
+         u_kn = np.zeros([K,sum(Nall_k)], np.float64) # u_kln is reduced pot. ener. of segment n of temp k evaluated at temp l
+         #index = 0
+         for k in range(K):
+           index = 0
+           for l in range(K):
+              u_kn[k,index:index+Nall_k[l]] = beta_k[k] * E_kn[l,0:Nall_k[l]]
+              index = index + Nall_k[l]
 
-           if (n==0):  # only print this information the first time
-              print("")
-              print("Initializing MBAR:")
-              print("--K = number of Temperatures with data = %d" % (originalK))
-              print("--L = number of total Temperatures = %d" % (K))
-              print("--N = number of Energies per Temperature = %d" % (np.max(Nall_k)))
+         #------------------------------------------------------------------------
+         # Initialize MBAR
+         #------------------------------------------------------------------------
 
-           if (n==0):
-              initial_f_k = None # start from zero 
-           else:
-              initial_f_k = mbar.f_k # start from the previous final free energies to speed convergence
+         #print("")
+         #print("Initializing MBAR:")
+         #print("--K = number of Temperatures with data = %d" % (originalK))
+         #print("--L = number of total Temperatures = %d" % (K))
+         #print("--N = number of Energies per Temperature = %d" % (np.max(Nall_k)))
 
-           mbar = pymbar.MBAR(u_kln, Nall_k, verbose=False, relative_tolerance=1e-12)
+         mbar = pymbar.MBAR(u_kn, Nall_k, verbose=False, relative_tolerance=1e-12,initial_f_k = None)
 
-           E_kln = u_kln  # not a copy, we are going to write over it, but we don't need it any more.
-           for k in range(K):
-               E_kln[:,k,:]*=beta_k[k]**(-1)  # get the 'unreduced' potential -- we can't take differences of reduced potentials because the beta is different; math is much more confusing with derivatives of the reduced potentials.
-           if output != None:
-               results = mbar.computeExpectations(E_kln,output='differences', state_dependent = True)
+         E_kn = u_kn  # not a copy, we are going to write over it, but we don't need it any more.
+         for k in range(K):
+               E_kn[k,:]*=beta_k[k]**(-1)  # get the 'unreduced' potential -- we can't take differences of reduced potentials because the beta is different; math is much more confusing with derivatives of the reduced potentials.
+
+        else:
+
+          E_kn = E_kln          
+          Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype) 
+
+        if output != None:
+               results = mbar.computeExpectations(E_kn,output='differences', state_dependent = True)
                results = {'mu': results[0], 'sigma': results[1]}
                result = results['mu']
                dresult = results['sigma']
-           else:
-               results = mbar.computeExpectations(E_kln, state_dependent = True)
+        else:
+               results = mbar.computeExpectations(E_kn, state_dependent = True)
                results = {'mu': results[0], 'sigma': results[1]}
                result = results['mu']
                dresult = results['sigma']
 
-
-        return(mbar,E_kln,result,dresult)
+        return(mbar,E_kn,result,dresult,Temp_k)
 
 def get_expectation_value(data_set):
         """

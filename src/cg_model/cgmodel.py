@@ -290,7 +290,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      homopolymer=True):
 
           """
-          Initialize variables that weren't provided
+          Initialize values for required variables that were not defined.
           """
           if bond_force_constants == None:
             bond_force_constants = {'bb_bb_bond_k': 1250.0,'bb_sc_bond_k': 1250.0, 'sc_sc_bond_k': 1250.0}
@@ -349,7 +349,6 @@ for all bond types, default = 200 * kJ/mol/rad^2
           Get bond, angle, and torsion lists.
           """
           self.constrain_bonds = constrain_bonds
-          self.no_bonds = True
           self.bond_list = self.get_bond_list()
           self.bond_angle_list = self.get_bond_angle_list()
           self.torsion_list = self.get_torsion_list()
@@ -465,11 +464,6 @@ for all bond types, default = 200 * kJ/mol/rad^2
           bond_list = self.get_bond_list()
           for particle_1 in range(self.num_beads):
                for particle_2 in range(particle_1+1,self.num_beads):
-                 if self.no_bonds:
-                   if [particle_1,particle_2] not in interaction_list:
-                       if [particle_2,particle_1] not in interaction_list:
-                         interaction_list.append([particle_1,particle_2])
-                 else:
                    if [particle_1,particle_2] not in bond_list and [particle_2,particle_1] not in bond_list:
                      if [particle_1,particle_2] not in interaction_list:
                        if [particle_2,particle_1] not in interaction_list:
