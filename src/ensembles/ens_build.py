@@ -1,11 +1,13 @@
-#!/usr/bin/python
-
-import os
+import numpy as np
+import os, statistics
 from simtk import unit
+from simtk.openmm.app.pdbfile import PDBFile
 from foldamers.src.cg_model.cgmodel import basic_cgmodel
-from cg_openmm.src.build.cg_build import get_mm_energy
+from cg_openmm.src.build.cg_build import build_topology, build_system
+from cg_openmm.src.simulation.tools import get_mm_energy, build_mm_simulation
+from foldamers.src.utilities.iotools import write_pdbfile_without_topology
 from foldamers.src.utilities.util import random_positions
-
+from foldamers.src.parameters.secondary_structure import fraction_native_contacts
 
 
 def get_ensemble(cgmodel,ensemble_size=100,high_energy=False,low_energy=False):
@@ -60,7 +62,194 @@ def get_ensemble(cgmodel,ensemble_size=100,high_energy=False,low_energy=False):
         
         return(ensemble)
 
-def z_score(topology,system,nonnative_ensemble,native_structure):
+def get_nonnative_ensemble(cgmodel,native_structure,ensemble_size=100,native_fraction_cutoff=0.8):
+        """
+        """
+        monomer_type = cgmodel.monomer_types[0]
+        ensembles_directory = str(str(__file__.split('src/ensembles/ens_build.py')[0])+"ensembles")
+        if not os.path.exists(ensembles_directory):
+            os.mkdir(ensembles_directory)
+        model_directory = str(str(ensembles_directory)+"/"+str(cgmodel.polymer_length)+"_"+str(monomer_type['backbone_length'])+"_"+str(monomer_type['sidechain_length'])+"_"+str(monomer_type['sidechain_positions']))
+        if not os.path.exists(model_directory):
+            os.mkdir(model_directory)
+
+        # We determine a suitable name for the ensemble directory by combining the 'bb_bb_bond_length', 'bb_sc_bond_length', and 'sc_sc_bond_length' into a single string:
+        ens_str = [monomer_type['bond_lengths']['bb_bb_bond_length']._value,monomer_type['bond_lengths']['bb_sc_bond_length']._value,monomer_type['bond_lengths']['sc_sc_bond_length']._value]
+        ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2])+"_nonnative")
+        if os.path.exists(ensemble_directory):
+          ensemble_energies = []
+          ensemble = []
+          pdb_list = []
+          for file in os.listdir(ensemble_directory):
+            if file.endswith('.pdb'):
+              pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
+          if len(pdb_list) > 0:
+             for pdb_file in pdb_list:
+              pdb_mm_obj = PDBFile(pdb_file)
+              cgmodel.positions = pdb_mm_obj.getPositions()
+              if fraction_native_contacts(cgmodel,native_structure) < native_fraction_cutoff:
+                ensemble.append(pdb_mm_obj.getPositions())            
+                cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+                ensemble_energies.append(energy)
+
+          unchanged_iterations = 0
+          while len(ensemble_energies) < ensemble_size or unchanged_iterations < 100:
+              cgmodel.positions = random_positions(cgmodel)
+             #print(fraction_native_contacts(cgmodel,native_structure))
+              if fraction_native_contacts(cgmodel,native_structure) < native_fraction_cutoff:
+               if len(ensemble_energies) < ensemble_size:
+                 cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                 energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+                 ensemble.append(cgmodel.positions)
+                 #energy = get_mm_energy(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                 ensemble_energies.append(energy)
+                 index = 1
+                 pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+                 while os.path.exists(pdb_file_name):
+                   index = index + 1
+                   pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+                 write_pdbfile_without_topology(cgmodel,pdb_file_name,energy=energy)
+                 print("There are currently "+str(len(ensemble_energies))+" poses in the nonnative ensemble.")
+               if len(ensemble_energies) == ensemble_size:
+                 if any([energy < ensemble_energies[i] for i in range(len(ensemble_energies))]):
+                   ensemble_energies[ensemble_energies.index(max(ensemble_energies))] = energy
+                   ensemble[ensemble_energies.index(max(ensemble_energies))] = cgmodel.positions
+                   index = 1
+                   pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+                   while os.path.exists(pdb_file_name):
+                     index = index + 1
+                     pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+                   write_pdbfile_without_topology(cgmodel,pdb_file_name,energy=energy)
+
+                 else:
+                   unchanged_iterations = unchanged_iterations + 1
+
+        else:
+          os.mkdir(ensemble_directory)
+
+          ensemble_energies = []
+          ensemble = []
+          unchanged_iterations = 0
+          while len(ensemble_energies) < ensemble_size and unchanged_iterations < 100:
+              cgmodel.positions = random_positions(cgmodel)
+             #print(fraction_native_contacts(cgmodel,native_structure))
+              if fraction_native_contacts(cgmodel,native_structure) < native_fraction_cutoff:
+               cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+               ensemble.append(cgmodel.positions)
+               #energy = get_mm_energy(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               ensemble_energies.append(energy)
+               index = 1
+               pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               while os.path.exists(pdb_file_name):
+                   index = index + 1
+                   pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               write_pdbfile_without_topology(cgmodel,pdb_file_name,energy=energy)
+               print("There are currently "+str(len(ensemble_energies))+" poses in the nonnative ensemble.")
+               if len(ensemble_energies) == ensemble_size:
+                 if any([energy < ensemble_energies[i] for i in range(len(ensemble_energies))]):
+                   ensemble_energies[ensemble_energies.index(max(ensemble_energies))] = energy
+                   ensemble[ensemble_energies.index(max(ensemble_energies))] = cgmodel.positions
+                 else:
+                   unchanged_iterations = unchanged_iterations + 1
+
+        return(ensemble,ensemble_energies)
+
+def get_native_ensemble(cgmodel,native_structure,ensemble_size=100,native_fraction_cutoff=0.95):
+        """
+        """
+        monomer_type = cgmodel.monomer_types[0]
+        ensembles_directory = str(str(__file__.split('src/ensembles/ens_build.py')[0])+"ensembles")
+        if not os.path.exists(ensembles_directory):
+            os.mkdir(ensembles_directory)
+        model_directory = str(str(ensembles_directory)+"/"+str(cgmodel.polymer_length)+"_"+str(monomer_type['backbone_length'])+"_"+str(monomer_type['sidechain_length'])+"_"+str(monomer_type['sidechain_positions']))
+        if not os.path.exists(model_directory):
+            os.mkdir(model_directory)
+
+        # We determine a suitable name for the ensemble directory by combining the 'bb_bb_bond_length', 'bb_sc_bond_length', and 'sc_sc_bond_length' into a single string:
+        ens_str = [monomer_type['bond_lengths']['bb_bb_bond_length']._value,monomer_type['bond_lengths']['bb_sc_bond_length']._value,monomer_type['bond_lengths']['sc_sc_bond_length']._value]
+        ensemble_directory = str(str(model_directory)+"/bonds_"+str(ens_str[0])+"_"+str(ens_str[1])+"_"+str(ens_str[2])+"_native")
+        if os.path.exists(ensemble_directory):
+          ensemble_energies = []
+          ensemble = []
+          pdb_list = []
+          for file in os.listdir(ensemble_directory):
+            if file.endswith('.pdb'):
+              pdb_list.append(str(str(ensemble_directory)+"/"+str(file)))
+          if len(pdb_list) > 0:
+             for pdb_file in pdb_list:
+              pdb_mm_obj = PDBFile(pdb_file)
+              cgmodel.positions = pdb_mm_obj.getPositions()
+              if fraction_native_contacts(cgmodel,native_structure) > native_fraction_cutoff:
+                ensemble.append(pdb_mm_obj.getPositions())
+                cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+                energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+                ensemble_energies.append(energy)
+
+          unchanged_iterations = 0
+          while len(ensemble_energies) < ensemble_size and unchanged_iterations < 100:
+              cgmodel.positions = random_positions(cgmodel)
+             #print(fraction_native_contacts(cgmodel,native_structure))
+              if fraction_native_contacts(cgmodel,native_structure) > native_fraction_cutoff:
+               cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+               ensemble.append(cgmodel.positions)
+               #energy = get_mm_energy(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               ensemble_energies.append(energy)
+               index = 1
+               pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               while os.path.exists(pdb_file_name):
+                   index = index + 1
+                   pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               write_pdbfile_without_topology(cgmodel,pdb_file_name,energy=energy)
+               print("There are currently "+str(len(ensemble_energies))+" poses in the native ensemble.")
+               if len(ensemble_energies) == ensemble_size:
+                 if any([energy < ensemble_energies[i] for i in range(len(ensemble_energies))]):
+                   ensemble_energies[ensemble_energies.index(max(ensemble_energies))] = energy
+                   ensemble[ensemble_energies.index(max(ensemble_energies))] = cgmodel.positions
+                 else:
+                   unchanged_iterations = unchanged_iterations + 1
+
+        else:
+          os.mkdir(ensemble_directory)
+
+          ensemble_energies = []
+          ensemble = []
+          unchanged_iterations = 0
+          while len(ensemble_energies) < ensemble_size and unchanged_iterations < 100:
+              cgmodel.positions = random_positions(cgmodel)
+             #print(fraction_native_contacts(cgmodel,native_structure))
+              if fraction_native_contacts(cgmodel,native_structure) > native_fraction_cutoff:
+               cgmodel.simulation = build_mm_simulation(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               energy = cgmodel.simulation.context.getState(getEnergy=True).getPotentialEnergy()
+               ensemble.append(cgmodel.positions)
+               #energy = get_mm_energy(cgmodel.topology,cgmodel.system,cgmodel.positions)
+               ensemble_energies.append(energy)
+               index = 1
+               pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               while os.path.exists(pdb_file_name):
+                   index = index + 1
+                   pdb_file_name = str(ensemble_directory+"/cg"+str(index)+".pdb")
+               write_pdbfile_without_topology(cgmodel,pdb_file_name,energy=energy)
+               print("There are currently "+str(len(ensemble_energies))+" poses in the native ensemble.")
+               if len(ensemble_energies) == ensemble_size:
+                 if any([energy < ensemble_energies[i] for i in range(len(ensemble_energies))]):
+                   ensemble_energies[ensemble_energies.index(max(ensemble_energies))] = energy
+                   ensemble[ensemble_energies.index(max(ensemble_energies))] = cgmodel.positions
+                 else:
+                   unchanged_iterations = unchanged_iterations + 1
+
+        return(ensemble,ensemble_energies)
+
+def get_ensembles(cgmodel,native_structure):
+        """
+        """
+        nonnative_ensemble,nonnative_ensemble_energies = get_nonnative_ensemble(cgmodel,native_structure)
+        native_ensemble,native_ensemble_energies = get_native_ensemble(cgmodel,native_structure)
+        return(nonnative_ensemble,nonnative_ensemble_energies,native_ensemble,native_ensemble_energies)
+
+def z_score(topology,system,nonnative_ensemble_energies,native_ensemble_energies):
         """
         Given an ensemble of nonnative structures, and a low-energy ("native") structure, this subroutine will calculate the Z-score.
 
@@ -75,18 +264,14 @@ def z_score(topology,system,nonnative_ensemble,native_structure):
 
         """
 
-        nonnative_ensemble_energies = []
-
-        for pose in nonnative_ensemble:
-         
-          energy = get_mm_energy(topology,system,pose)
-          nonnative_ensemble_energies.append(energy)
+        nonnative_ensemble_energies = np.array([energy._value for energy in nonnative_ensemble_energies])
+        native_ensemble_energies = np.array([energy._value for energy in native_ensemble_energies])
 
         average_nonnative_energy = statistics.mean(nonnative_ensemble_energies)
 
         stdev_nonnative_energy = statistics.stdev(nonnative_ensemble_energies)
 
-        native_energy = get_mm_energy(topology,system,native_structure)
+        native_energy = statistics.mean(native_ensemble_energies)
 
         z_score = ( average_nonnative_energy - native_energy ) / stdev_nonnative_energy
 

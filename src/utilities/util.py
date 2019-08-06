@@ -8,7 +8,7 @@ import numpy as np
 import math, random, statistics
 from simtk import unit
 from simtk.openmm.app.pdbfile import PDBFile
-from cg_openmm.src.build.cg_build import build_system
+from cg_openmm.src.build.cg_build import build_system, build_topology
 from cg_openmm.src.simulation.tools import *
 from foldamers.src.cg_model.cgmodel import *
 from foldamers.src.utilities.iotools import *
@@ -782,6 +782,7 @@ def random_positions( cgmodel,max_attempts=1000,use_library=False,high_energy=Fa
         distance_list = distances(nonbonded_list,positions)
         if len(distance_list) == 0 or not collisions(positions,distance_list,distance_cutoff):
           cgmodel.positions = positions
+          cgmodel.topology = build_topology(cgmodel,use_pdbfile=True)
           cgmodel.system = build_system(cgmodel)
           positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
         

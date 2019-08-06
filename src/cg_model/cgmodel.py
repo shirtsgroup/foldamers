@@ -369,6 +369,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
             self.positions = util.random_positions(self,use_library=False)
           self.simulation = None
           
+          self.topology = build_topology(self,use_pdbfile=True)
           self.system = build_system(self)
 
         def get_monomer_types(self):
