@@ -1,0 +1,36 @@
+## The OpenMM potential energy for this structure is: 10.280691965157235 kJ/mol
+## with the following parameter settings:
+## sigma = 18.75 A, epsilon = 0.5 kcal/mol
+ATOM      1   X1  MT A   1      -0.166   0.098  -0.664  1.00  0.00
+ATOM      2   A2  MT A   1       0.225  -0.493   -0.91  1.00  0.00
+ATOM      3   X1   M A   2        -0.3   0.499  -0.044  1.00  0.00
+ATOM      4   A2   M A   2      -0.676   0.972  -0.488  1.00  0.00
+ATOM      5   X1   M A   3      -0.444   0.419   0.687  1.00  0.00
+ATOM      6   A2   M A   3       0.184   0.677   1.005  1.00  0.00
+ATOM      7   X1   M A   4      -0.909  -0.011   1.089  1.00  0.00
+ATOM      8   A2   M A   4      -1.542   0.386   1.157  1.00  0.00
+ATOM      9   X1   M A   5      -0.916  -0.642   1.495  1.00  0.00
+ATOM     10   A2   M A   5      -0.736  -1.248   1.091  1.00  0.00
+ATOM     11   X1   M A   6      -1.037  -0.883   2.195  1.00  0.00
+ATOM     12   A2   M A   6      -0.577  -0.614   2.722  1.00  0.00
+ATOM     13   X1   M A   7      -1.655  -1.104   2.557  1.00  0.00
+ATOM     14   A2   M A   7      -1.853  -1.751   2.881  1.00  0.00
+ATOM     15   X1  MT A   8      -2.394  -0.986   2.501  1.00  0.00
+ATOM     16   A2  MT A   8      -2.955   -0.57   2.227  1.00  0.00
+TER
+CONECT    1    2
+CONECT    1    3
+CONECT    3    4
+CONECT    3    5
+CONECT    5    6
+CONECT    5    7
+CONECT    7    8
+CONECT    7    9
+CONECT    9   10
+CONECT    9   11
+CONECT   11   12
+CONECT   11   13
+CONECT   13   14
+CONECT   13   15
+CONECT   15   16
+END
