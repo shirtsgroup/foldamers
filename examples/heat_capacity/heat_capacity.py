@@ -22,9 +22,9 @@ total_steps = round(total_simulation_time.__div__(simulation_time_step))
 
 # Yank (replica exchange) simulation settings
 output_data=str(str(top_directory)+"/output.nc")
-number_replicas = 50
-temperature_increment = 5 # unit.kelvin
-temperature_list = [(50.0 * unit.kelvin).__add__(i * unit.kelvin) for i in range(0,number_replicas*temperature_increment,temperature_increment)]
+temperature_list = [5.00, 10.76, 16.61, 22.51, 28.55, 34.71, 41.00, 47.44, 54.04, 60.81, 67.74, 74.86, 82.16, 89.41, 97.10, 105.02, 113.17, 121.57, 130.21, 139.13, 148.32, 157.79, 167.56, 177.64, 188.05, 198.92, 210.04, 221.52, 233.38, 245.64, 258.32, 271.42, 284.98, 299.00, 313.50, 328.51, 344.02, 360.09, 376.72, 393.93, 400.00]
+temperature_list = [temp * unit.kelvin for temp in temperature_list]
+number_replicas = len(temperature_list)
 if total_steps > 10000:
    exchange_attempts = round(total_steps/1000)
 else:

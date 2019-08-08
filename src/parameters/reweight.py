@@ -22,6 +22,7 @@ def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
         #------------------------------------------------------------------------
         # Insert Intermediate T's and corresponding blank U's and E's
         #------------------------------------------------------------------------
+        kB = unit.Quantity(0.008314462,unit.kilojoule_per_mole)  #Boltzmann constant (Gas constant) in kJ/(mol*K)
         minT = T_from_file[0]
         maxT = T_from_file[len(T_from_file) - 1]
         #beta = 1/(k*BT)
@@ -30,26 +31,35 @@ def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
            minv = minT
            maxv = maxT
         elif dertype == 'beta':   # actually going in the opposite direction as beta for logistical reasons
-           minv = 1/(kB*minT)
-           maxv = 1/(kB*maxT)
-        delta = (T_from_file[1]-T_from_file[0])/(NumIntermediates+1)
+           minv = 1/(kB._value*minT)
+           maxv = 1/(kB._value*maxT)
+        deltas = []
+        for i in range(1,len(T_from_file)):
+         deltas.append((T_from_file[i]._value-T_from_file[i-1]._value)/(NumIntermediates+1))
+         deltas.append((T_from_file[i]._value-T_from_file[i-1]._value)/(NumIntermediates+1))
         originalK = len(T_from_file)
 
         Temp_k = []
         val_k = []
-        currentv = minv
+        currentv = minv._value
+#        print(deltas)
         if dertype == 'temperature':
            # Loop, inserting equally spaced T's at which we are interested in the properties
-           while (currentv <= maxv):
+           delta_index = 0
+           while (currentv <= maxv._value):
+              print(delta_index)
+              print(currentv)
+              delta = deltas[delta_index]
               val_k = np.append(val_k, currentv)
               currentv = currentv + delta
-           Temp_k = np.concatenate((Temp_k,np.array(val_k)))
+              Temp_k = np.concatenate((Temp_k,np.array(val_k)))
+              delta_index = delta_index + 1
         elif dertype == 'beta':
         # Loop, inserting equally spaced T's at which we are interested in the properties
            while (currentv >= maxv):
               val_k = np.append(val_k, currentv)
               currentv = currentv + delta
-           Temp_k = np.concatenate((Temp_k,(1/(kB*np.array(val_k)))))
+           Temp_k = np.concatenate((Temp_k,(1/(kB._value*np.array(val_k)))))
 
 
         return(Temp_k)
@@ -70,7 +80,7 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
           quit()
          ntypes = len(types)
 
-         kB = 0.008314462  #Boltzmann constant (Gas constant) in kJ/(mol*K)
+         kB = unit.Quantity(0.008314462,unit.kilojoule_per_mole)  #Boltzmann constant (Gas constant) in kJ/(mol*K)
          T_from_file = np.array([temperature._value for temperature in temperature_list])
          E_from_file = E_kln
          originalK = len(T_from_file)
@@ -87,6 +97,7 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
           #E_from_file[k,0:N_k[k]] = E_from_file[k,indices]
 
          Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype)
+         print(Temp_k)
 
          # Update number of states
          K = len(Temp_k)
@@ -113,7 +124,7 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
          #------------------------------------------------------------------------
          # Compute inverse temperatures
          #------------------------------------------------------------------------
-         beta_k = 1 / (kB * Temp_k)
+         beta_k = 1 / (kB._value * Temp_k)
 
          #------------------------------------------------------------------------
          # Compute reduced potential energies
@@ -134,11 +145,11 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
          # Initialize MBAR
          #------------------------------------------------------------------------
 
-         #print("")
-         #print("Initializing MBAR:")
-         #print("--K = number of Temperatures with data = %d" % (originalK))
-         #print("--L = number of total Temperatures = %d" % (K))
-         #print("--N = number of Energies per Temperature = %d" % (np.max(Nall_k)))
+         print("")
+         print("Initializing MBAR:")
+         print("--K = number of Temperatures with data = %d" % (originalK))
+         print("--L = number of total Temperatures = %d" % (K))
+         print("--N = number of Energies per Temperature = %d" % (np.max(Nall_k)))
 
          mbar = pymbar.MBAR(u_kn, Nall_k, verbose=False, relative_tolerance=1e-12,initial_f_k = None)
 
