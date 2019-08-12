@@ -1,7 +1,7 @@
 import numpy as np
 from foldamers.src.utilities.util import distances
 
-def fraction_native_contacts(cgmodel,native_structure,cutoff_distance=None):
+def fraction_native_contacts(cgmodel,positions,native_structure,cutoff_distance=None):
         """
         """
         cutoff_distance = 1.2 * cgmodel.get_sigma(0)
@@ -9,7 +9,7 @@ def fraction_native_contacts(cgmodel,native_structure,cutoff_distance=None):
         nonbonded_interaction_list = cgmodel.nonbonded_interaction_list
         #print("There are "+str(len(nonbonded_interaction_list))+" total nonbonded interaction possibilities.")
         native_structure_distances = distances(nonbonded_interaction_list,native_structure)
-        current_structure_distances = distances(nonbonded_interaction_list,cgmodel.positions)
+        current_structure_distances = distances(nonbonded_interaction_list,positions)
         native_distances = []
         native_interaction_list = []
         

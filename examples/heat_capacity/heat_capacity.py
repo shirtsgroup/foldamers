@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as pyplot
 from simtk import unit
 from foldamers.src.cg_model.cgmodel import CGModel
-from foldamers.src.parameters.reweight import get_mbar_expectation, get_free_energy_differences
+from foldamers.src.parameters.reweight import get_mbar_expectation, get_free_energy_differences,get_temperature_list
 from foldamers.src.thermo.calc import calculate_heat_capacity
 from cg_openmm.src.build.cg_build import build_topology
 from cg_openmm.src.simulation.rep_exch import *
@@ -12,7 +12,6 @@ from cg_openmm.src.simulation.rep_exch import *
 top_directory = 'output'
 if not os.path.exists(top_directory):
   os.mkdir(top_directory)
-run_simulations = True
 
 # OpenMM simulation settings
 print_frequency = 5 # Number of steps to skip when printing output
@@ -21,10 +20,10 @@ simulation_time_step = 5.0 * unit.femtosecond
 total_steps = round(total_simulation_time.__div__(simulation_time_step))
 
 # Yank (replica exchange) simulation settings
-output_data=str(str(top_directory)+"/output.nc")
-temperature_list = [5.00, 10.76, 16.61, 22.51, 28.55, 34.71, 41.00, 47.44, 54.04, 60.81, 67.74, 74.86, 82.16, 89.41, 97.10, 105.02, 113.17, 121.57, 130.21, 139.13, 148.32, 157.79, 167.56, 177.64, 188.05, 198.92, 210.04, 221.52, 233.38, 245.64, 258.32, 271.42, 284.98, 299.00, 313.50, 328.51, 344.02, 360.09, 376.72, 393.93, 400.00]
-temperature_list = [temp * unit.kelvin for temp in temperature_list]
-number_replicas = len(temperature_list)
+number_replicas = 200
+min_temp = 10.0 * unit.kelvin
+max_temp = 200.0 * unit.kelvin
+temperature_list = get_temperature_list(min_temp,max_temp,number_replicas)
 if total_steps > 10000:
    exchange_attempts = round(total_steps/1000)
 else:
@@ -85,20 +84,16 @@ for sigma in sigma_list:
 
   # Run a replica exchange simulation with this cgmodel
   output_data = str(str(top_directory)+"/sig_"+str(sigma._value)+".nc")
-  if run_simulations:
+  if not os.path.exists(output_data):
     replica_energies,replica_positions,replica_states = run_replica_exchange(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature_list=temperature_list,simulation_time_step=simulation_time_step,total_simulation_time=total_simulation_time,print_frequency=print_frequency,output_data=output_data)
+    steps_per_stage = round(total_steps/exchange_attempts)
+    plot_replica_exchange_energies(replica_energies,temperature_list,simulation_time_step,steps_per_stage=steps_per_stage)
+    plot_replica_exchange_summary(replica_states,temperature_list,simulation_time_step,steps_per_stage=steps_per_stage)
   else:
     replica_energies,replica_positions,replica_states = read_replica_exchange_data(system=cgmodel.system,topology=cgmodel.topology,temperature_list=temperature_list,output_data=output_data,print_frequency=print_frequency)
 
-  steps_per_stage = round(total_steps/exchange_attempts)
-  plot_replica_exchange_energies(replica_energies,temperature_list,simulation_time_step,steps_per_stage=steps_per_stage)
-  plot_replica_exchange_summary(replica_states,temperature_list,simulation_time_step,steps_per_stage=steps_per_stage)
-
   num_intermediate_states = 1
   mbar,E_kn,E_expect,dE_expect,new_temp_list = get_mbar_expectation(replica_energies,temperature_list,num_intermediate_states)
-
-  #print(new_temp_list)
-  #print(E_kn)
 
   mbar,E_kn,DeltaE_expect,dDeltaE_expect,new_temp_list = get_mbar_expectation(E_kn,temperature_list,num_intermediate_states,mbar=mbar,output='differences')
 
@@ -111,10 +106,13 @@ for sigma in sigma_list:
   C_v_list.append(C_v)
   dC_v_list.append(dC_v)
 
-file_name = "heat_capacity.png"
+file_name = str(str(top_directory)+"/heat_capacity.png")
 figure = pyplot.figure(1)
 original_temperature_list = np.array([temperature._value for temperature in temperature_list])
-temperatures = np.array([temperature._value for temperature in new_temp_list])
+try:
+  temperatures = np.array([temperature._value for temperature in new_temp_list])
+except:
+  temperatures = np.array([temperature for temperature in new_temp_list])
 legend_labels = [ str("$\sigma / r_{bond}$= "+str(round(i/bond_length._value,2)))  for i in sigma_range]
 
 for C_v,dC_v in zip(C_v_list,dC_v_list):
@@ -130,5 +128,19 @@ pyplot.savefig(file_name)
 pyplot.show()
 pyplot.close()
 
+figure = pyplot.figure(2)
+file_name = str(str(top_directory)+"/heat_capacity_low_T.png")
+for C_v,dC_v in zip(C_v_list,dC_v_list):
+ C_v = np.array([C_v[i][0] for i in range(len(C_v))])
+ dC_v = np.array([dC_v[i][0] for i in range(len(dC_v))])
+ pyplot.errorbar(temperatures,C_v,yerr=dC_v,figure=figure)
+pyplot.xlabel("Temperature ( Kelvin )")
+pyplot.ylabel("C$_v$ ( kcal/mol * Kelvin )")
+pyplot.title("Heat capacity for variable $\sigma / r_{bond}$")
+pyplot.legend(legend_labels)
+pyplot.xlim(10.0,25.0)
+pyplot.savefig(file_name)
+pyplot.show()
+pyplot.close()
 
 exit()

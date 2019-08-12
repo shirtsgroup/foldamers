@@ -1,10 +1,44 @@
 #!/usr/bin/python
 
 import numpy as np
+from math import exp, log
 # OpenMM utilities
 import mdtraj as md
 from simtk import unit
 import pymbar
+
+def get_decorrelated_samples(replica_positions,replica_energies,temperature_list):
+        """
+        """
+        configurations = []
+        energies = []
+        K = len(temperature_list)
+        g = np.zeros(K,np.float64)
+        for k in range(K):  # subsample the energies
+          g[k] = pymbar.timeseries.statisticalInefficiency(replica_energies[k][k])
+          indices = np.array(pymbar.timeseries.subsampleCorrelatedData(replica_energies[k][k],g=g[k])) # indices of uncorre
+          configurations.append(replica_positions[k][k][g[k]])
+          energies.append(replica_energies[k][k][g[k]])
+          temperatures.append(temperature)
+        return(configurations,energies,temperatures)
+
+def get_entropy_differences(mbar):
+        """
+        """
+        results = mbar.computeEntropyAndEnthalpy()
+        results = {'Delta_f': results[0], 'dDelta_f': results[1], 'Delta_u': results[2], 'dDelta_u': results[3], 'Delta_s': results[4], 'dDelta_s': results[5]}
+        Delta_s = results['Delta_s']
+        dDelta_s = results['dDelta_s']
+        return(Delta_s,dDelta_s)
+
+def get_enthalpy_differences(mbar):
+        """
+        """
+        results = mbar.computeEntropyAndEnthalpy()
+        results = {'Delta_f': results[0], 'dDelta_f': results[1], 'Delta_u': results[2], 'dDelta_u': results[3], 'Delta_s': results[4], 'dDelta_s': results[5]}
+        Delta_u = results['Delta_u']
+        dDelta_u = results['dDelta_u']
+        return(Delta_u,dDelta_u)
 
 def get_free_energy_differences(mbar):
         """
@@ -16,6 +50,28 @@ def get_free_energy_differences(mbar):
         ddf_ij = results['dDelta_f']
         return(df_ij,ddf_ij)
 
+def calc_temperature_spacing(min_temp,max_temp,num_replicas,replica_index):
+        """
+        """
+        T_replica_index = min_temp * exp( replica_index * log( max_temp._value / min_temp._value )/(num_replicas-1) )
+        T_previous_index = min_temp * exp( (replica_index-1) * log( max_temp._value / min_temp._value )/(num_replicas-1) )
+        delta = T_replica_index - T_previous_index 
+        return(delta)
+
+def get_temperature_list(min_temp,max_temp,num_replicas):
+        """
+        """
+        temperature_list = []
+        temperature_list.append(min_temp)
+        replica_index = 1
+        while len(temperature_list) > 0 and temperature_list[-1].__lt__(max_temp):
+          delta = calc_temperature_spacing(min_temp,max_temp,num_replicas,replica_index)
+          last_temperature = temperature_list[-1]
+          temperature = last_temperature.__add__(delta)
+          temperature_list.append(temperature)
+          replica_index = replica_index + 1
+        return(temperature_list)
+
 def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
         """
         """
@@ -23,16 +79,7 @@ def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
         # Insert Intermediate T's and corresponding blank U's and E's
         #------------------------------------------------------------------------
         kB = unit.Quantity(0.008314462,unit.kilojoule_per_mole)  #Boltzmann constant (Gas constant) in kJ/(mol*K)
-        minT = T_from_file[0]
-        maxT = T_from_file[len(T_from_file) - 1]
-        #beta = 1/(k*BT)
-        #T = 1/(kB*beta)
-        if dertype == 'temperature':
-           minv = minT
-           maxv = maxT
-        elif dertype == 'beta':   # actually going in the opposite direction as beta for logistical reasons
-           minv = 1/(kB._value*minT)
-           maxv = 1/(kB._value*maxT)
+
         deltas = []
         for i in range(1,len(T_from_file)):
          deltas.append((T_from_file[i]._value-T_from_file[i-1]._value)/(NumIntermediates+1))
@@ -41,27 +88,20 @@ def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
 
         Temp_k = []
         val_k = []
-        currentv = minv._value
-#        print(deltas)
-        if dertype == 'temperature':
-           # Loop, inserting equally spaced T's at which we are interested in the properties
-           delta_index = 0
-           while (currentv <= maxv._value):
-              print(delta_index)
-              print(currentv)
-              delta = deltas[delta_index]
-              val_k = np.append(val_k, currentv)
-              currentv = currentv + delta
-              Temp_k = np.concatenate((Temp_k,np.array(val_k)))
-              delta_index = delta_index + 1
-        elif dertype == 'beta':
-        # Loop, inserting equally spaced T's at which we are interested in the properties
-           while (currentv >= maxv):
-              val_k = np.append(val_k, currentv)
-              currentv = currentv + delta
-           Temp_k = np.concatenate((Temp_k,(1/(kB._value*np.array(val_k)))))
+        current_T = min([T_from_file[i]._value for i in range(len(T_from_file))])
 
+        for delta in deltas:
+           current_T = current_T + delta
+           Temp_k.append(current_T)
 
+        if len(Temp_k) != (len(T_from_file) + NumIntermediates* (len(T_from_file)-NumIntermediates-1)):
+          print("Error: new temperatures are not being assigned correctly.")
+          print("There were "+str(len(T_from_file))+" temperatures before inserting intermediates,")
+          print(str(NumIntermediates)+" intermediate strucutures were requested,")
+          print("and there were "+str(len(Temp_k))+" temperatures after inserting intermediates.")
+          exit()
+
+        Temp_k = np.array([temp for temp in Temp_k])
         return(Temp_k)
 
 def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temperature',output=None,mbar=None):
@@ -107,13 +147,14 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
 
          try:
           E_kn = np.zeros([K,len(E_from_file[0][0])], np.float64)
-          for k in range(originalK):
-            #if k != 0: 
+          for k in range(originalK-1):
               E_kn[k+k*NumIntermediates,0:N_k[k]] = E_from_file[k,k,0:N_k[k]]
-                
-            #else:
-              #E_kn[k,0:N_k[k]] = E_from_file[k,k,0:N_k[k]]
               Nall_k[k+k*NumIntermediates] = N_k[k]
+
+          E_kn[-1][0:N_k[-1]] = E_from_file[-1][-1][0:N_k[-1]]
+          Nall_k[-1] = N_k[-1]
+
+
          except:
           E_kn = np.zeros([K,len(E_from_file[0])], np.float64)
           for k in range(originalK):

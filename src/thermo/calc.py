@@ -17,7 +17,10 @@ def calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_e
 
     allCv_expect = np.zeros([K,ntypes], np.float64)
     dCv_expect = np.zeros([K,ntypes],np.float64)
-    Temp_k = np.array([temp._value for temp in Temp_k])
+    try:
+      Temp_k = np.array([temp._value for temp in Temp_k])
+    except:
+      Temp_k = np.array([temp for temp in Temp_k])
 
     allCv_expect[:,0] = (E2_expect - (E_expect*E_expect)) / ( kB * Temp_k**2)
 
