@@ -126,15 +126,16 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
          originalK = len(T_from_file)
          N_k = np.zeros(originalK,np.int32)
 
-         #g = np.zeros(K,np.float64)
+         g = np.zeros(originalK,np.float64)
          for k in range(originalK):  # subsample the energies
-#          g[k] = pymbar.timeseries.statisticalInefficiency(E_from_file[k][k])
-#          indices = np.array(pymbar.timeseries.subsampleCorrelatedData(E_from_file[k][k],g=g[k])) # indices of uncorrelated samples
-          try:
-            N_k[k] = len(E_from_file[k][k]) # number of uncorrelated samples
-          except:
-            N_k[k] = len(E_from_file[k])
-          #E_from_file[k,0:N_k[k]] = E_from_file[k,indices]
+          g[k] = pymbar.timeseries.statisticalInefficiency(E_from_file[k][k])
+          indices = np.array(pymbar.timeseries.subsampleCorrelatedData(E_from_file[k][k],g=g[k])) # indices of uncorrelated samples
+          N_k[k] = len(indices)
+#          try:
+#            N_k[k] = len(E_from_file[k][k]) # number of uncorrelated samples
+#          except:
+#            N_k[k] = len(E_from_file[k])
+          E_from_file[k,k,0:N_k[k]] = E_from_file[k,k,indices]
 
          Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype)
          print(Temp_k)
