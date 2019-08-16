@@ -22,8 +22,8 @@ def calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_e
     except:
       Temp_k = np.array([temp for temp in Temp_k])
 
-    allCv_expect[:,0] = (E2_expect - (E_expect*E_expect)) / ( kB * Temp_k**2)
 
+    allCv_expect[:,0] = (E2_expect - (E_expect*E_expect)) / ( kB * Temp_k**2)
 
     ####################################
     # C_v by fluctuation formula
@@ -32,11 +32,12 @@ def calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_e
     N_eff = (E2_expect - (E_expect*E_expect))/dE_expect**2  # sigma^2 / (sigma^2/n) = effective number of samples
     dCv_expect[:,0] = allCv_expect[:,0]*np.sqrt(2/N_eff)
 
-    for i in range(1,K,1+numIntermediates):
+    for i in range(originalK,K):
 
         # Now, calculae heat capacity by T-differences
         im = i-1
         ip = i+1
+        #print(im,ip)
         if (i==originalK):
             im = originalK
         if (i==K-1):
@@ -86,5 +87,5 @@ def calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_e
                 allCv_expect[i,2] = kB * beta_k[i]**2 *(df_ij[ip,i]-df_ij[i,im])/((beta_k[ip]-beta_k[im])/(ip-im))**2
             dCv_expect[i,2] = kB*(beta_k[i])**2 * (ddf_ij[ip,i]-ddf_ij[i,im])/((beta_k[ip]-beta_k[im])/(ip-im))**2
                 # also wrong, need to be fixed.
-
-    return(allCv_expect,dCv_expect)
+   
+    return(allCv_expect[:,0],dCv_expect[:,0])
