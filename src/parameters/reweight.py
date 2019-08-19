@@ -73,7 +73,7 @@ def get_temperature_list(min_temp,max_temp,num_replicas):
           replica_index = replica_index + 1
         return(temperature_list)
 
-def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
+def get_intermediate_temperatures(T_from_file,NumIntermediates):
         """
         """
         #------------------------------------------------------------------------
@@ -105,21 +105,12 @@ def get_intermediate_temperatures(T_from_file,NumIntermediates,dertype):
         Temp_k = np.array([temp for temp in Temp_k])
         return(Temp_k)
 
-def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temperature',output=None,mbar=None):
+def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,output=None,mbar=None):
         """
         """
 
         if mbar == None:
          NumTemps = len(temperature_list) # Last TEMP # + 1 (start counting at 1)
-
-         if (dertype == 'temperature'): # if the temperatures are equally spaced
-          types = ['var','dT','ddT']
-         elif (dertype == 'beta'): # if the inverse temperatures are equally spaced.
-          types = ['var','dbeta','ddbeta']
-         else:
-          print('type of finite difference not recognized must be \'beta\' or \'temperature\'')
-          quit()
-         ntypes = len(types)
 
          kB = unit.Quantity(0.008314462,unit.kilojoule_per_mole)  #Boltzmann constant (Gas constant) in kJ/(mol*K)
          T_from_file = np.array([temperature._value for temperature in temperature_list])
@@ -132,14 +123,12 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
           g[k] = pymbar.timeseries.statisticalInefficiency(E_from_file[k][k])
           indices = np.array(pymbar.timeseries.subsampleCorrelatedData(E_from_file[k][k],g=g[k])) # indices of uncorrelated samples
           N_k[k] = len(indices)
-#          try:
-#            N_k[k] = len(E_from_file[k][k]) # number of uncorrelated samples
-#          except:
-#            N_k[k] = len(E_from_file[k])
           E_from_file[k,k,0:N_k[k]] = E_from_file[k,k,indices]
 
-         Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype)
-         print(Temp_k)
+         if NumIntermediates > 0:
+           Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates)
+         else:
+           Temp_k = np.array([temperature._value for temperature in temperature_list])
 
          # Update number of states
          K = len(Temp_k)
@@ -163,15 +152,7 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
               E_kn[k+k*NumIntermediates,0:N_k[k]] = E_from_file[k,0:N_k[k]]
               Nall_k[k+k*NumIntermediates] = N_k[k]
 
-
-         #------------------------------------------------------------------------
-         # Compute inverse temperatures
-         #------------------------------------------------------------------------
          beta_k = 1 / (kB._value * Temp_k)
-
-         #------------------------------------------------------------------------
-         # Compute reduced potential energies
-         #------------------------------------------------------------------------
 
          allE_expect = np.zeros([K], np.float64)
          allE2_expect = np.zeros([K], np.float64)
@@ -188,7 +169,6 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
          # Initialize MBAR
          #------------------------------------------------------------------------
 
-         print("")
          print("Initializing MBAR:")
          print("--K = number of Temperatures with data = %d" % (originalK))
          print("--L = number of total Temperatures = %d" % (K))
@@ -203,7 +183,7 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
         else:
 
           E_kn = E_kln          
-          Temp_k = get_intermediate_temperatures(temperature_list,NumIntermediates,dertype) 
+          Temp_k = temperature_list
 
         if output != None:
                results = mbar.computeExpectations(E_kn,output='differences', state_dependent = True)
@@ -217,21 +197,3 @@ def get_mbar_expectation(E_kln,temperature_list,NumIntermediates,dertype='temper
                dresult = results['sigma']
 
         return(mbar,E_kn,result,dresult,Temp_k)
-
-def get_expectation_value(data_set):
-        """
-        Evaluate the dimensionless 
-
-        Parameters
-        ----------
-
-        cgmodel: CGModel() class object.
-
-        Returns
-        -------
-
-        cgmodel: CGModel() class object.
-
-        """
-
-        return(cgmodel)

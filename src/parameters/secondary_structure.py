@@ -1,12 +1,14 @@
 import os, subprocess
 import numpy as np
+from scipy import stats.linregress
+from scipy.spatial.transform import Rotation as R
 from foldamers.src.utilities.util import distances
 from foldamers.src.utilities.iotools import write_pdbfile_without_topology
 
 def fraction_native_contacts(cgmodel,positions,native_structure,cutoff_distance=None):
         """
         """
-        cutoff_distance = 1.2 * cgmodel.get_sigma(0)
+        cutoff_distance = 1.1 * cgmodel.get_sigma(0)
 
         nonbonded_interaction_list = cgmodel.nonbonded_interaction_list
         #print("There are "+str(len(nonbonded_interaction_list))+" total nonbonded interaction possibilities.")
@@ -17,14 +19,9 @@ def fraction_native_contacts(cgmodel,positions,native_structure,cutoff_distance=
         
         for interaction in range(len(nonbonded_interaction_list)):
           if native_structure_distances[interaction].__lt__(cutoff_distance):
-            #print(native_structure_distances[interaction])
-            #print(cutoff_distance.in_units_of(native_structure_distances[interaction].unit))
             native_distances.append(native_structure_distances[interaction])
             native_interaction_list.append(interaction)
         total_native_interactions = len(native_interaction_list)
-        #print("There are "+str(total_native_interactions)+" total nonbonded interactions within the cutoff")
-        #print("distance for the native structure.")
-        #print("Their distances are: "+str([dist._value for dist in native_distances]))
 
         current_distances = []
         current_structure_interaction_list = []
@@ -34,10 +31,7 @@ def fraction_native_contacts(cgmodel,positions,native_structure,cutoff_distance=
               current_distances.append(current_structure_distances[interaction])
               current_structure_interaction_list.append(interaction)
         current_structure_native_interactions = len(current_structure_interaction_list) 
-        #print("There are "+str(current_structure_native_interactions)+" total 'native' interactions in the current structure.")
-        #print("Their distances are: "+str([dist._value for dist in current_distances]))
         Q = current_structure_native_interactions / total_native_interactions
-        #print(Q)
         return(Q)
 
 def get_helical_parameters(cgmodel):
@@ -81,4 +75,70 @@ def get_helical_parameters(cgmodel):
           line_index = line_index + 1
           
         return(pitch,radius,monomers_per_turn)
+
+def get_helical_data(cgmodel):
+        """
+        """
+        positions = cgmodel.positions
+        # 1) Get the backbone particle positions
+        backbone_positions = []
+        for particle in range(len(cgmodel.positions)):
+          if get_particle_type(particle) == "backbone":
+            backbone_positions.append(cgmodel.positions[particle])
+        backbone_positions = np.array([coord for coord in backbone_positions])
+        # 2) Project the backbone positions onto the (x,y) plane
+        xy_projected_positions = backbone_positions
+        for position_index in range(len(xy_projected_positions)):
+          xy_projected_positions[position_index][2] = 0.0 * xy_projected_positions[position_index][0].unit
+        # 3) Calculate the best fit line for these projected positions
+        slope,intercept,r,p,std_err=stats.linregress(xy_projected_positions[:][0],xy_projected_positions[:][1])
+        # 4) Rotate the coordinate system so that this line is oriented along the x-axis
+        # Calculate angle from z-axis:
+        z_axis_angle = np.arctan(slope)
+        z_axis_rotation_matrix = R.from_euler('z', z_axis_angle, degrees=False)
+        x_oriented_positions = xy_projected_positions * z_axis_rotation_matrix
+        # 5) Project the positions onto the (x,z) plane
+        xz_projected_positions = x_oriented_positions
+        for position_index in range(len(xz_projected_positions)):
+          xz_projected_positions[position_index][1] = 0.0 * xz_projected_positions[position_index][0].unit
+        # 6) Calculate the best fit line for these projected positions
+        slope,intercept,r,p,std_err=stats.linregress(xz_projected_positions[:][0],xz_projected_positions[:][1])
+        # 7) Rotate the coordinate system so that this line is oriented along the x-axis
+        # Calculate angle from y-axis:
+        y_axis_angle = np.arctan(slope)
+        y_axis_rotation_matrix = R.from_euler('y', y_axis_angle, degrees=False)
+        final_positions = xz_projected_positions * y_axis_rotation_matrix
+
+        # 8) Using these transformed coordinates, calculate the helical parameters for this structure:
+
+        # radius
+        axis_distances = []
+        rotations = 0.0
+        for position in final_positions:
+          axis_distance = np.linalg.norm(np.array([0.0,0.0,0.0]),np.array([i._value for i in position]))
+          axis_distances.append(axis_distance)
+          if len(axis_distances) > 1:
+            rotation = np.arctan(position[1]._value/position[2]._value) - last_angle
+            last_angle = rotation
+            rotations = rotations + rotation
+            
+        radius = mean(np.array([float(dist) for dist in axis_distances]))
+        particles_per_turn = float(cgmodel.polymer_length/(rotations/6.28))
+
+        # pitch
+        #
+        # Shift all coordinates so that the first backbone atom has x=0
+
+        shift = - final_positions[0][0]
+
+        axis_deltas = []
+        for position in final_positions:
+          position[0] = position[0].__add__(shift)
+          if abs(position[0] - final_positions[0][0]) > 0:
+            axis_deltas.append(float(position[0]-final_positions[0][0]))
+        average_delta = mean(axis_deltas)
+        pitch = average_delta * particles_per_turn
+
+        return(radius,pitch,particles_per_turn)
+        
 
