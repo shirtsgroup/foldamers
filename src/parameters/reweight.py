@@ -15,7 +15,8 @@ def get_decorrelated_samples(replica_positions,replica_energies,temperature_list
         K = len(temperature_list)
         g = np.zeros(K,np.float64)
         for k in range(K):  # subsample the energies
-          g[k] = pymbar.timeseries.statisticalInefficiency(replica_energies[k][k])
+          E_total_all = np.array(np.delete(E_total_all_temp,0,0),dtype=float) # E_total_all stores total energies from NaCl simulation output, after re-typing
+          [t0, g[k], Neff_max] = timeseries.detectEquilibration(replica_energies[k][k],nskip=10)
           indices = np.array(pymbar.timeseries.subsampleCorrelatedData(replica_energies[k][k],g=g[k])) # indices of uncorre
           configurations.append(replica_positions[k][k][g[k]])
           energies.append(replica_energies[k][k][g[k]])

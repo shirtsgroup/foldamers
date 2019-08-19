@@ -1,6 +1,37 @@
 import numpy as np
+from foldamers.src.parameters.reweight import *
+import matplotlib.pyplot as pyplot
 
 kB = 0.008314462  #Boltzmann constant (Gas constant) in kJ/(mol*K)
+
+def plot_heat_capacity(C_v,dC_v,temperature_list):
+        """
+        """
+        file_name = "heat_capacity.png"
+        figure = pyplot.figure(1)
+        temperature_list = np.array([temperature for temperature in temperature_list])
+        C_v = np.array([C_v[i] for i in range(len(C_v))])
+        dC_v = np.array([dC_v[i] for i in range(len(dC_v))])
+        pyplot.errorbar(temperature_list,C_v,yerr=dC_v,figure=figure)
+        pyplot.xlabel("Temperature ( Kelvin )")
+        pyplot.ylabel("C$_v$ ( kcal/mol * Kelvin )")
+        pyplot.title("Heat capacity for")
+        pyplot.savefig(file_name)
+        pyplot.close()
+        return
+
+def get_heat_capacity(replica_energies,temperature_list,num_intermediate_states=None):
+        """
+        """
+        if num_intermediate_states == None:
+         num_intermediate_states = 1
+        mbar,E_kn,E_expect,dE_expect,new_temp_list = get_mbar_expectation(replica_energies,temperature_list,num_intermediate_states)
+        mbar,E_kn,DeltaE_expect,dDeltaE_expect,new_temp_list = get_mbar_expectation(E_kn,temperature_list,num_intermediate_states,mbar=mbar,output='differences')
+        mbar,E_kn,E2_expect,dE2_expect,new_temp_list = get_mbar_expectation(E_kn**2,temperature_list,num_intermediate_states,mbar=mbar)
+        df_ij,ddf_ij = get_free_energy_differences(mbar)
+        C_v,dC_v = calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_expect,df_ij,ddf_ij,new_temp_list,len(temperature_list),num_intermediate_states)
+        plot_heat_capacity(C_v,dC_v,new_temp_list)
+        return(C_v,dC_v,new_temp_list)
 
 def calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_expect,df_ij,ddf_ij,Temp_k,originalK,numIntermediates,ntypes=3,dertype="temperature"):
     """

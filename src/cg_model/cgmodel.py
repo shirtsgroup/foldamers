@@ -3,6 +3,7 @@ import sys, os
 from collections import Counter
 from foldamers.src.utilities import util
 from simtk import openmm as mm
+from simtk.openmm.app.pdbfile import PDBFile
 from simtk.openmm.app.topology import Topology
 from simtk.openmm.app.topology import Residue
 import simtk.openmm.app.element as elem
@@ -59,7 +60,7 @@ def get_parent_bead(cgmodel,monomer_index,bead_index,backbone_bead_index=None,si
          exit()
         return(parent_bead)
 
-def basic_cgmodel(polymer_length=8,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=100.0 * unit.amu,bond_length=0.75 * unit.nanometer,sigma=1.85*unit.nanometer,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
+def basic_cgmodel(polymer_length=12,backbone_length=1,sidechain_length=1,sidechain_positions=[0],mass=100.0 * unit.amu,bond_length=0.75 * unit.nanometer,sigma=1.85*unit.nanometer,epsilon=0.5 * unit.kilocalorie_per_mole,positions=None):
 
         """
         :param polymer_length: Number of monomer units, default = 8
@@ -266,13 +267,13 @@ for all bond types, default = 200 * kJ/mol/rad^2
         def __init__(self,
                      positions = None,
                      #: The number of monomers in the polymer/oligomer
-                     polymer_length = 8,
+                     polymer_length = 12,
                      backbone_lengths = [1],
                      sidechain_lengths = [1],
                      sidechain_positions = [0],
                      masses = {'backbone_bead_masses': 100.0 * unit.amu, 'sidechain_bead_masses': 100.0 * unit.amu}, 
-                     sigmas = {'bb_bb_sigma': 0.9 * unit.nanometer,'bb_sc_sigma': 0.9 * unit.nanometer,'sc_sc_sigma': 0.9 * unit.nanometer},
-                     epsilons = {'bb_bb_eps': 0.5 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.5 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.5 * unit.kilocalorie_per_mole}, 
+                     sigmas = {'bb_bb_sigma': 1.875 * unit.nanometer,'bb_sc_sigma': 1.875 * unit.nanometer,'sc_sc_sigma': 1.875 * unit.nanometer},
+                     epsilons = {'bb_bb_eps': 0.05 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.05 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.05 * unit.kilocalorie_per_mole}, 
                      bond_lengths = {'bb_bb_bond_length': 0.75 * unit.nanometer,'bb_sc_bond_length': 0.75 * unit.nanometer,'sc_sc_bond_length': 0.75 * unit.nanometer}, 
                      bond_force_constants = None, 
                      bond_angle_force_constants=None, 
@@ -283,8 +284,8 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      constrain_bonds = True,
                      include_bond_forces=False,
                      include_nonbonded_forces=True,
-                     include_bond_angle_forces=False,
-                     include_torsion_forces=False,
+                     include_bond_angle_forces=True,
+                     include_torsion_forces=True,
                      check_energy_conservation=True,
                      use_structure_library=False,
                      homopolymer=True):
@@ -295,13 +296,13 @@ for all bond types, default = 200 * kJ/mol/rad^2
           if bond_force_constants == None:
             bond_force_constants = {'bb_bb_bond_k': 1250.0,'bb_sc_bond_k': 1250.0, 'sc_sc_bond_k': 1250.0}
           if bond_angle_force_constants == None:
-            bond_angle_force_constants={'bb_bb_bb_angle_k': 200.0,'bb_bb_sc_angle_k': 200.0,'bb_sc_sc_angle_k': 200.0,'sc_sc_sc_angle_k': 200.0}
+            bond_angle_force_constants={'bb_bb_bb_angle_k': 0.0002,'bb_bb_sc_angle_k': 0.0002,'bb_sc_sc_angle_k': 0.0002,'sc_sc_sc_angle_k': 0.0002}
           if torsion_force_constants == None:
-            torsion_force_constants={'bb_bb_bb_bb_torsion_k': 200.0,'bb_bb_bb_sc_torsion_k': 200.0,'bb_bb_sc_sc_torsion_k': 200.0, 'bb_sc_sc_sc_torsion_k': 200.0, 'sc_bb_bb_sc_torsion_k': 200.0, 'bb_sc_sc_bb_torsion_k': 200.0, 'sc_sc_sc_sc_torsion_k': 200.0, 'sc_bb_bb_bb_torsion_k': 200.0}
+            torsion_force_constants={'bb_bb_bb_bb_torsion_k': 0.0002,'bb_bb_bb_sc_torsion_k': 0.0002,'bb_bb_sc_sc_torsion_k': 0.0002, 'bb_sc_sc_sc_torsion_k': 0.0002, 'sc_bb_bb_sc_torsion_k': 0.0002, 'sc_sc_sc_sc_torsion_k': 0.0002, 'sc_bb_bb_bb_torsion_k': 0.0002}
           if equil_bond_angles == None:
-            equil_bond_angles = {'bb_bb_bb_angle_0': 2.09,'bb_bb_sc_angle_0': 2.09,'bb_bb_sc_angle_0': 2.09,'bb_sc_sc_angle_0': 2.09,'sc_sc_sc_angle_0': 2.09}
+            equil_bond_angles = {'bb_bb_bb_angle_0': 1.61,'bb_bb_sc_angle_0': 2.09,'bb_sc_sc_angle_0': 2.09}
           if equil_torsion_angles == None:
-            equil_torsion_angles = {'bb_bb_bb_bb_torsion_0': 0.0,'bb_bb_bb_sc_torsion_0': 0.0,'bb_bb_sc_sc_torsion_0': 0.0, 'bb_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_sc_torsion_0': 0.0, 'bb_sc_sc_bb_torsion_0': 0.0, 'sc_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_bb_torsion_0': 0.0}
+            equil_torsion_angles = {'bb_bb_bb_bb_torsion_0': 0.91,'bb_bb_bb_sc_torsion_0': 2.09,'bb_bb_sc_sc_torsion_0': 0.0, 'bb_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_sc_torsion_0': 0.0, 'bb_sc_sc_bb_torsion_0': 0.0, 'sc_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_bb_torsion_0': 2.09}
           if charges == None:
             charges = {'backbone_bead_charges': 0.0 * unit.elementary_charge,'sidechain_bead_charges': 0.0 * unit.elementary_charge}
 
@@ -360,13 +361,18 @@ for all bond types, default = 200 * kJ/mol/rad^2
           """
           self.particle_types = add_new_elements(self)
 
-          self.topology = build_topology(self)
-
           if positions == None: 
            if use_structure_library:
             self.positions = util.random_positions(self,use_library=True)
            else:
-            self.positions = util.random_positions(self,use_library=False)
+            if polymer_length == 12:
+              positions_file = str(str(__file__.split('src/cg_model/cgmodel.py')[0])+"ensembles/12_1_1_0/helix.pdb")
+              self.positions = PDBFile(positions_file).getPositions()
+            else:
+              self.positions = util.random_positions(self,use_library=False)
+          else:
+           self.positions = positions
+
           self.simulation = None
           
           self.topology = build_topology(self,use_pdbfile=True)
