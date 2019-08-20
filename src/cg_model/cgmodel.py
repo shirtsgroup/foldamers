@@ -542,6 +542,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
           """
 
           bond_list = self.bond_list
+          angle_list = self.bond_angle_list
           torsions = []
           # Choose the first bond in the torsion
           for bond_1 in bond_list:
@@ -588,6 +589,39 @@ for all bond types, default = 200 * kJ/mol/rad^2
                        if Counter(torsion) == Counter(existing_torsion):
                          unique = False
                      if unique: torsions.append(torsion)
+
+          for angle in angle_list:
+            for bond in bond_list:
+             if bond[0] in angle and bond[1] not in angle or bond[1] in angle and bond[0] not in angle:
+              if bond[0] == angle[0]:
+                torsion = [bond[1],angle[0],angle[1],angle[2]]
+                unique = True
+                for existing_torsion in torsions:
+                 if Counter(torsion) == Counter(existing_torsion):
+                   unique = False
+                if unique: torsions.append(torsion)
+              if bond[0] == angle[2]:
+                torsion = [angle[0],angle[1],angle[2],bond[1]]
+                unique = True
+                for existing_torsion in torsions:
+                 if Counter(torsion) == Counter(existing_torsion):
+                   unique = False
+                if unique: torsions.append(torsion)
+              if bond[1] == angle[0]:
+                torsion = [bond[0],angle[0],angle[1],angle[2]]
+                unique = True
+                for existing_torsion in torsions:
+                 if Counter(torsion) == Counter(existing_torsion):
+                   unique = False
+                if unique: torsions.append(torsion)
+              if bond[1] == angle[2]:
+                torsion = [angle[0],angle[1],angle[2],bond[0]]
+                unique = True
+                for existing_torsion in torsions:
+                 if Counter(torsion) == Counter(existing_torsion):
+                   unique = False
+                if unique: torsions.append(torsion)
+
           torsion_set = set(tuple(torsion) for torsion in torsions)
           torsions = [ list(torsion) for torsion in torsion_set ]            
           return(torsions)

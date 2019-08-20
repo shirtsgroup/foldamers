@@ -1,4 +1,5 @@
-## The OpenMM potential energy for this structure is: 28.713375808820075 kJ/mol
+REMARK   1 CREATED WITH OPENMM 7.3.1, 2019-08-19
+ is: 28.713375808820075 kJ/mol
 ## with the following parameter settings:
 ## sigma = 18.75 A, epsilon = 0.5 kcal/mol
 ATOM      1 X1    MT A   1       -1.94    4.03   -0.01  1.00  0.00

@@ -1,7 +1,8 @@
 import os, subprocess
 import numpy as np
-from scipy import stats.linregress
-from scipy.spatial.transform import Rotation as R
+from scipy.stats import linregress
+from scipy import spatial
+#from spatial.transform import Rotation as R
 from foldamers.src.utilities.util import distances
 from foldamers.src.utilities.iotools import write_pdbfile_without_topology
 
@@ -91,22 +92,22 @@ def get_helical_data(cgmodel):
         for position_index in range(len(xy_projected_positions)):
           xy_projected_positions[position_index][2] = 0.0 * xy_projected_positions[position_index][0].unit
         # 3) Calculate the best fit line for these projected positions
-        slope,intercept,r,p,std_err=stats.linregress(xy_projected_positions[:][0],xy_projected_positions[:][1])
+        slope,intercept,r,p,std_err=linregress(xy_projected_positions[:][0],xy_projected_positions[:][1])
         # 4) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from z-axis:
         z_axis_angle = np.arctan(slope)
-        z_axis_rotation_matrix = R.from_euler('z', z_axis_angle, degrees=False)
+        z_axis_rotation_matrix = spatial.transform.Rotation.from_euler('z', z_axis_angle, degrees=False)
         x_oriented_positions = xy_projected_positions * z_axis_rotation_matrix
         # 5) Project the positions onto the (x,z) plane
         xz_projected_positions = x_oriented_positions
         for position_index in range(len(xz_projected_positions)):
           xz_projected_positions[position_index][1] = 0.0 * xz_projected_positions[position_index][0].unit
         # 6) Calculate the best fit line for these projected positions
-        slope,intercept,r,p,std_err=stats.linregress(xz_projected_positions[:][0],xz_projected_positions[:][1])
+        slope,intercept,r,p,std_err=linregress(xz_projected_positions[:][0],xz_projected_positions[:][1])
         # 7) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from y-axis:
         y_axis_angle = np.arctan(slope)
-        y_axis_rotation_matrix = R.from_euler('y', y_axis_angle, degrees=False)
+        y_axis_rotation_matrix = spatial.transform.Rotation.from_euler('y', y_axis_angle, degrees=False)
         final_positions = xz_projected_positions * y_axis_rotation_matrix
 
         # 8) Using these transformed coordinates, calculate the helical parameters for this structure:
