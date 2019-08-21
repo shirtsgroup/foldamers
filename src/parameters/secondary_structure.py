@@ -1,9 +1,11 @@
 import os, subprocess
 import numpy as np
+from simtk import unit
+from statistics import mean
 from scipy.stats import linregress
 from scipy import spatial
 #from spatial.transform import Rotation as R
-from foldamers.src.utilities.util import distances
+from foldamers.src.utilities.util import *
 from foldamers.src.utilities.iotools import write_pdbfile_without_topology
 
 def fraction_native_contacts(cgmodel,positions,native_structure,cutoff_distance=None):
@@ -80,35 +82,52 @@ def get_helical_parameters(cgmodel):
 def get_helical_data(cgmodel):
         """
         """
-        positions = cgmodel.positions
+        file = open("before_rotation.pdb","w")
+        PDBFile.writeFile(cgmodel.topology,cgmodel.positions,file=file)
+        positions = np.array([[float(i.in_units_of(unit.angstrom)._value) for i in position] for position in cgmodel.positions])
         # 1) Get the backbone particle positions
         backbone_positions = []
         for particle in range(len(cgmodel.positions)):
-          if get_particle_type(particle) == "backbone":
+          if cgmodel.get_particle_type(particle) == "backbone":
             backbone_positions.append(cgmodel.positions[particle])
-        backbone_positions = np.array([coord for coord in backbone_positions])
+        backbone_positions = np.array([[float(i.in_units_of(unit.angstrom)._value) for i in coord] for coord in backbone_positions])
         # 2) Project the backbone positions onto the (x,y) plane
+        print(backbone_positions)
         xy_projected_positions = backbone_positions
-        for position_index in range(len(xy_projected_positions)):
-          xy_projected_positions[position_index][2] = 0.0 * xy_projected_positions[position_index][0].unit
+        x_data = []
+        y_data = []
+        for position in xy_projected_positions:
+          position[2] = 0.0
+          x_data.append(position[0])
+          y_data.append(position[1])
         # 3) Calculate the best fit line for these projected positions
-        slope,intercept,r,p,std_err=linregress(xy_projected_positions[:][0],xy_projected_positions[:][1])
+        slope,intercept,r,p,std_err=linregress(np.array([x for x in x_data]),np.array([y for y in y_data]))
         # 4) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from z-axis:
         z_axis_angle = np.arctan(slope)
         z_axis_rotation_matrix = spatial.transform.Rotation.from_euler('z', z_axis_angle, degrees=False)
-        x_oriented_positions = xy_projected_positions * z_axis_rotation_matrix
+        x_oriented_positions = z_axis_rotation_matrix.apply(positions)
         # 5) Project the positions onto the (x,z) plane
-        xz_projected_positions = x_oriented_positions
+        xz_projected_positions = backbone_positions
+        x_data = []
+        z_data = []
         for position_index in range(len(xz_projected_positions)):
-          xz_projected_positions[position_index][1] = 0.0 * xz_projected_positions[position_index][0].unit
+          xz_projected_positions[position_index][1] = 0.0
+          x_data.append(xz_projected_positions[position_index][0])
+          z_data.append(xz_projected_positions[position_index][2])
+
         # 6) Calculate the best fit line for these projected positions
-        slope,intercept,r,p,std_err=linregress(xz_projected_positions[:][0],xz_projected_positions[:][1])
+        slope,intercept,r,p,std_err=linregress(np.array([x for x in x_data]),np.array([z for z in z_data]))
         # 7) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from y-axis:
         y_axis_angle = np.arctan(slope)
         y_axis_rotation_matrix = spatial.transform.Rotation.from_euler('y', y_axis_angle, degrees=False)
-        final_positions = xz_projected_positions * y_axis_rotation_matrix
+        final_positions = y_axis_rotation_matrix.apply(x_oriented_positions)
+
+        cgmodel.positions = unit.Quantity(final_positions,cgmodel.positions.unit)
+
+        file = open("after_rotation.pdb","w")
+        PDBFile.writeFile(cgmodel.topology,cgmodel.positions,file=file)
 
         # 8) Using these transformed coordinates, calculate the helical parameters for this structure:
 
@@ -116,14 +135,21 @@ def get_helical_data(cgmodel):
         axis_distances = []
         rotations = 0.0
         for position in final_positions:
-          axis_distance = np.linalg.norm(np.array([0.0,0.0,0.0]),np.array([i._value for i in position]))
+          axis_distance = distance(unit.Quantity([float(position[0]),0.0,0.0],cgmodel.positions.unit),unit.Quantity(position,cgmodel.positions.unit))
           axis_distances.append(axis_distance)
           if len(axis_distances) > 1:
-            rotation = np.arctan(position[1]._value/position[2]._value) - last_angle
+            rotation = np.arctan(position[1]/position[2]) - last_angle
             last_angle = rotation
             rotations = rotations + rotation
+          else:
+            rotation = np.arctan(position[1]/position[2])
+            last_angle = rotation
+            rotations = rotations + rotation
+
             
-        radius = mean(np.array([float(dist) for dist in axis_distances]))
+        print(axis_distances)
+        exit()
+        radius = mean(np.array([float(dist.in_units_of(unit.angstrom)._value) for dist in axis_distances]))
         particles_per_turn = float(cgmodel.polymer_length/(rotations/6.28))
 
         # pitch
@@ -134,7 +160,7 @@ def get_helical_data(cgmodel):
 
         axis_deltas = []
         for position in final_positions:
-          position[0] = position[0].__add__(shift)
+          position[0] = position[0] + shift
           if abs(position[0] - final_positions[0][0]) > 0:
             axis_deltas.append(float(position[0]-final_positions[0][0]))
         average_delta = mean(axis_deltas)

@@ -1,6 +1,6 @@
 from simtk import unit
 from msmbuilder.cluster.kcenters import KCenters
-import mdtraj
+import mdtraj as md
 from simtk.openmm.app.pdbfile import PDBFile
 from foldamers.src.utilities.iotools import write_pdbfile_without_topology
 
@@ -29,7 +29,7 @@ def get_cluster_centroid_positions(pdb_file,cgmodel,n_clusters=None):
         """
         """
         centroid_positions = []
-        traj = mdtraj.load(pdb_file)
+        traj = md.load(pdb_file)
         print(traj.n_frames)
         exit()
         if n_clusters == None:
@@ -45,4 +45,12 @@ def get_cluster_centroid_positions(pdb_file,cgmodel,n_clusters=None):
           write_pdbfile_without_topology(cgmodel,file_name)
           centroid_positions.append(positions)
         return(centroid_positions)
+
+def align_structures(reference_traj,target_traj):
+        """
+        """
+
+        aligned_target_traj = target_traj.superpose(reference_traj)
+
+        return(aligned_target_traj)
 
