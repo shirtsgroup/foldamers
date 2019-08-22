@@ -288,7 +288,9 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      include_torsion_forces=True,
                      check_energy_conservation=True,
                      use_structure_library=False,
-                     homopolymer=True):
+                     heteropolymer=False,
+                     monomer_types=None,
+                     sequence=None):
 
           """
           Initialize values for required variables that were not defined.
@@ -315,24 +317,31 @@ for all bond types, default = 200 * kJ/mol/rad^2
           self.sidechain_lengths = sidechain_lengths
           self.sidechain_positions = sidechain_positions
           self.bond_lengths = bond_lengths
-          self.monomer_types = self.get_monomer_types()
+          self.sigmas = sigmas
+          self.epsilons = epsilons
+          if monomer_types == None:
+            self.monomer_types = self.get_monomer_types()
+          else:
+            self.monomer_types = monomer_types
 
-          sequence = []
-          if homopolymer == True:
+
+          if heteropolymer == True:
+            if sequence == None:
+              print("ERROR: The 'heteropolymer'=True flag was selected, but no")
+              print("'sequence' was provided.  Please rerun with an input 'sequence'.")
+              exit()
+            else:
+              self.sequence = sequence
+          else:
+           sequence = []
            monomer_type = self.monomer_types[0]
            for monomer in range(self.polymer_length):
             sequence.append(monomer_type)
-          else:
-           for monomer in range(self.polymer_length):
-            monomer_type_index = random.randint(0,len(self.monomer_types))
-            sequence.append(monomer_types[monomer_type_index])
 
           self.sequence = sequence
           self.num_beads = self.get_num_beads()
           self.particle_list = self.get_particle_list()
           self.masses = masses
-          self.sigmas = sigmas
-          self.epsilons = epsilons
           self.bond_force_constants = bond_force_constants
           self.bond_angle_force_constants = bond_angle_force_constants
           self.equil_bond_angles = equil_bond_angles
@@ -395,7 +404,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
              while monomer_name in monomer_types:
               monomer_name = str('CG'+str(backbone_length)+str(sidechain_length)+str(modifier_index))
               modifier_index = modifier_index + 1
-            monomer_type = {'monomer_name': monomer_name, 'backbone_length': backbone_length, 'sidechain_length': sidechain_length, 'sidechain_positions': sidechain_position, 'num_beads': num_beads, 'bond_lengths': self.bond_lengths}
+            monomer_type = {'monomer_name': monomer_name, 'backbone_length': backbone_length, 'sidechain_length': sidechain_length, 'sidechain_positions': sidechain_position, 'num_beads': num_beads, 'bond_lengths': self.bond_lengths, 'epsilons': self.epsilons, 'sigmas': self.sigmas}
             monomer_types.append(monomer_type)
           return(monomer_types)
 

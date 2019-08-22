@@ -82,8 +82,9 @@ def get_helical_parameters(cgmodel):
 def get_helical_data(cgmodel):
         """
         """
-        file = open("before_rotation.pdb","w")
-        PDBFile.writeFile(cgmodel.topology,cgmodel.positions,file=file)
+        plot_projections = False
+        #file = open("before_rotation.pdb","w")
+        #PDBFile.writeFile(cgmodel.topology,cgmodel.positions,file=file)
         positions = np.array([[float(i.in_units_of(unit.angstrom)._value) for i in position] for position in cgmodel.positions])
         # 1) Get the backbone particle positions
         backbone_positions = []
@@ -92,7 +93,6 @@ def get_helical_data(cgmodel):
             backbone_positions.append(cgmodel.positions[particle])
         backbone_positions = np.array([[float(i.in_units_of(unit.angstrom)._value) for i in coord] for coord in backbone_positions])
         # 2) Project the backbone positions onto the (x,y) plane
-        print(backbone_positions)
         xy_projected_positions = backbone_positions
         x_data = []
         y_data = []
@@ -102,40 +102,85 @@ def get_helical_data(cgmodel):
           y_data.append(position[1])
         # 3) Calculate the best fit line for these projected positions
         slope,intercept,r,p,std_err=linregress(np.array([x for x in x_data]),np.array([y for y in y_data]))
+
+        if plot_projections:
+        # Plot this projected data, as well as the best fit line   
+          file_name = "xy_projection.png"
+          figure = pyplot.figure(1)
+          x_data = np.array([x for x in x_data])
+          y_data = np.array([y for y in y_data])
+          pyplot.xlabel("x")
+          pyplot.ylabel("y")
+          pyplot.scatter(x_data,y_data)
+          x = np.linspace(min(x_data),max(x_data),100)
+          pyplot.plot(x,slope*x+intercept,label=str("y="+str(round(slope,2))+"x+"+str(round(intercept,2))))
+          pyplot.legend()
+          pyplot.savefig(file_name)
+          pyplot.show()
+          pyplot.close()
+
         # 4) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from z-axis:
         z_axis_angle = np.arctan(slope)
-        z_axis_rotation_matrix = spatial.transform.Rotation.from_euler('z', z_axis_angle, degrees=False)
+        z_axis_rotation_matrix = spatial.transform.Rotation.from_euler('xyz',[0.,0.,z_axis_angle], degrees=False)
         x_oriented_positions = z_axis_rotation_matrix.apply(positions)
+
         # 5) Project the positions onto the (x,z) plane
         xz_projected_positions = backbone_positions
         x_data = []
         z_data = []
         for position_index in range(len(xz_projected_positions)):
           xz_projected_positions[position_index][1] = 0.0
-          x_data.append(xz_projected_positions[position_index][0])
-          z_data.append(xz_projected_positions[position_index][2])
+          x_data.append(positions[position_index][0])
+          z_data.append(positions[position_index][2])
 
         # 6) Calculate the best fit line for these projected positions
         slope,intercept,r,p,std_err=linregress(np.array([x for x in x_data]),np.array([z for z in z_data]))
+
+        if plot_projections:
+        # Plot this projected data, as well as the best fit line   
+          file_name = "xz_projection.png"
+          figure = pyplot.figure(1)
+          x_data = np.array([x for x in x_data])
+          z_data = np.array([z for z in z_data])
+          pyplot.xlabel("x")
+          pyplot.ylabel("z")
+          pyplot.scatter(x_data,z_data)
+          x = np.linspace(min(x_data),max(x_data),100)
+          pyplot.plot(x,slope*x+intercept,label=str("z="+str(round(slope,2))+"x+"+str(round(intercept,2))))
+          pyplot.legend()
+          pyplot.savefig(file_name)
+          pyplot.show()
+          pyplot.close()
+
+
         # 7) Rotate the coordinate system so that this line is oriented along the x-axis
         # Calculate angle from y-axis:
         y_axis_angle = np.arctan(slope)
-        y_axis_rotation_matrix = spatial.transform.Rotation.from_euler('y', y_axis_angle, degrees=False)
+        y_axis_rotation_matrix = spatial.transform.Rotation.from_euler('xyz', [0.,y_axis_angle,0.], degrees=False)
         final_positions = y_axis_rotation_matrix.apply(x_oriented_positions)
 
-        cgmodel.positions = unit.Quantity(final_positions,cgmodel.positions.unit)
+        print(final_positions)
+
+        cgmodel.positions = unit.Quantity(final_positions,unit.angstrom)
 
         file = open("after_rotation.pdb","w")
         PDBFile.writeFile(cgmodel.topology,cgmodel.positions,file=file)
 
         # 8) Using these transformed coordinates, calculate the helical parameters for this structure:
 
+        # Get the new backbone particle positions
+        backbone_positions = []
+        for particle in range(len(cgmodel.positions)):
+          if cgmodel.get_particle_type(particle) == "backbone":
+            backbone_positions.append(cgmodel.positions[particle])
+        backbone_positions = np.array([[float(i.in_units_of(unit.angstrom)._value) for i in coord] for coord in backbone_positions])
+
         # radius
         axis_distances = []
         rotations = 0.0
-        for position in final_positions:
-          axis_distance = distance(unit.Quantity([float(position[0]),0.0,0.0],cgmodel.positions.unit),unit.Quantity(position,cgmodel.positions.unit))
+        for position in backbone_positions:
+          axis_distance = distance(unit.Quantity([float(position[0]),0.0,0.0],unit.angstrom),unit.Quantity(position,unit.angstrom))
           axis_distances.append(axis_distance)
           if len(axis_distances) > 1:
             rotation = np.arctan(position[1]/position[2]) - last_angle
@@ -146,9 +191,10 @@ def get_helical_data(cgmodel):
             last_angle = rotation
             rotations = rotations + rotation
 
-            
+        print(rotations)
         print(axis_distances)
         exit()
+            
         radius = mean(np.array([float(dist.in_units_of(unit.angstrom)._value) for dist in axis_distances]))
         particles_per_turn = float(cgmodel.polymer_length/(rotations/6.28))
 

@@ -26,8 +26,8 @@ def get_heat_capacity(replica_energies,temperature_list,num_intermediate_states=
         if num_intermediate_states == None:
          num_intermediate_states = 1
         mbar,E_kn,E_expect,dE_expect,new_temp_list = get_mbar_expectation(replica_energies,temperature_list,num_intermediate_states)
-        mbar,E_kn,DeltaE_expect,dDeltaE_expect,new_temp_list = get_mbar_expectation(E_kn,temperature_list,num_intermediate_states,mbar=mbar,output='differences')
-        mbar,E_kn,E2_expect,dE2_expect,new_temp_list = get_mbar_expectation(E_kn**2,temperature_list,num_intermediate_states,mbar=mbar)
+        mbar,E_kn,DeltaE_expect,dDeltaE_expect,new_temp_list = get_mbar_expectation(E_kn,new_temp_list,num_intermediate_states,mbar=mbar,output='differences')
+        mbar,E_kn,E2_expect,dE2_expect,new_temp_list = get_mbar_expectation(E_kn**2,new_temp_list,num_intermediate_states,mbar=mbar)
         df_ij,ddf_ij = get_free_energy_differences(mbar)
         C_v,dC_v = calculate_heat_capacity(E_expect,E2_expect,dE_expect,DeltaE_expect,dDeltaE_expect,df_ij,ddf_ij,new_temp_list,len(temperature_list),num_intermediate_states)
         plot_heat_capacity(C_v,dC_v,new_temp_list)

@@ -606,7 +606,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
                 #print("Minimizing the structure.")
                 simulation_time_step = 5.0 * unit.femtosecond
                #,tolerance = get_simulation_time_step(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,total_simulation_time=0.1 * unit.picosecond,time_step_list=[ 5.0 * unit.femtosecond ])
-                positions_after,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+                positions_after,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,print_frequency=10)
                 cgmodel.positions = positions_after
                 write_pdbfile_without_topology(cgmodel,file_name)
                 #print(positions_after)
@@ -667,7 +667,7 @@ def get_structure_from_library( cgmodel, high_energy=False, low_energy=False ):
          cgmodel.simulation = simulation
         except:
          cgmodel.system = build_system(cgmodel)
-         positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+         positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,cgmodel.positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,print_frequency=10)
 
         return(positions)
 
@@ -784,7 +784,7 @@ def random_positions( cgmodel,max_attempts=1000,use_library=False,high_energy=Fa
           cgmodel.positions = positions
           cgmodel.topology = build_topology(cgmodel,use_pdbfile=True)
           cgmodel.system = build_system(cgmodel)
-          positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,output_pdb='minimum.pdb',output_data='minimization.dat',print_frequency=10)
+          positions,energy,simulation = minimize_structure(cgmodel.topology,cgmodel.system,positions,temperature=300.0 * unit.kelvin,simulation_time_step=5.0 * unit.femtosecond,total_simulation_time=0.1 * unit.picosecond,print_frequency=10)
         
           #print("No collisions detected.")
           return(positions)
