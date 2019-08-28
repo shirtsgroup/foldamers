@@ -273,7 +273,7 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      sidechain_positions = [0],
                      masses = {'backbone_bead_masses': 100.0 * unit.amu, 'sidechain_bead_masses': 100.0 * unit.amu}, 
                      sigmas = {'bb_bb_sigma': 1.875 * unit.nanometer,'bb_sc_sigma': 1.875 * unit.nanometer,'sc_sc_sigma': 1.875 * unit.nanometer},
-                     epsilons = {'bb_bb_eps': 0.05 * unit.kilocalorie_per_mole,'bb_sc_eps': 0.05 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.05 * unit.kilocalorie_per_mole}, 
+                     epsilons = {'bb_bb_eps': 0.05 * unit.kilocalorie_per_mole,'sc_sc_eps': 0.05 * unit.kilocalorie_per_mole}, 
                      bond_lengths = {'bb_bb_bond_length': 0.75 * unit.nanometer,'bb_sc_bond_length': 0.75 * unit.nanometer,'sc_sc_bond_length': 0.75 * unit.nanometer}, 
                      bond_force_constants = None, 
                      bond_angle_force_constants=None, 
@@ -290,7 +290,8 @@ for all bond types, default = 200 * kJ/mol/rad^2
                      use_structure_library=False,
                      heteropolymer=False,
                      monomer_types=None,
-                     sequence=None):
+                     sequence=None,
+                     random_positions=False):
 
           """
           Initialize values for required variables that were not defined.
@@ -298,13 +299,13 @@ for all bond types, default = 200 * kJ/mol/rad^2
           if bond_force_constants == None:
             bond_force_constants = {'bb_bb_bond_k': 1250.0,'bb_sc_bond_k': 1250.0, 'sc_sc_bond_k': 1250.0}
           if bond_angle_force_constants == None:
-            bond_angle_force_constants={'bb_bb_bb_angle_k': 0.0002,'bb_bb_sc_angle_k': 0.0002,'bb_sc_sc_angle_k': 0.0002,'sc_sc_sc_angle_k': 0.0002}
+            bond_angle_force_constants={'bb_bb_bb_angle_k': 0.0002,'bb_bb_sc_angle_k': 0,'bb_sc_sc_angle_k': 0,'sc_sc_sc_angle_k': 0.0002}
           if torsion_force_constants == None:
-            torsion_force_constants={'bb_bb_bb_bb_torsion_k': 0.0002,'bb_bb_bb_sc_torsion_k': 0.0002,'bb_bb_sc_sc_torsion_k': 0.0002, 'bb_sc_sc_sc_torsion_k': 0.0002, 'sc_bb_bb_sc_torsion_k': 0.0002, 'sc_sc_sc_sc_torsion_k': 0.0002, 'sc_bb_bb_bb_torsion_k': 0.0002}
+            torsion_force_constants={'bb_bb_bb_bb_torsion_k': 0.0002,'bb_bb_bb_sc_torsion_k': 0,'bb_bb_sc_sc_torsion_k': 0, 'bb_sc_sc_sc_torsion_k': 0, 'sc_bb_bb_sc_torsion_k': 0, 'sc_sc_sc_sc_torsion_k': 0, 'sc_bb_bb_bb_torsion_k': 0}
           if equil_bond_angles == None:
-            equil_bond_angles = {'bb_bb_bb_angle_0': 1.61,'bb_bb_sc_angle_0': 2.09,'bb_sc_sc_angle_0': 2.09}
+            equil_bond_angles = {'bb_bb_bb_angle_0': 1.61}
           if equil_torsion_angles == None:
-            equil_torsion_angles = {'bb_bb_bb_bb_torsion_0': 0.91,'bb_bb_bb_sc_torsion_0': 2.09,'bb_bb_sc_sc_torsion_0': 0.0, 'bb_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_sc_torsion_0': 0.0, 'bb_sc_sc_bb_torsion_0': 0.0, 'sc_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_bb_torsion_0': 2.09}
+            equil_torsion_angles = {'bb_bb_bb_bb_torsion_0': 0.91,'bb_bb_bb_sc_torsion_0': 0,'bb_bb_sc_sc_torsion_0': 0.0, 'bb_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_sc_torsion_0': 0.0, 'bb_sc_sc_bb_torsion_0': 0.0, 'sc_sc_sc_sc_torsion_0': 0.0, 'sc_bb_bb_bb_torsion_0': 0}
           if charges == None:
             charges = {'backbone_bead_charges': 0.0 * unit.elementary_charge,'sidechain_bead_charges': 0.0 * unit.elementary_charge}
 
@@ -371,8 +372,11 @@ for all bond types, default = 200 * kJ/mol/rad^2
           self.particle_types = add_new_elements(self)
 
           if positions == None: 
-           if use_structure_library:
-            self.positions = util.random_positions(self,use_library=True)
+           if random_positions:
+            if use_structure_library:
+              self.positions = util.random_positions(self,use_library=True)
+            else:
+              self.positions = util.random_positions(self)
            else:
             if polymer_length == 12:
               positions_file = str(str(__file__.split('src/cg_model/cgmodel.py')[0])+"ensembles/12_1_1_0/helix.pdb")

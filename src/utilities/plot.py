@@ -1,9 +1,10 @@
 import matplotlib.pyplot as pyplot
 import numpy as np
 
-def plot_distribution(x_data,y_data,file_name=None,plot_type=None,multiple=False,legend=None,legend_title=None):
+def plot_distribution(x_data,y_data,file_name=None,plot_type=None,multiple=False,legend=None,legend_title=None,plot_title=None):
         """
         """
+        index = 0
         figure = pyplot.figure(1)
         if plot_type == "Torsions":
            if file_name == None:
@@ -20,7 +21,6 @@ def plot_distribution(x_data,y_data,file_name=None,plot_type=None,multiple=False
         if multiple:
          x_data = np.array([[float(n) for n in x] for x in x_data])
          y_data = np.array([[float(n) for n in y] for y in y_data])
-         index = 0
          for x,y in zip(x_data,y_data):
           line, = pyplot.plot(x,y)
           if legend:
@@ -34,7 +34,13 @@ def plot_distribution(x_data,y_data,file_name=None,plot_type=None,multiple=False
         else:
           x_data = np.array([float(x) for x in x_data])
           y_data = np.array([float(y) for y in y_data])
-          pyplot.plot(x_data,y_data)
+          if legend != None:
+            line, = pyplot.plot(x_data,y_data)
+            line.set_label(str(legend[index]))
+          else:
+            pyplot.plot(x_data,y_data)
+        if plot_title != None:
+          pyplot.title(plot_title)
         pyplot.savefig(file_name)
         pyplot.close()
 

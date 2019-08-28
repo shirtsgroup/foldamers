@@ -4,10 +4,11 @@ import matplotlib.pyplot as pyplot
 
 kB = 0.008314462  #Boltzmann constant (Gas constant) in kJ/(mol*K)
 
-def plot_heat_capacity(C_v,dC_v,temperature_list):
+def plot_heat_capacity(C_v,dC_v,temperature_list,file_name=None):
         """
         """
-        file_name = "heat_capacity.png"
+        if file_name == None:
+          file_name = "heat_capacity.png"
         figure = pyplot.figure(1)
         temperature_list = np.array([temperature for temperature in temperature_list])
         C_v = np.array([C_v[i] for i in range(len(C_v))])
