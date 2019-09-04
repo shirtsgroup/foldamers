@@ -7,7 +7,7 @@ from shutil import rmtree
 import setuptools
 from setuptools import setup, Command
 
-data_dir=os.path.join(os.getcwd(), "src")
+#data_dir=os.path.join(os.getcwd(), "foldamers")
 # Package meta-data.
 NAME = 'foldamers'
 DESCRIPTION = 'Package containing tools to model secondary structure formation in heteropolymers.'
