@@ -27,7 +27,7 @@ EXTRAS = {
     # 'fancy feature': ['django'],
 }
 
-here = os.path.abspath(os.path.dirname(__file__))
+#here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!

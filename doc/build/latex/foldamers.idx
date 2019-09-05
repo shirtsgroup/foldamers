@@ -2,45 +2,46 @@
 \indexentry{basic\_cgmodel() (in module cg\_model.cgmodel)@\spxentry{basic\_cgmodel()}\spxextra{in module cg\_model.cgmodel}|hyperpage}{2}
 \indexentry{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}|hyperpage}{3}
 \indexentry{CGModel (class in cg\_model.cgmodel)@\spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}|hyperpage}{3}
-\indexentry{check\_energy\_conservation (cg\_model.cgmodel.CGModel attribute)@\spxentry{check\_energy\_conservation}\spxextra{cg\_model.cgmodel.CGModel attribute}|hyperpage}{7}
-\indexentry{constrain\_bonds (cg\_model.cgmodel.CGModel attribute)@\spxentry{constrain\_bonds}\spxextra{cg\_model.cgmodel.CGModel attribute}|hyperpage}{7}
-\indexentry{get\_all\_particle\_masses() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
-\indexentry{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
-\indexentry{get\_bond\_angle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
-\indexentry{get\_bond\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_bond\_length() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_bond\_length\_from\_names() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_bond\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_epsilon() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_equil\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
-\indexentry{get\_equil\_torsion\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
-\indexentry{get\_monomer\_types() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
+\indexentry{get\_all\_particle\_masses() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{5}
+\indexentry{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{5}
+\indexentry{get\_bond\_angle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{6}
+\indexentry{get\_bond\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{6}
+\indexentry{get\_bond\_length() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{6}
+\indexentry{get\_bond\_length\_from\_names() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
+\indexentry{get\_bond\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
+\indexentry{get\_epsilon() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
+\indexentry{get\_equil\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{7}
+\indexentry{get\_equil\_torsion\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
+\indexentry{get\_monomer\_types() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
+\indexentry{get\_nonbonded\_exclusion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_exclusion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{8}
 \indexentry{get\_nonbonded\_interaction\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
 \indexentry{get\_num\_beads() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_num\_beads()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
 \indexentry{get\_particle\_charge() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
 \indexentry{get\_particle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
 \indexentry{get\_particle\_mass() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_mass()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
-\indexentry{get\_particle\_type() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_type()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{9}
+\indexentry{get\_particle\_name() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_name()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{10}
+\indexentry{get\_particle\_type() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_type()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{10}
 \indexentry{get\_sigma() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_sigma()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{10}
-\indexentry{get\_torsion\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{10}
-\indexentry{get\_torsion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{10}
-\indexentry{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}|hyperpage}{10}
-\indexentry{get\_parent\_bead() (in module cg\_model.cgmodel)@\spxentry{get\_parent\_bead()}\spxextra{in module cg\_model.cgmodel}|hyperpage}{10}
-\indexentry{utilities.iotools (module)@\spxentry{utilities.iotools}\spxextra{module}|hyperpage}{12}
-\indexentry{write\_bonds() (in module utilities.iotools)@\spxentry{write\_bonds()}\spxextra{in module utilities.iotools}|hyperpage}{12}
-\indexentry{write\_cg\_pdb() (in module utilities.iotools)@\spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}|hyperpage}{12}
-\indexentry{write\_pdbfile\_without\_topology() (in module utilities.iotools)@\spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}|hyperpage}{12}
-\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{13}
-\indexentry{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}|hyperpage}{13}
-\indexentry{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}|hyperpage}{13}
-\indexentry{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}|hyperpage}{13}
-\indexentry{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}|hyperpage}{13}
-\indexentry{collisions() (in module utilities.util)@\spxentry{collisions()}\spxextra{in module utilities.util}|hyperpage}{13}
-\indexentry{distance() (in module utilities.util)@\spxentry{distance()}\spxextra{in module utilities.util}|hyperpage}{14}
-\indexentry{distance\_matrix() (in module utilities.util)@\spxentry{distance\_matrix()}\spxextra{in module utilities.util}|hyperpage}{14}
-\indexentry{distances() (in module utilities.util)@\spxentry{distances()}\spxextra{in module utilities.util}|hyperpage}{14}
-\indexentry{first\_bead() (in module utilities.util)@\spxentry{first\_bead()}\spxextra{in module utilities.util}|hyperpage}{14}
-\indexentry{get\_move() (in module utilities.util)@\spxentry{get\_move()}\spxextra{in module utilities.util}|hyperpage}{14}
-\indexentry{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}|hyperpage}{15}
-\indexentry{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}|hyperpage}{15}
-\indexentry{random\_sign() (in module utilities.util)@\spxentry{random\_sign()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{get\_torsion\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{11}
+\indexentry{get\_torsion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}|hyperpage}{11}
+\indexentry{nonbonded\_interaction\_list (cg\_model.cgmodel.CGModel attribute)@\spxentry{nonbonded\_interaction\_list}\spxextra{cg\_model.cgmodel.CGModel attribute}|hyperpage}{11}
+\indexentry{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}|hyperpage}{11}
+\indexentry{get\_parent\_bead() (in module cg\_model.cgmodel)@\spxentry{get\_parent\_bead()}\spxextra{in module cg\_model.cgmodel}|hyperpage}{11}
+\indexentry{utilities.iotools (module)@\spxentry{utilities.iotools}\spxextra{module}|hyperpage}{14}
+\indexentry{write\_bonds() (in module utilities.iotools)@\spxentry{write\_bonds()}\spxextra{in module utilities.iotools}|hyperpage}{14}
+\indexentry{write\_cg\_pdb() (in module utilities.iotools)@\spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}|hyperpage}{14}
+\indexentry{write\_pdbfile\_without\_topology() (in module utilities.iotools)@\spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}|hyperpage}{14}
+\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{15}
+\indexentry{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}|hyperpage}{15}
+\indexentry{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}|hyperpage}{15}
+\indexentry{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}|hyperpage}{15}
+\indexentry{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}|hyperpage}{15}
+\indexentry{collisions() (in module utilities.util)@\spxentry{collisions()}\spxextra{in module utilities.util}|hyperpage}{15}
+\indexentry{distance() (in module utilities.util)@\spxentry{distance()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{distance\_matrix() (in module utilities.util)@\spxentry{distance\_matrix()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{distances() (in module utilities.util)@\spxentry{distances()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{first\_bead() (in module utilities.util)@\spxentry{first\_bead()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{get\_move() (in module utilities.util)@\spxentry{get\_move()}\spxextra{in module utilities.util}|hyperpage}{16}
+\indexentry{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}|hyperpage}{17}
+\indexentry{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}|hyperpage}{17}
+\indexentry{random\_sign() (in module utilities.util)@\spxentry{random\_sign()}\spxextra{in module utilities.util}|hyperpage}{18}

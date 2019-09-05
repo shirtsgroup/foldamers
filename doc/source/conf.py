@@ -14,7 +14,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../foldamers'))
 #sys.path.insert(1,os.path.abspath('../../src/cg_model'))
 #sys.path.insert(2,os.path.abspath('../../src/thermo'))
 #sys.path.insert(3,os.path.abspath('../../src/utilities'))
