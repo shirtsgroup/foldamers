@@ -12,6 +12,7 @@ This documentation is generated automatically using Sphinx, which reads all docs
    :maxdepth: 2
 
    cg_model.rst
+   ensembles.rst
    thermo.rst
    utilities.rst
 

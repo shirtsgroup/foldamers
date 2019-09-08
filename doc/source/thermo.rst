@@ -9,6 +9,6 @@ Tools to calculate the heat capacity with pymbar
 Shown below are functions/tools used in order to calculate
 the heat capacity with pymbar.
 
-.. automodule:: thermo.heat_capacity
+.. automodule:: thermo.get_heat_capacity
     :members:
 

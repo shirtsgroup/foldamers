@@ -1,28 +1,22 @@
 Coarse grained model utilities
 ==============================
 
-This page details the functions and classes in src/cg_model/cgmodel.py
+The foldamers package uses "CGModel()" objects to define and store information about the properties of coarse grained models.
 
-The 'basic_cgmodel' function to build coarse grained oligomers
---------------------------------------------------------------
+'basic_cgmodel': a simple function to build coarse grained homopolymers
+-----------------------------------------------------------------------
 
-Shown below is the 'basic_cgmodel' function, which requires only a minimal set of input arguments to build a coarse grained model.  Given a set of input arguments this function creates a CGModel() class object, applying a set of default values for un-defined parameters.
+Shown below is the 'basic_cgmodel' function, which requires a minimal set of input arguments to build a coarse grained holopolymer model.
 
 .. automodule:: cg_model.cgmodel
     :members: basic_cgmodel
 
-Full 'CGModel' class to build/model coarse grained oligomers
-------------------------------------------------------------
+Using the 'CGModel()' class to build coarse grained heteropolymers
+------------------------------------------------------------------
 
-Shown below is a detailed description of the full 'cgmodel' class object.
+Shown below is a detailed description of the 'CGModel()' class object, as well as some of examples demonstrating how to use its functions and attributes.
 
 .. automodule:: cg_model.cgmodel
     :members: CGModel
     :inherited-members: CGModel
-    :exclude-members: basic_cgmodel, get_parent_bead
-
-Other coarse grained model utilities
-------------------------------------
-
-.. automodule:: cg_model.cgmodel
-    :members: get_parent_bead
+    :exclude-members: basic_cgmodel
