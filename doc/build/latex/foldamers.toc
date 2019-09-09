@@ -1,17 +1,19 @@
 \select@language {english}
 \contentsline {chapter}{\numberline {1}Coarse grained model utilities}{2}{chapter.1}
 \contentsline {section}{\numberline {1.1}\IeC {\textquoteleft }basic\_cgmodel\IeC {\textquoteright }: a simple function to build coarse grained homopolymers}{2}{section.1.1}
-\contentsline {section}{\numberline {1.2}Using the \IeC {\textquoteleft }CGModel()\IeC {\textquoteright } class to build coarse grained heteropolymers}{3}{section.1.2}
-\contentsline {chapter}{\numberline {2}Ensemble building tools}{12}{chapter.2}
-\contentsline {section}{\numberline {2.1}Using MSMBuilder to generate conformational ensembles}{12}{section.2.1}
-\contentsline {section}{\numberline {2.2}Native structure-based ensemble generation tools}{12}{section.2.2}
-\contentsline {section}{\numberline {2.3}Energy-based ensemble generation tools}{13}{section.2.3}
-\contentsline {section}{\numberline {2.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{14}{section.2.4}
-\contentsline {chapter}{\numberline {3}Thermodynamic analysis tools for coarse grained modeling}{17}{chapter.3}
-\contentsline {section}{\numberline {3.1}Tools to calculate the heat capacity with pymbar}{17}{section.3.1}
-\contentsline {chapter}{\numberline {4}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{18}{chapter.4}
-\contentsline {section}{\numberline {4.1}Input/Output options (src/utilities/iotools.py)}{18}{section.4.1}
-\contentsline {section}{\numberline {4.2}Utilities and random functions (src/utilities/util.py)}{19}{section.4.2}
-\contentsline {chapter}{\numberline {5}Indices and tables}{23}{chapter.5}
-\contentsline {chapter}{Python Module Index}{24}{section*.61}
-\contentsline {chapter}{Index}{25}{section*.62}
+\contentsline {section}{\numberline {1.2}Using the \IeC {\textquoteleft }CGModel()\IeC {\textquoteright } class to build coarse grained heteropolymers}{4}{section.1.2}
+\contentsline {chapter}{\numberline {2}Ensemble building tools}{13}{chapter.2}
+\contentsline {section}{\numberline {2.1}Using MSMBuilder to generate conformational ensembles}{13}{section.2.1}
+\contentsline {section}{\numberline {2.2}Native structure-based ensemble generation tools}{13}{section.2.2}
+\contentsline {section}{\numberline {2.3}Energy-based ensemble generation tools}{14}{section.2.3}
+\contentsline {section}{\numberline {2.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{15}{section.2.4}
+\contentsline {chapter}{\numberline {3}Parameter analysis tools for coarse grained modeling}{18}{chapter.3}
+\contentsline {section}{\numberline {3.1}How to}{18}{section.3.1}
+\contentsline {chapter}{\numberline {4}Thermodynamic analysis tools for coarse grained modeling}{19}{chapter.4}
+\contentsline {section}{\numberline {4.1}Tools to calculate the heat capacity with pymbar}{19}{section.4.1}
+\contentsline {chapter}{\numberline {5}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{20}{chapter.5}
+\contentsline {section}{\numberline {5.1}Input/Output options (src/utilities/iotools.py)}{20}{section.5.1}
+\contentsline {section}{\numberline {5.2}Utilities and random functions (src/utilities/util.py)}{21}{section.5.2}
+\contentsline {chapter}{\numberline {6}Indices and tables}{27}{chapter.6}
+\contentsline {chapter}{Python Module Index}{28}{section*.61}
+\contentsline {chapter}{Index}{29}{section*.62}

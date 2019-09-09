@@ -52,7 +52,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 08, 2019}
+\date{Sep 09, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -115,14 +115,16 @@ Shown below is the ‘basic\_cgmodel’ function, which requires a minimal set o
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-cgmodel: CGModel() class object
+\begin{itemize}
+\item {} 
+cgmodel (class) - CGModel() class object
 
-\item[{Return type}] \leavevmode
-class
+\end{itemize}
+
 
 \end{description}\end{quote}
 
-..warning:: this function has significant limitations, in comparison with building a coarse grained model with the CGModel() class.  In particular, this function makes it more difficult to build heteropolymers, and is best-suited for the simulation of homopolymers.
+..warning :: this function has significant limitations, in comparison with building a coarse grained model with the CGModel() class.  In particular, this function makes it more difficult to build heteropolymers, and is best-suited for the simulation of homopolymers.
 \begin{quote}\begin{description}
 \item[{Example}] \leavevmode
 \end{description}\end{quote}
@@ -143,6 +145,8 @@ class
 
 \end{fulllineitems}
 
+
+\newpage
 
 
 \section{Using the ‘CGModel()’ class to build coarse grained heteropolymers}
@@ -208,11 +212,11 @@ Returns a list of all unique particle masses
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-list\_of\_masses: List of unique particle masses
+\begin{itemize}
+\item {} 
+list\_of\_masses ( List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - List of unique particle masses
 
-\item[{Return type}] \leavevmode
-
-List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )
+\end{itemize}
 
 
 \end{description}\end{quote}
@@ -222,33 +226,44 @@ List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk
 \index{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}~\begin{quote}
+
 Determines the correct bond angle force constant for a bond angle between three particles, given their indices within the coarse grained model
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+\item[{type CGModel}] \leavevmode
+class
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+\item[{param particle\_1\_index}] \leavevmode
+Index for the first particle
 
+\item[{type particle\_1\_index}] \leavevmode
+int
+
+\item[{param particle\_2\_index}] \leavevmode
+Index for the second particle
+
+\item[{type particle\_2\_index}] \leavevmode
+int
+
+\item[{param particle\_3\_index}] \leavevmode
+Index for the third particle
+
+\item[{type particle\_3\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_3\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the third particle
+bond\_angle\_force\_constant ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/sim}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-bond\_angle\_force\_constant: The assigned bond angle force constant for the provided particles
-
-\item[{Return type}] \leavevmode
-
-bond\_angle\_force\_constant: \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+tk.unit.quantity.Quantity.html\textgreater{}{}`\_ ) - The assigned bond angle force constant for the provided particles
 
 \end{fulllineitems}
 
@@ -262,10 +277,12 @@ Construct a list of bond angles, which can be used to build bond angle potential
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-A list of indices for all of the bond angles in the coarse grained model
+\begin{itemize}
+\item {} 
+bond\_angles ( List( List( int, int, int ) ) ) - A list of indices for all of the bond angles in the coarse grained model
 
-\item[{Return type}] \leavevmode
-List( List( \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int} ) )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -290,11 +307,11 @@ Determines the correct bond force constant for two particles, given their indice
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-bond\_force\_constant: The assigned bond force constant for the provided particles
+\begin{itemize}
+\item {} 
+bond\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond force constant for the provided particles
 
-\item[{Return type}] \leavevmode
-
-bond\_length: \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+\end{itemize}
 
 
 \end{description}\end{quote}
@@ -304,60 +321,76 @@ bond\_length: \sphinxhref{https://docs.openmm.org/development/api-python/generat
 \index{get\_bond\_length() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}~\begin{quote}
+
 Determines the correct bond length for two particles, given their indices.
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+\item[{type CGModel}] \leavevmode
+class
 
+\item[{param particle\_1\_index}] \leavevmode
+Index for the first particle
+
+\item[{type particle\_1\_index}] \leavevmode
+int
+
+\item[{param particle\_2\_index}] \leavevmode
+Index for the second particle
+
+\item[{type particle\_2\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+bond\_length ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quanti}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-bond\_length: The assigned bond length for the provided particles
-
-\item[{Return type}] \leavevmode
-
-bond\_length: \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+ty.Quantity.html\textgreater{}{}`\_ ) - The assigned bond length for the provided particles
 
 \end{fulllineitems}
 
 \index{get\_bond\_length\_from\_names() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length_from_names}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length\_from\_names}}}{\emph{particle\_1\_name}, \emph{particle\_2\_name}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length_from_names}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length\_from\_names}}}{\emph{particle\_1\_name}, \emph{particle\_2\_name}}{}~\begin{quote}
+
 Determines the correct bond length for two particles, given their symbols.
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the first particle
+\item[{type CGModel}] \leavevmode
+class
 
+\item[{param particle\_1\_name}] \leavevmode
+Name for the first particle
+
+\item[{type particle\_1\_name}] \leavevmode
+str
+
+\item[{param particle\_2\_name}] \leavevmode
+Name for the second particle
+
+\item[{type particle\_2\_name}] \leavevmode
+str
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the second particle
+bond\_length ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quanti}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-bond\_length: The assigned bond length for the provided particles
-
-\item[{Return type}] \leavevmode
-
-bond\_length: \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+ty.Quantity.html\textgreater{}{}`\_ ) - The assigned bond length for the provided particles
 
 \end{fulllineitems}
 
@@ -371,10 +404,12 @@ Construct a bond list for the coarse grained model
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-bond\_list: A list of the bonds in the coarse grained model.
+\begin{itemize}
+\item {} 
+bond\_list ( List( List( int, int ) ) ) - A list of the bonds in the coarse grained model.
 
-\item[{Return type}] \leavevmode
-bond\_list: List( List( \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int} ) )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -383,30 +418,38 @@ bond\_list: List( List( \sphinxhref{https://docs.python.org/3/library/functions.
 \index{get\_epsilon() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_epsilon}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_epsilon}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_epsilon}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_epsilon}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}~\begin{quote}
+
 Returns the Lennard-Jones potential epsilon value for a particle, given its index within the coarse grained model.
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+\item[{type CGModel}] \leavevmode
+class
 
+\item[{param particle\_index}] \leavevmode
+Index of the particle for which we would like to determine the type
+
+\item[{type particle\_index}] \leavevmode
+int
+
+\item[{param particle\_type}] \leavevmode
+Designates a particle as “backbone” or “sidechain”
+
+\item[{type particle\_type}] \leavevmode
+str
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates a particle as “backbone” or “sidechain”
+epsilon ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.h}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-epsilon: The assigned Lennard-Jones epsilon value for the provided particle index
-
-\item[{Return type}] \leavevmode
-
-\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+tml\textgreater{}{}`\_ ) - The assigned Lennard-Jones epsilon value for the provided particle index
 
 \end{fulllineitems}
 
@@ -432,10 +475,12 @@ Determines the correct equilibrium bond angle between three particles, given the
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-equil\_bond\_angle: The assigned equilibrium bond angle for the provided particles
+\begin{itemize}
+\item {} 
+equil\_bond\_angle (float) - The assigned equilibrium bond angle for the provided particles
 
-\item[{Return type}] \leavevmode
-equil\_bond\_angle: float
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -457,10 +502,12 @@ Determines the correct equilibrium angle for a torsion (bond angle involving fou
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-equil\_torsion\_angle: The assigned equilibrium torsion angle for the provided particles
+\begin{itemize}
+\item {} 
+equil\_torsion\_angle (float) - The assigned equilibrium torsion angle for the provided particles
 
-\item[{Return type}] \leavevmode
-equil\_torsion\_angle: float
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -469,21 +516,26 @@ equil\_torsion\_angle: float
 \index{get\_monomer\_types() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_monomer_types}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_monomer\_types}}}{}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_monomer_types}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_monomer\_types}}}{}{}~\begin{quote}
+
 Get a list of ‘monomer\_types’ for all unique monomers.
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
-\item[{Returns}] \leavevmode
-monomer\_types: A list of unique monomer types in the coarse grained model
+\item[{type CGModel}] \leavevmode
+class
 
-\item[{Return type}] \leavevmode
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+monomer\_types ( List( dict( ‘monomer\_name’: str, ‘backbone\_length’: int, ‘sidechain\_length’: int, ‘si
 
-monomer\_types: List( dict( ‘monomer\_name’: str, ‘backbone\_length’: int, ‘sidechain\_length’: int, ‘sidechain\_positions’: List( int ), ‘num\_beads’: int, ‘bond\_lengths’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘epsilons’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘sigmas’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) )
-
+\end{itemize}
 
 \end{description}\end{quote}
+\end{quote}
+
+dechain\_positions’: List( int ), ‘num\_beads’: int, ‘bond\_lengths’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘epsilons’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘sigmas’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) ) ) - A list of unique monomer types in the coarse grained model
 
 \end{fulllineitems}
 
@@ -497,10 +549,12 @@ Get a list of the nonbonded interaction exclusions, which are assigned if two pa
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-exclusion\_list: A list of the nonbonded particle interaction exclusions for the coarse grained model
+\begin{itemize}
+\item {} 
+exclusion\_list ( List( List( int, int ) ) ) - A list of the nonbonded particle interaction exclusions for the coarse grained model
 
-\item[{Return type}] \leavevmode
-List( List( \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int} ) )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -516,10 +570,12 @@ Construct a nonbonded interaction list for the coarse grained model
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-interaction\_list: A list of the nonbonded interactions (which don’t violate exclusion rules) in the coarse grained model
+\begin{itemize}
+\item {} 
+interaction\_list ( List( List( int, int ) ) ) - A list of the nonbonded interactions (which don’t violate exclusion rules) in the coarse grained model
 
-\item[{Return type}] \leavevmode
-interaction\_list: List( List( \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int} ) )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -535,10 +591,12 @@ Calculate the number of beads in a coarse grained model class object
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-num\_beads: The total number of beads in the coarse grained model
+\begin{itemize}
+\item {} 
+num\_beads (int) - The total number of beads in the coarse grained model
 
-\item[{Return type}] \leavevmode
-num\_beads: int
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -547,27 +605,32 @@ num\_beads: int
 \index{get\_particle\_charge() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_charge}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_charge}}}{\emph{particle\_index}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_charge}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_charge}}}{\emph{particle\_index}}{}~\begin{quote}
+
 Returns the charge for a particle, given its index within the coarse grained model
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
+\item[{type CGModel}] \leavevmode
+class
+
+\item[{param particle\_index}] \leavevmode
+Index of the particle for which we would like to determine the type
+
+\item[{type particle\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+particle\_charge ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.h}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-particle\_charge: The charge for the provided particle index
-
-\item[{Return type}] \leavevmode
-
-\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+tml\textgreater{}{}`\_ ) - The charge for the provided particle index
 
 \end{fulllineitems}
 
@@ -581,10 +644,12 @@ Get a list of particles, where the indices correspond to those in the system/top
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-particle\_list: A list of unique particles in the coarse grained model
+\begin{itemize}
+\item {} 
+particle\_list ( List( str ) ) - A list of unique particles in the coarse grained model
 
-\item[{Return type}] \leavevmode
-particle\_list: List( \sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{str} )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -593,27 +658,32 @@ particle\_list: List( \sphinxhref{https://docs.python.org/3/library/stdtypes.htm
 \index{get\_particle\_mass() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_mass()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_mass}}}{\emph{particle\_index}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_mass}}}{\emph{particle\_index}}{}~\begin{quote}
+
 Get the mass for a particle, given its index within the coarse grained model
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
+\item[{type CGModel}] \leavevmode
+class
+
+\item[{param particle\_index}] \leavevmode
+Index of the particle for which we would like to determine the type
+
+\item[{type particle\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+particle\_mass ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.h}
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-particle\_mass: The mass for the provided particle index
-
-\item[{Return type}] \leavevmode
-
-\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+tml\textgreater{}{}`\_ ) - The mass for the provided particle index
 
 \end{fulllineitems}
 
@@ -633,10 +703,12 @@ Returns the name of a particle, given its index within the model
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-particle\_name: The name of the particle
+\begin{itemize}
+\item {} 
+particle\_name ( str ) - The name of the particle
 
-\item[{Return type}] \leavevmode
-particle\_name: str
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -661,10 +733,12 @@ Indicates if a particle is a backbone bead or a sidechain bead
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-particle\_type: ‘backbone’ or ‘sidechain’
+\begin{itemize}
+\item {} 
+particle\_type (str) - ‘backbone’ or ‘sidechain’
 
-\item[{Return type}] \leavevmode
-particle\_type: str
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -689,11 +763,11 @@ Returns the Lennard-Jones potential sigma value for a particle, given its index 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
-sigma: The assigned Lennard-Jones sigma value for the provided particle index
+\begin{itemize}
+\item {} 
+sigma ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned Lennard-Jones sigma value for the provided particle index
 
-\item[{Return type}] \leavevmode
-
-\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+\end{itemize}
 
 
 \end{description}\end{quote}
@@ -703,27 +777,32 @@ sigma: The assigned Lennard-Jones sigma value for the provided particle index
 \index{get\_torsion\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_force\_constant}}}{\emph{torsion}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_force\_constant}}}{\emph{torsion}}{}~\begin{quote}
+
 Determines the correct torsion force constant for a torsion (bond angle involving four particles), given their indices within the coarse grained model
 \begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+\item[{param CGModel}] \leavevmode
+CGModel() class object
 
+\item[{type CGModel}] \leavevmode
+class
+
+\item[{param torsion}] \leavevmode
+A list of the indices for the particles in a torsion
+
+\item[{type torsion}] \leavevmode
+List( int )
+
+\item[{returns}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+torsion\_force\_constant ( {\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk}.
 
 \end{itemize}
 
-\item[{Returns}] \leavevmode
-torsion\_force\_constant: The assigned torsion force constant for the provided particles
-
-\item[{Return type}] \leavevmode
-
-torsion\_force\_constant: \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
-
-
 \end{description}\end{quote}
+\end{quote}
+
+unit.quantity.Quantity.html\textgreater{}{}`\_ ) - The assigned torsion force constant for the provided particles
 
 \end{fulllineitems}
 
@@ -737,10 +816,12 @@ Construct a list of particle indices from which to define torsions for the coars
 \sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
 \item[{Returns}] \leavevmode
-torsions: A list of the particle indices for the torsions in the coarse grained model
+\begin{itemize}
+\item {} 
+torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse grained model
 
-\item[{Return type}] \leavevmode
-torsions: List( List( \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int}, \sphinxhref{https://docs.python.org/3/library/functions.html\#int}{int} ) )
+\end{itemize}
+
 
 \end{description}\end{quote}
 
@@ -1030,6 +1111,17 @@ When energies are written to a PDB file, only the sigma and epsilon values for t
 
 
 
+\chapter{Parameter analysis tools for coarse grained modeling}
+\label{\detokenize{parameters:parameter-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{parameters::doc}}
+The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse grained model.  In particular, the package contains tools to analyze quantities that reflect secondary structure, including: 1) the fraction of native contacts, 2) the orientational ordering parameter ‘P2’, and 3) using kHelios, helical order parameters such as the pitch.
+
+
+\section{How to}
+\label{\detokenize{parameters:how-to}}
+Shown below are functions/tools used in order to calculate
+the heat capacity with pymbar.
+
+
 \chapter{Thermodynamic analysis tools for coarse grained modeling}
 \label{\detokenize{thermo:thermodynamic-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{thermo::doc}}
 This page details the functions and classes in src/thermo
@@ -1095,78 +1187,197 @@ energy: Energy to write to the PDB file, default = None
 \label{\detokenize{utilities:module-utilities.util}}\label{\detokenize{utilities:utilities-and-random-functions-src-utilities-util-py}}\index{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}}\index{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.assign_position}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position}}}{\emph{positions}, \emph{bond\_length}, \emph{sigma}, \emph{bead\_index}, \emph{parent\_index}}{}
+\phantomsection\label{\detokenize{utilities:utilities.util.assign_position}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position}}}{\emph{positions}, \emph{bond\_length}, \emph{distance\_cutoff}, \emph{parent\_index}, \emph{bead\_index}}{}~\begin{quote}
+
 Assign random position for a bead
+\begin{quote}\begin{description}
+\item[{param positions}] \leavevmode
+Positions for the particles in a coarse grained model.
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+\item[{type positions}] \leavevmode
+np.array( float * unit.angstrom ( num\_particles x 3 ) )
 
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
+\item[{param bond\_length}] \leavevmode
+The distance to step when placing new particles.
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+\item[{type bond\_length}] \leavevmode
+\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+
+\item[{param distance\_cutoff}] \leavevmode
+The distance below which particles will be considered to have “collisions”.
+
+\item[{type distance\_cutoff}] \leavevmode
+{\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quanti}
+
+\end{description}\end{quote}
+\end{quote}
+
+ty.Quantity.html\textgreater{}{}`\_
+\begin{quote}
+\begin{quote}\begin{description}
+\item[{param parent\_bead\_index}] \leavevmode
+The index of the particle from which we will bond a new particle, when assigning pos
+
+\end{description}\end{quote}
+\end{quote}
+\begin{description}
+\item[{itions.}] \leavevmode\begin{quote}\begin{description}
+\item[{type parent\_bead\_index}] \leavevmode
+int
+
+\item[{param bead\_index}] \leavevmode
+The index of the particle for which the function will assign positions.
+
+\item[{type bead\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of positions for the updated model, including the particle that was just added.
+
+\item {} 
+success ( Logical ) - Indicates whether or not a particle was placed successfully.
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{description}
 
 \end{fulllineitems}
 
 \index{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.assign_position_lattice_style}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position\_lattice\_style}}}{\emph{cgmodel}, \emph{positions}, \emph{distance\_cutoff}, \emph{parent\_bead\_index}, \emph{bead\_index}}{}
-Assign random position for a bead
+\phantomsection\label{\detokenize{utilities:utilities.util.assign_position_lattice_style}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position\_lattice\_style}}}{\emph{cgmodel}, \emph{positions}, \emph{distance\_cutoff}, \emph{parent\_bead\_index}, \emph{bead\_index}}{}~\begin{quote}
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+Assign random position for a particle
+\begin{quote}\begin{description}
+\item[{param cgmodel}] \leavevmode
+CGModel() class object.
 
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
+\item[{type cgmodel}] \leavevmode
+class
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+\item[{param positions}] \leavevmode
+Positions for the particles in a coarse grained model.
+
+\item[{type positions}] \leavevmode
+np.array( float * unit.angstrom ( num\_particles x 3 ) )
+
+\item[{param distance\_cutoff}] \leavevmode
+The distance below which particles will be considered to have “collisions”.
+
+\item[{type distance\_cutoff}] \leavevmode
+{\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quanti}
+
+\end{description}\end{quote}
+\end{quote}
+
+ty.Quantity.html\textgreater{}{}`\_
+\begin{quote}
+\begin{quote}\begin{description}
+\item[{param parent\_bead\_index}] \leavevmode
+The index of the particle from which we will bond a new particle, when assigning positions.
+
+\item[{type parent\_bead\_index}] \leavevmode
+int
+
+\item[{param bead\_index}] \leavevmode
+The index of the particle for which the function will assign positions.
+
+\item[{type bead\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+test\_positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of positions for the updated model, including the particle that was just added.
+
+\item {} 
+success ( Logical ) - Indicates whether or not a particle was placed successfully.
+
+\end{itemize}
+
+\end{description}\end{quote}
+\end{quote}
 
 \end{fulllineitems}
 
 \index{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.attempt_lattice_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_lattice\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}, \emph{move\_direction\_list}}{}
-Given a set of cartesian coordinates, assign a new particle
-a distance of ‘bond\_length’ away in a random direction.
+\phantomsection\label{\detokenize{utilities:utilities.util.attempt_lattice_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_lattice\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}, \emph{move\_direction\_list}}{}~\begin{quote}
 
-parent\_coordinates: Positions for a single particle,
-away from which we will place a new particle a distance
-of ‘bond\_length’ away.
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+Given a set of cartesian coordinates this function positions a new particle a distance of ‘bond\_length’ away in a random direction.
+\begin{quote}\begin{description}
+\item[{param parent\_coordinates}] \leavevmode
+Positions for a single particle, away from which we will place a new particle a distance of ‘bond\_length’ away.
 
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
+\item[{type parent\_coordinates}] \leavevmode
+np.array( float * unit.angstrom ( length = 3 ) )
 
-trial\_coordinates: Positions for a new trial particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item[{param bond\_length}] \leavevmode
+Bond length for all beads that are bonded.
+
+\item[{type bond\_length}] \leavevmode
+{\color{red}\bfseries{}{}`}Quantity() \textless{}\sphinxurl{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Q}
+
+\end{description}\end{quote}
+\end{quote}
+
+uantity.html\textgreater{}{}`\_
+\begin{quote}
+\begin{quote}\begin{description}
+\item[{param move\_direction\_list}] \leavevmode
+A list of cartesian directions (denoted by integers) that tracks the directions in which a particle placement has been attempted.
+
+\item[{type move\_direction\_list}] \leavevmode
+List( int )
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+trial\_coordinates ( np.array( float * unit.angstrom ( length = 3 ) ) ) - The coordinates for a new, trial particle.
+
+\item {} 
+move\_direction\_list ( List(int) ) - A list of cartesian directions (denoted by integers) that tracks the directions in which a particle placement has been attempted.
+
+\end{itemize}
+
+\end{description}\end{quote}
+\end{quote}
 
 \end{fulllineitems}
 
 \index{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.util.attempt_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}}{}
+\phantomsection\label{\detokenize{utilities:utilities.util.attempt_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}}{}~\begin{quote}
+
 Given a set of cartesian coordinates, assign a new particle
 a distance of ‘bond\_length’ away in a random direction.
+\begin{quote}\begin{description}
+\item[{param parent\_coordinates}] \leavevmode
+Positions for a single particle, away from which we will place a new particle a distance of ‘bond\_length’ away.
 
-parent\_coordinates: Positions for a single particle,
-away from which we will place a new particle a distance
-of ‘bond\_length’ away.
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item[{type parent\_coordinates}] \leavevmode
+np.array( float * unit.angstrom ( length = 3 ) )
 
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
+\item[{param bond\_length}] \leavevmode
+Bond length for all beads that are bonded.
 
-trial\_coordinates: Positions for a new trial particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item[{type bond\_length}] \leavevmode
+\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+trial\_coordinates ( np.array( float * unit.angstrom ( length = 3 ) ) ) - The coordinates for a new, trial
+
+\end{itemize}
+
+\end{description}\end{quote}
+\end{quote}
+
+particle.
 
 \end{fulllineitems}
 
@@ -1174,20 +1385,30 @@ trial\_coordinates: Positions for a new trial particle
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.collisions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{collisions}}}{\emph{positions}, \emph{distance\_list}, \emph{distance\_cutoff}}{}
-Determine whether there are any collisions between non-bonded
-particles, where a “collision” is defined as a distance shorter
-than the user-provided ‘bond\_length’.
+Determine if there are any collisions between non-bonded
+particles, where a “collision” is defined as a distance shorter than ‘distance\_cutoff’.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
 
-distances: List of the distances between all nonbonded particles.
-( list ( float * simtk.unit.distance ( length = \# nonbonded\_interactions ) ) )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance\_list}} \textendash{} A list of distances.
 
-bond\_length: Bond length for all beads that are bonded,
-( float * simtk.unit.distance )
-default = 1.0 * unit.angstrom
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance\_cutoff}} \textendash{} The distance below which particles will be considered to have “collisions”.
 
-collision: Logical variable stating whether or not the model has
-bead collisions.
-default = False
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+collision (Logical) - A variable indicating whether or not the model contains particle collisions.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1195,16 +1416,26 @@ default = False
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.distance}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distance}}}{\emph{positions\_1}, \emph{positions\_2}}{}
-Construct a matrix of the distances between all particles.
+Calculate the distance between two particles.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions\_1}} \textendash{} Positions for a particle
 
-positions\_1: Positions for a particle
-( np.array( length = 3 ) )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions\_2}} \textendash{} Positions for a particle
 
-positions\_2: Positions for a particle
-( np.array( length = 3 ) )
+\end{itemize}
 
-distance
-( float * unit )
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The distance between the provided particles.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1212,13 +1443,20 @@ distance
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.distance_matrix}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distance\_matrix}}}{\emph{positions}}{}
-Construct a matrix of the distances between all particles.
+Construct a matrix of the distances between an input array of particles.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for an array of particles.
 
-positions: Positions for an array of particles.
-( np.array( num\_particles x 3 ) )
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance\_matrix (np.array(num\_particles x num\_particles)) - Matrix containing the distances between all beads.
 
-distance\_matrix: Matrix containing the distances between all beads.
-( np.array( num\_particles x 3 ) )
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1226,17 +1464,26 @@ distance\_matrix: Matrix containing the distances between all beads.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.distances}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distances}}}{\emph{interaction\_list}, \emph{positions}}{}
-Calculate the distances between a trial particle (‘new\_coordinates’)
-and all existing particles (‘existing\_coordinates’).
+Calculate the distances between all non-bonded particles in a model, given a list of particle interactions and particle positions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{interaction\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{{[} }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ {]} }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} A list of non-bonded particle interactions
 
-new\_coordinates: Positions for a single trial particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
 
-existing\_coordinates: Positions for a single trial particle
-( np.array( float * unit.angstrom ( shape = num\_particles x 3 ) ) )
+\end{itemize}
 
-distances: List of the distances between all nonbonded particles.
-( list ( float * simtk.unit.distance ( length = \# nonbonded\_interactions ) ) )
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance\_list ( List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - A list of distances for the non-bonded interactions in the coarse grained model.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1244,10 +1491,20 @@ distances: List of the distances between all nonbonded particles.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.first_bead}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{first\_bead}}}{\emph{positions}}{}
-Determine if we have any particles in ‘positions’
-positions: Positions for all beads in the coarse-grained model.
-( np.array( float * unit ( shape = num\_beads x 3 ) ) )
-first\_bead: Logical variable stating if this is the first particle.
+Determine if the provided ‘positions’ contain any particles (are the coordinates non-zero).
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for all beads in the coarse-grained model.
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+first\_bead (Logical) - Variable stating if the positions are all non-zero.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1255,28 +1512,43 @@ first\_bead: Logical variable stating if this is the first particle.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.get_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_move}}}{\emph{trial\_coordinates}, \emph{move\_direction}, \emph{distance}, \emph{bond\_length}, \emph{finish\_bond=False}}{}
-Given a ‘move\_direction’, a current distance, and a
-target ‘bond\_length’ ( Index denoting x,y,z Cartesian 
-direction), update the coordinates for the particle.
+Used to build random structures.  Given a set of input coordinates, this function attempts to add a new particle.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{trial\_coordinates}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{length = 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for a particle
 
-trial\_coordinates: positions for a particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{move\_direction}} \textendash{} Cartesian direction in which we will
 
-move\_direction: Cartesian direction in which we will
+\end{itemize}
+
+\end{description}\end{quote}
+
 attempt a particle placement, where: x=0, y=1, z=2. 
-( integer )
+:type move\_direction: int
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance}} \textendash{} Current distance between the trial coordinates for the particle this function is positioning and the particle that it is branched from (bonded to).
 
-distance: Current distance from parent particle
-( float * simtk.unit.distance )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} \textendash{} The distance to step before placing a new particle.
 
-bond\_length: Target bond\_length for particle placement.
-( float * simtk.unit.distance )
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{finish\_bond}} \textendash{} Logical variable determining how we will update the coordinates for this particle, default = False.  If set to “True”, the “move” length will be the difference between “distance” and “bond\_length”.
 
-finish\_bond: Logical variable determining how we will
-update the coordinates for this particle.
+\end{itemize}
 
-trial\_coordinates: Updated positions for the particle
-( np.array( float * unit.angstrom ( length = 3 ) ) )
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+trial\_coordinates (np.array( float * unit.angstrom (length=3) )) - Updated positions for the particle.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1285,11 +1557,10 @@ trial\_coordinates: Updated positions for the particle
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.get_structure_from_library}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_structure\_from\_library}}}{\emph{cgmodel}, \emph{high\_energy=False}, \emph{low\_energy=False}}{}
 Given a coarse grained model class object, this function retrieves
-a set of positions for the model from the ensemble library, in:
-‘../foldamers/ensembles/\$\{backbone\_length\}\_\$\{sidechain\_length\}\_\$\{sidechain\_positions\}’
+a set of positions for the model from the ‘foldamers’ ensemble library, in:
+‘foldamers/ensembles/\$\{backbone\_length\}\_\$\{sidechain\_length\}\_\$\{sidechain\_positions\}’
 If this coarse grained model does not have an ensemble library, an 
-error message will be returned and we will attempt to assign 
-positions at random with ‘random\_positions()’.
+error message will be returned and positions at random with ‘random\_positions()’.
 
 cgmodel: CGModel() class object.
 \begin{quote}\begin{description}
@@ -1302,10 +1573,15 @@ cgmodel: CGModel() class object.
 
 \end{itemize}
 
-\end{description}\end{quote}
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of coarse grained model positions.
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1316,35 +1592,37 @@ positions: Positions for all beads in the coarse-grained model.
 Assign random positions for all beads in a coarse-grained polymer.
 
 cgmodel: CGModel() class object.
-
-max\_attempts: The maximum number of times that we will attempt to build
-a coarse grained model with the settings in ‘cgmodel’.
-default = 1000
-
-use\_library: A logical variable determining if we will generate a new
-random structure, or take a random structure from the library in the following path:
-‘../foldamers/ensembles/\$\{backbone\_length\}\_\$\{sidechain\_length\}\_\$\{sidechain\_positions\}’
-default = True
-( NOTE: By default, if use\_library = False, new structures will be added to the
-\begin{quote}
-
-ensemble library for the relevant coarse grained model.  If that model does not
-have an ensemble library, one will be created. )
-\end{quote}
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{max\_attempts}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The maximum number of attempts to generate random positions a coarse grained model with the current parameters, default = 1000
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{use\_library}} \textendash{} A logical variable determining if a new random structure will be generated, or if an ensemble will be read from the ‘foldamers’ database, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{use\_library}} \textendash{} Logical
+
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
 
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{generate\_library}} \textendash{} If set to ‘True’, this function will save the poses that are generated to the ‘foldamers’ ensemble database.
+
 \end{itemize}
 
-\end{description}\end{quote}
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of coarse grained model positions.
 
-positions: Positions for all beads in the coarse-grained model.
-( np.array( num\_beads x 3 ) )
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1352,11 +1630,20 @@ positions: Positions for all beads in the coarse-grained model.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.util.random_sign}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{random\_sign}}}{\emph{number}}{}
-Returns ‘number’ with a random sign.
+Returns the provided ‘number’ with a random sign.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{number}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The number to add a random sign (positive or negative) to
 
-number: float
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+number (float) - The provided number with a random sign added
 
-number
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 

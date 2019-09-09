@@ -11,6 +11,10 @@ Shown below is the 'basic_cgmodel' function, which requires a minimal set of inp
 .. automodule:: cg_model.cgmodel
     :members: basic_cgmodel
 
+.. raw:: latex
+
+    \newpage
+
 Using the 'CGModel()' class to build coarse grained heteropolymers
 ------------------------------------------------------------------
 
