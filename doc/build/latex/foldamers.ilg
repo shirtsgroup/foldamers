@@ -1,7 +1,7 @@
-This is makeindex, version 2.15 [TeX Live 2017] (kpathsea + Thai support).
+This is makeindex, version 2.15 [TeX Live 2013] (kpathsea + Thai support).
 Scanning style file ./python.ist.......done (7 attributes redefined, 0 ignored).
-Scanning input file foldamers.idx....done (4 entries accepted, 0 rejected).
-Sorting entries....done (9 comparisons).
-Generating output file foldamers.ind....done (17 lines written, 0 warnings).
+Scanning input file foldamers.idx....done (59 entries accepted, 0 rejected).
+Sorting entries....done (338 comparisons).
+Generating output file foldamers.ind....done (121 lines written, 0 warnings).
 Output written in foldamers.ind.
 Transcript written in foldamers.ilg.

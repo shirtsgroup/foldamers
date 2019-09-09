@@ -15,16 +15,12 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../foldamers'))
-#sys.path.insert(1,os.path.abspath('../../src/cg_model'))
-#sys.path.insert(2,os.path.abspath('../../src/thermo'))
-#sys.path.insert(3,os.path.abspath('../../src/utilities'))
-
 
 # -- Project information -----------------------------------------------------
 
 project = 'foldamers'
 copyright = '2019, Shirts research group'
-author = "Garrett A. Meek\\\Theodore L. Fobe\\\Connor M. Vogel\\\Research group of Professor Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
+author = "Garrett A. Meek\\\Theodore L. Fobe\\\Connor M. Vogel\\\ \\\Research group of Professor Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
 
 # The short X.Y version
 version = ''
@@ -45,10 +41,10 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.ifconfig',
+    #'sphinx.ext.todo',
+    #'sphinx.ext.coverage',
+    #'sphinx.ext.imgmath',
+    #'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
 ]
@@ -196,4 +192,4 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # -- Options for todo extension ----------------------------------------------
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+#todo_include_todos = True

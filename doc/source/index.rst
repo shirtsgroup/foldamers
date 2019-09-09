@@ -13,6 +13,7 @@ This documentation is generated automatically using Sphinx, which reads all docs
 
    cg_model.rst
    ensembles.rst
+   parameters.rst
    thermo.rst
    utilities.rst
 
