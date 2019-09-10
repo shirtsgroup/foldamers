@@ -19,7 +19,7 @@ VERSION = 0.0
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    # 'requests', 'maya', 'records',
+    'cg_openmm', 'pymbar', 'MDTraj', 'MSMBuilder'
 ]
 
 # What packages are optional?
@@ -27,7 +27,7 @@ EXTRAS = {
     # 'fancy feature': ['django'],
 }
 
-#here = os.path.abspath(os.path.dirname(__file__))
+here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
@@ -100,6 +100,7 @@ setup(
     extras_require=EXTRAS,
     include_package_data=True,
     license='MIT',
+    keywords'foldamers, coarse grained models, parameter re-weighting, oligomers',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
