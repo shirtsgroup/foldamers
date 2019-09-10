@@ -5,117 +5,30 @@
 \let\spxextra \sphinxstyleindexextra
 
   \bigletter A
-  \item \spxentry{assign\_position()}\spxextra{in module utilities.util}, \hyperpage{21}
-  \item \spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}, 
-		\hyperpage{21}
-  \item \spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}, \hyperpage{22}
-  \item \spxentry{attempt\_move()}\spxextra{in module utilities.util}, \hyperpage{23}
-
-  \indexspace
-  \bigletter B
-  \item \spxentry{basic\_cgmodel()}\spxextra{in module cg\_model.cgmodel}, \hyperpage{2}
+  \item \spxentry{align\_structures()}\spxextra{in module ensembles.cluster}, \hyperpage{4}
 
   \indexspace
   \bigletter C
-  \item \spxentry{cg\_model.cgmodel}\spxextra{module}, \hyperpage{2}, \hyperpage{4}
-  \item \spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}, \hyperpage{4}
-  \item \spxentry{collisions()}\spxextra{in module utilities.util}, \hyperpage{23}
-
-  \indexspace
-  \bigletter D
-  \item \spxentry{distance()}\spxextra{in module utilities.util}, \hyperpage{23}
-  \item \spxentry{distance\_matrix()}\spxextra{in module utilities.util}, \hyperpage{24}
-  \item \spxentry{distances()}\spxextra{in module utilities.util}, \hyperpage{24}
+  \item \spxentry{concatenate\_trajectories()}\spxextra{in module ensembles.cluster}, \hyperpage{4}
 
   \indexspace
   \bigletter E
-  \item \spxentry{ensembles.ens\_build}\spxextra{module}, \hyperpage{13, 14}, \hyperpage{16}
-
-  \indexspace
-  \bigletter F
-  \item \spxentry{first\_bead()}\spxextra{in module utilities.util}, \hyperpage{24}
+  \item \spxentry{ensembles.cluster}\spxextra{module}, \hyperpage{4}
 
   \indexspace
   \bigletter G
-  \item \spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{5}
-  \item \spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{6}
-  \item \spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{6}
-  \item \spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{6}
-  \item \spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{7}
-  \item \spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{7}
-  \item \spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{7}
-  \item \spxentry{get\_ensemble()}\spxextra{in module ensembles.ens\_build}, \hyperpage{14}
-  \item \spxentry{get\_ensemble\_data()}\spxextra{in module ensembles.ens\_build}, \hyperpage{17}
-  \item \spxentry{get\_ensemble\_directory()}\spxextra{in module ensembles.ens\_build}, 
-		\hyperpage{16}
-  \item \spxentry{get\_ensembles()}\spxextra{in module ensembles.ens\_build}, \hyperpage{13}
-  \item \spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{8}
-  \item \spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{8}
-  \item \spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{8}
-  \item \spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
-  \item \spxentry{get\_move()}\spxextra{in module utilities.util}, \hyperpage{24}
-  \item \spxentry{get\_native\_ensemble()}\spxextra{in module ensembles.ens\_build}, \hyperpage{13}
-  \item \spxentry{get\_nonbonded\_exclusion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{9}
-  \item \spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{9}
-  \item \spxentry{get\_nonnative\_ensemble()}\spxextra{in module ensembles.ens\_build}, 
-		\hyperpage{13}
-  \item \spxentry{get\_num\_beads()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
-  \item \spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{9}
-  \item \spxentry{get\_particle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{10}
-  \item \spxentry{get\_particle\_mass()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{10}
-  \item \spxentry{get\_particle\_name()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{10}
-  \item \spxentry{get\_particle\_type()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{11}
-  \item \spxentry{get\_pdb\_list()}\spxextra{in module ensembles.ens\_build}, \hyperpage{16}
-  \item \spxentry{get\_sigma()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{11}
-  \item \spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}, 
-		\hyperpage{25}
-  \item \spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}, 
-		\hyperpage{11}
-  \item \spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{12}
-
-  \indexspace
-  \bigletter I
-  \item \spxentry{improve\_ensemble()}\spxextra{in module ensembles.ens\_build}, \hyperpage{15}
-
-  \indexspace
-  \bigletter N
-  \item \spxentry{nonbonded\_interaction\_list}\spxextra{cg\_model.cgmodel.CGModel attribute}, 
-		\hyperpage{12}
-
-  \indexspace
-  \bigletter R
-  \item \spxentry{random\_positions()}\spxextra{in module utilities.util}, \hyperpage{25}
-  \item \spxentry{random\_sign()}\spxextra{in module utilities.util}, \hyperpage{26}
-
-  \indexspace
-  \bigletter T
-  \item \spxentry{test\_energy()}\spxextra{in module ensembles.ens\_build}, \hyperpage{14}
+  \item \spxentry{get\_cluster\_centroid\_positions()}\spxextra{in module ensembles.cluster}, 
+		\hyperpage{4}
 
   \indexspace
   \bigletter U
-  \item \spxentry{utilities.iotools}\spxextra{module}, \hyperpage{20}
-  \item \spxentry{utilities.util}\spxextra{module}, \hyperpage{21}
+  \item \spxentry{utilities.iotools}\spxextra{module}, \hyperpage{8}
 
   \indexspace
   \bigletter W
-  \item \spxentry{write\_bonds()}\spxextra{in module utilities.iotools}, \hyperpage{20}
-  \item \spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}, \hyperpage{20}
-  \item \spxentry{write\_ensemble\_pdb()}\spxextra{in module ensembles.ens\_build}, \hyperpage{16}
+  \item \spxentry{write\_bonds()}\spxextra{in module utilities.iotools}, \hyperpage{8}
+  \item \spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}, \hyperpage{8}
   \item \spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}, 
-		\hyperpage{20}
-
-  \indexspace
-  \bigletter Z
-  \item \spxentry{z\_score()}\spxextra{in module ensembles.ens\_build}, \hyperpage{14}
+		\hyperpage{8}
 
 \end{sphinxtheindex}
