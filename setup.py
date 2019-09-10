@@ -100,7 +100,7 @@ setup(
     extras_require=EXTRAS,
     include_package_data=True,
     license='MIT',
-    keywords'foldamers, coarse grained models, parameter re-weighting, oligomers',
+    keywords='foldamers, coarse grained models, parameter re-weighting, oligomers',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
