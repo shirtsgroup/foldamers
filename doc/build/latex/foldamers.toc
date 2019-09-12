@@ -1,19 +1,21 @@
 \babel@toc {english}{}
 \contentsline {chapter}{\numberline {1}Coarse grained model utilities}{2}{chapter.1}
 \contentsline {section}{\numberline {1.1}\IeC {\textquoteleft }basic\_cgmodel\IeC {\textquoteright }: a simple function to build coarse grained homopolymers}{2}{section.1.1}
-\contentsline {section}{\numberline {1.2}Using the \IeC {\textquoteleft }CGModel()\IeC {\textquoteright } class to build coarse grained heteropolymers}{3}{section.1.2}
-\contentsline {chapter}{\numberline {2}Ensemble building tools}{4}{chapter.2}
-\contentsline {section}{\numberline {2.1}Using MSMBuilder to generate conformational ensembles}{4}{section.2.1}
-\contentsline {section}{\numberline {2.2}Native structure-based ensemble generation tools}{4}{section.2.2}
-\contentsline {section}{\numberline {2.3}Energy-based ensemble generation tools}{5}{section.2.3}
-\contentsline {section}{\numberline {2.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{5}{section.2.4}
-\contentsline {chapter}{\numberline {3}Parameter analysis tools for coarse grained modeling}{6}{chapter.3}
-\contentsline {section}{\numberline {3.1}How to}{6}{section.3.1}
-\contentsline {chapter}{\numberline {4}Thermodynamic analysis tools for coarse grained modeling}{7}{chapter.4}
-\contentsline {section}{\numberline {4.1}Tools to calculate the heat capacity with pymbar}{7}{section.4.1}
-\contentsline {chapter}{\numberline {5}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{8}{chapter.5}
-\contentsline {section}{\numberline {5.1}Input/Output options (src/utilities/iotools.py)}{8}{section.5.1}
-\contentsline {section}{\numberline {5.2}Utilities and random functions (src/utilities/util.py)}{9}{section.5.2}
-\contentsline {chapter}{\numberline {6}Indices and tables}{10}{chapter.6}
-\contentsline {chapter}{Python Module Index}{11}{section*.11}
-\contentsline {chapter}{Index}{12}{section*.12}
+\contentsline {section}{\numberline {1.2}Using the \IeC {\textquoteleft }CGModel()\IeC {\textquoteright } class to build coarse grained heteropolymers}{4}{section.1.2}
+\contentsline {chapter}{\numberline {2}Thermodynamic analysis tools for coarse grained modeling}{12}{chapter.2}
+\contentsline {section}{\numberline {2.1}Using MBAR to compute expectation values for structural \& thermodynamic properties}{12}{section.2.1}
+\contentsline {section}{\numberline {2.2}Evaluating thermodynamic properties with \IeC {\textquoteleft }pymbar\IeC {\textquoteright }}{14}{section.2.2}
+\contentsline {section}{\numberline {2.3}Tools to evaluate thermodynamic properties with \IeC {\textquoteleft }pymbar\IeC {\textquoteright }}{15}{section.2.3}
+\contentsline {section}{\numberline {2.4}Calculating the heat capacity with pymbar}{17}{section.2.4}
+\contentsline {chapter}{\numberline {3}Ensemble building tools}{19}{chapter.3}
+\contentsline {section}{\numberline {3.1}Using MSMBuilder to generate conformational ensembles}{19}{section.3.1}
+\contentsline {section}{\numberline {3.2}Native structure-based ensemble generation tools}{21}{section.3.2}
+\contentsline {section}{\numberline {3.3}Energy-based ensemble generation tools}{24}{section.3.3}
+\contentsline {section}{\numberline {3.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{26}{section.3.4}
+\contentsline {chapter}{\numberline {4}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{28}{chapter.4}
+\contentsline {section}{\numberline {4.1}Random structure generation in \IeC {\textquoteleft }foldamers\IeC {\textquoteright }}{28}{section.4.1}
+\contentsline {section}{\numberline {4.2}Reading and writing to output within the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{35}{section.4.2}
+\contentsline {chapter}{\numberline {5}Parameter analysis tools for coarse grained modeling}{36}{chapter.5}
+\contentsline {chapter}{\numberline {6}Indices and tables}{38}{chapter.6}
+\contentsline {chapter}{Python Module Index}{39}{section*.94}
+\contentsline {chapter}{Index}{40}{section*.95}

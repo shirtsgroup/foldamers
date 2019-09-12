@@ -11,6 +11,10 @@ The foldamers package allows the user to apply K-means clustering tools from MSM
 .. automodule:: ensembles.cluster
     :members: concatenate_trajectories, align_structures, get_cluster_centroid_positions
 
+.. raw:: latex
+
+    \newpage
+
 Native structure-based ensemble generation tools
 ------------------------------------------------
 
@@ -19,6 +23,10 @@ The foldamers package allows the user to build "native" and "nonnative" structur
 .. automodule:: ensembles.ens_build
     :members: get_ensembles, get_native_ensemble, get_nonnative_ensemble, z_score
 
+.. raw:: latex
+
+    \newpage
+
 Energy-based ensemble generation tools
 --------------------------------------
 
@@ -26,6 +34,10 @@ The foldamers package allows the user to build structural ensembles that exhibit
 
 .. automodule:: ensembles.ens_build
     :members: get_ensemble, test_energy, improve_ensemble
+
+.. raw:: latex
+
+    \newpage
 
 Writing and reading ensemble data from the 'foldamers' database
 ---------------------------------------------------------------

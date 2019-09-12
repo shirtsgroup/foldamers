@@ -71,7 +71,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 09, 2019}
+\date{Sep 11, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -99,12 +99,1052 @@ The foldamers package uses “CGModel()” objects to define and store informati
 \label{\detokenize{cg_model:basic-cgmodel-a-simple-function-to-build-coarse-grained-homopolymers}}
 Shown below is the ‘basic\_cgmodel’ function, which requires a minimal set of input arguments to build a coarse grained holopolymer model.
 
+\phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{basic\_cgmodel() (in module cg\_model.cgmodel)@\spxentry{basic\_cgmodel()}\spxextra{in module cg\_model.cgmodel}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.basic_cgmodel}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{basic\_cgmodel}}}{\emph{polymer\_length=12, backbone\_length=1, sidechain\_length=1, sidechain\_positions={[}0{]}, mass=Quantity(value=100.0, unit=dalton), bond\_length=Quantity(value=0.75, unit=nanometer), sigma=Quantity(value=1.85, unit=nanometer), epsilon=Quantity(value=0.5, unit=kilocalorie/mole), positions=None}}{}~\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{polymer\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of monomer units, default = 8
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{backbone\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of beads in the backbone for individual monomers within a coarse grained model, default = 1
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of beads in the sidechain for individual monomers within a coarse grained model, default = 1
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Designates the indices of backbone beads upon which we will place sidechains, default = {[}0{]} (add a sidechain to the first backbone bead in each monomer)
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{mass}} (\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}) \textendash{} Mass for all coarse grained beads, default = 100.0 * unit.amu
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} \textendash{} Defines the length for all bond types, default = 7.5 * unit.angstrom
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sigma}} \textendash{} Lennard-Jones equilibrium interaction distance (by default, calculated for particles that are separated by 3 or more bonds), default = 18.5 * bond\_length (for all interaction types)
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{epsilon}} \textendash{} Lennard-Jones equilibrium interaction energy (by default, calculated for particles that are separated by 3 or more bonds), default = 0.5 * unit.kilocalorie\_per\_mole
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} \textendash{} Positions for coarse grained particles in the model, default = None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+cgmodel (class) - CGModel() class object
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+this function has significant limitations, in comparison with building a coarse grained model with the CGModel() class.  In particular, this function makes it more difficult to build heteropolymers, and is best-suited for the simulation of homopolymers.
+\end{sphinxadmonition}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{polymer\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{20}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{backbone\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}positions} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{mass} \PYG{o}{=} \PYG{l+m+mf}{100.0} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{amu}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mf}{0.75} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{nanometer}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigma}\PYG{o}{=}\PYG{l+m+mf}{1.85}\PYG{o}{*}\PYG{n}{unit}\PYG{o}{.}\PYG{n}{nanometer}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilon}\PYG{o}{=}\PYG{l+m+mf}{0.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{kilocalorie\PYGZus{}per\PYGZus{}mole}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{basic\PYGZus{}cgmodel}\PYG{p}{(}\PYG{n}{polymer\PYGZus{}length}\PYG{o}{=}\PYG{n}{polymer\PYGZus{}length}\PYG{p}{,}\PYG{n}{backbone\PYGZus{}length}\PYG{o}{=}\PYG{n}{backbone\PYGZus{}length}\PYG{p}{,}\PYG{n}{sidechain\PYGZus{}length}\PYG{o}{=}\PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,}\PYG{n}{sidechain\PYGZus{}positions}\PYG{o}{=}\PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,}\PYG{n}{mass}\PYG{o}{=}\PYG{n}{mass}\PYG{p}{,}\PYG{n}{bond\PYGZus{}length}\PYG{o}{=}\PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{n}{sigma}\PYG{o}{=}\PYG{n}{sigma}\PYG{p}{,}\PYG{n}{epsilon}\PYG{o}{=}\PYG{n}{epsilon}\PYG{p}{)} 
+\end{sphinxVerbatim}
+
+\end{fulllineitems}
+
+
 \newpage
 
 
 \section{Using the ‘CGModel()’ class to build coarse grained heteropolymers}
 \label{\detokenize{cg_model:using-the-cgmodel-class-to-build-coarse-grained-heteropolymers}}
 Shown below is a detailed description of the ‘CGModel()’ class object, as well as some of examples demonstrating how to use its functions and attributes.
+
+\phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{CGModel (class in cg\_model.cgmodel)@\spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=12, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=\{'backbone\_bead\_masses': Quantity(value=100.0, unit=dalton), 'sidechain\_bead\_masses': Quantity(value=100.0, unit=dalton)\}, sigmas=\{'bb\_bb\_sigma': Quantity(value=1.875, unit=nanometer), 'bb\_sc\_sigma': Quantity(value=1.875, unit=nanometer), 'sc\_sc\_sigma': Quantity(value=1.875, unit=nanometer)\}, epsilons=\{'bb\_bb\_eps': Quantity(value=0.05, unit=kilocalorie/mole), 'sc\_sc\_eps': Quantity(value=0.05, unit=kilocalorie/mole)\}, bond\_lengths=\{'bb\_bb\_bond\_length': Quantity(value=0.75, unit=nanometer), 'bb\_sc\_bond\_length': Quantity(value=0.75, unit=nanometer), 'sc\_sc\_bond\_length': Quantity(value=0.75, unit=nanometer)\}, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, equil\_bond\_angles=None, equil\_torsion\_angles=None, charges=None, constrain\_bonds=True, include\_bond\_forces=False, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, check\_energy\_conservation=True, use\_structure\_library=False, heteropolymer=False, monomer\_types=None, sequence=None, random\_positions=False}}{}
+Build a coarse grained model class object.
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mf}{7.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{angstrom}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}lengths} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}sc\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{constrain\PYGZus{}bonds} \PYG{o}{=} \PYG{k+kc}{False}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{n}{bond\PYGZus{}lengths}\PYG{o}{=}\PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,}\PYG{n}{constrain\PYGZus{}bonds}\PYG{o}{=}\PYG{n}{constrain\PYGZus{}bonds}\PYG{p}{)}
+\end{sphinxVerbatim}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{backbone\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}positions}\PYG{o}{=}\PYG{l+m+mi}{0}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mf}{7.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{angstrom}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigma} \PYG{o}{=} \PYG{l+m+mf}{2.0} \PYG{o}{*} \PYG{n}{bond\PYGZus{}length}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilon} \PYG{o}{=} \PYG{l+m+mf}{0.2} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{kilocalorie\PYGZus{}per\PYGZus{}mole}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigmas} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}sigma}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigma}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}sigma}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigma}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilons} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}sc\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{A} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{monomer\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{A}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{backbone\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{backbone\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}positions}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{num\PYGZus{}beads}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{num\PYGZus{}beads}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bond\PYGZus{}lengths}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{epsilons}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilons}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sigmas}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigmas}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{B} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{monomer\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{B}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{backbone\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{backbone\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}positions}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{num\PYGZus{}beads}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{num\PYGZus{}beads}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bond\PYGZus{}lengths}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{epsilons}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilons}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sigmas}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigmas}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{monomer\PYGZus{}types} \PYG{o}{=} \PYG{p}{[}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sequence} \PYG{o}{=} \PYG{p}{[}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{n}{heteropolymer}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,}\PYG{n}{monomer\PYGZus{}types}\PYG{o}{=}\PYG{n}{monomer\PYGZus{}types}\PYG{p}{,}\PYG{n}{sequence}\PYG{o}{=}\PYG{n}{sequence}\PYG{p}{)}
+\end{sphinxVerbatim}
+\index{get\_all\_particle\_masses() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_all_particle_masses}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_particle\_masses}}}{}{}
+Returns a list of all unique particle masses
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+list\_of\_masses ( List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - List of unique particle masses
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+Determines the correct bond angle force constant for a bond angle between three particles, given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_3\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the third particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_angle\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond angle force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_angle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_list}}}{}{}
+Construct a list of bond angles, which can be used to build bond angle potentials for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_angles ( List( List( int, int, int ) ) ) - A list of indices for all of the bond angles in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}
+Determines the correct bond force constant for two particles, given their indices
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_length() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}
+Determines the correct bond length for two particles, given their indices.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_length ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond length for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_length\_from\_names() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length_from_names}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length\_from\_names}}}{\emph{particle\_1\_name}, \emph{particle\_2\_name}}{}
+Determines the correct bond length for two particles, given their symbols.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_length ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond length for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_list}}}{}{}
+Construct a bond list for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_list ( List( List( int, int ) ) ) - A list of the bonds in the coarse grained model.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_epsilon() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_epsilon}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_epsilon}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}
+Returns the Lennard-Jones potential epsilon value for a particle, given its index within the coarse grained model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates a particle as “backbone” or “sidechain”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+epsilon ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned Lennard-Jones epsilon value for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_equil\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_bond_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_bond\_angle}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+Determines the correct equilibrium bond angle between three particles, given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_3\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the third particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+equil\_bond\_angle (float) - The assigned equilibrium bond angle for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_equil\_torsion\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_torsion_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_torsion\_angle}}}{\emph{torsion}}{}
+Determines the correct equilibrium angle for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+equil\_torsion\_angle (float) - The assigned equilibrium torsion angle for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_monomer\_types() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_monomer_types}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_monomer\_types}}}{}{}
+Get a list of ‘monomer\_types’ for all unique monomers.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+monomer\_types ( List( dict( ‘monomer\_name’: str, ‘backbone\_length’: int, ‘sidechain\_length’: int, ‘sidechain\_positions’: List( int ), ‘num\_beads’: int, ‘bond\_lengths’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘epsilons’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘sigmas’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) ) ) - A list of unique monomer types in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_nonbonded\_exclusion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_exclusion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_exclusion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_exclusion\_list}}}{}{}
+Get a list of the nonbonded interaction exclusions, which are assigned if two particles are separated by less than three bonds
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+exclusion\_list ( List( List( int, int ) ) ) - A list of the nonbonded particle interaction exclusions for the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_nonbonded\_interaction\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_interaction_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_interaction\_list}}}{}{}
+Construct a nonbonded interaction list for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+interaction\_list ( List( List( int, int ) ) ) - A list of the nonbonded interactions (which don’t violate exclusion rules) in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_num\_beads() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_num\_beads()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_num_beads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_num\_beads}}}{}{}
+Calculate the number of beads in a coarse grained model class object
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+num\_beads (int) - The total number of beads in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_charge() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_charge}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_charge}}}{\emph{particle\_index}}{}
+Returns the charge for a particle, given its index within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_charge ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The charge for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_list}}}{}{}
+Get a list of particles, where the indices correspond to those in the system/topology.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_list ( List( str ) ) - A list of unique particles in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_mass() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_mass()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_mass}}}{\emph{particle\_index}}{}
+Get the mass for a particle, given its index within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_mass ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The mass for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_name() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_name()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_name}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_name}}}{\emph{particle\_index}}{}
+Returns the name of a particle, given its index within the model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_name ( str ) - The name of the particle
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_type() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_type()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_type}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_type}}}{\emph{particle\_index}, \emph{particle\_name=None}}{}
+Indicates if a particle is a backbone bead or a sidechain bead
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name of the particle that we would like to “type”.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_type (str) - ‘backbone’ or ‘sidechain’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_sigma() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_sigma()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_sigma}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_sigma}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}
+Returns the Lennard-Jones potential sigma value for a particle, given its index within the coarse grained model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates a particle as “backbone” or “sidechain”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+sigma ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned Lennard-Jones sigma value for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_torsion\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_force\_constant}}}{\emph{torsion}}{}
+Determines the correct torsion force constant for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+torsion\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned torsion force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_torsion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_list}}}{}{}
+Construct a list of particle indices from which to define torsions for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\chapter{Thermodynamic analysis tools for coarse grained modeling}
+\label{\detokenize{thermo:thermodynamic-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{thermo::doc}}
+The ‘foldamers’ package contains wide-ranging tools to analyze simulation data in order to estimate the thermodynamic properties of a system.  In particular, the package leverages tools from \sphinxhref{https://pymbar.readthedocs.io/en/latest/index.html}{pymbar} to enable analysis of and estimate expectation values for sampled and unsampled thermodynamic states.
+
+
+\section{Using MBAR to compute expectation values for structural \& thermodynamic properties}
+\label{\detokenize{thermo:using-mbar-to-compute-expectation-values-for-structural-thermodynamic-properties}}
+Shown below is the main ‘foldamers’ function used to re-weight simulation results with ‘pymbar’.
+
+\phantomsection\label{\detokenize{thermo:module-parameters.reweight}}\index{parameters.reweight (module)@\spxentry{parameters.reweight}\spxextra{module}}\index{get\_mbar\_expectation() (in module parameters.reweight)@\spxentry{get\_mbar\_expectation()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_mbar_expectation}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_mbar\_expectation}}}{\emph{E\_kln}, \emph{temperature\_list}, \emph{NumIntermediates}, \emph{output=None}, \emph{mbar=None}}{}
+Given a properly-formatted matrix of energies with associated temperatures this function reweights with MBAR (if ‘mbar’=None), and can also compute the expectation value for any property of interest.
+
+\begin{sphinxadmonition}{warning}{Warning:}
+This function accepts an input matrix thtat has either ‘E\_kln’ or ‘E\_kn’ format, but always provides an ‘E\_kn’-formatted matrix in return.
+\end{sphinxadmonition}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{E\_kln}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{OR List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A matrix of energies or samples for a property that we would like to use to make predictions with MBAR.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{temperature\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.temperature}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of temperatures for the simulation data.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{NumIntermediates}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of states to insert between existing states in ‘T\_from\_file’
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{output}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The ‘output’ option to use when calling MBAR, default = ‘differences’
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{mbar}} (\sphinxhref{https://pymbar.readthedocs.io/en/latest/mbar.html}{MBAR} class object) \textendash{} An MBAR() class object (from the ‘pymbar’ package), default = None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+mbar ( \sphinxhref{https://pymbar.readthedocs.io/en/latest/mbar.html}{MBAR} ) - An MBAR() class object (from the ‘pymbar’ package)
+
+\end{itemize}
+\begin{itemize}
+\item {} 
+E\_kn ( List( List( float * simtk.unit.energy for num\_samples ) for num\_replicas ) ) - A matrix of energies or samples for a property that we would like to use to make predictions with MBAR.
+
+\item {} 
+result ( List( List( float for num\_samples ) for num\_replicas ) - The MBAR expectation value for the energies and/or other samples that were provided.
+
+\item {} 
+dresult ( List( List( float for num\_samples ) for num\_replicas ) - The MBAR expectation value for the energies and/or other samples that were provided.
+
+\item {} 
+Temp\_k ( List( float * simtk.unit.temperature ) ) - A new list of temperatures that includes the inserted intermediates.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
+
+\section{Evaluating thermodynamic properties with ‘pymbar’}
+\label{\detokenize{thermo:evaluating-thermodynamic-properties-with-pymbar}}
+Shown below ‘pymbar’-based tools/functions to evaluate thermodynamic properties within the ‘foldamers’ package.
+
+\phantomsection\label{\detokenize{thermo:module-parameters.reweight}}\index{parameters.reweight (module)@\spxentry{parameters.reweight}\spxextra{module}}\index{get\_free\_energy\_differences() (in module parameters.reweight)@\spxentry{get\_free\_energy\_differences()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_free_energy_differences}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_free\_energy\_differences}}}{\emph{mbar}}{}
+Given an \sphinxhref{https://pymbar.readthedocs.io/en/latest/mbar.html}{MBAR} class object, this function computes the free energy differences for the states defined within.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{mbar}} \textendash{} An MBAR() class object (from the ‘pymbar’ package)
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+df\_ij ( np.array( n\_mbar\_states x n\_thermo\_states ) - Free energy differences for the thermodynamic states in ‘mbar’
+
+\item {} 
+ddf\_ij ( np.array( n\_mbar\_states x n\_thermo\_states ) - Uncertainty in the free energy differences for the thermodynamic states in ‘mbar’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_entropy\_differences() (in module parameters.reweight)@\spxentry{get\_entropy\_differences()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_entropy_differences}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_entropy\_differences}}}{\emph{mbar}}{}
+Given an \sphinxhref{https://pymbar.readthedocs.io/en/latest/mbar.html}{MBAR} class object, this function computes the entropy differences for the states defined within.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{mbar}} \textendash{} An MBAR() class object (from the ‘pymbar’ package)
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+Delta\_s ( np.array( n\_mbar\_states x n\_thermo\_states ) - Entropy differences for the thermodynamic states in ‘mbar’
+
+\item {} 
+dDelta\_s ( np.array( n\_mbar\_states x n\_thermo\_states ) - Uncertainty in the entropy differences for the thermodynamic states in ‘mbar’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_enthalpy\_differences() (in module parameters.reweight)@\spxentry{get\_enthalpy\_differences()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_enthalpy_differences}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_enthalpy\_differences}}}{\emph{mbar}}{}
+Given an \sphinxhref{https://pymbar.readthedocs.io/en/latest/mbar.html}{MBAR} class object, this function computes the enthalpy differences for the states defined within.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{mbar}} \textendash{} An MBAR() class object (from the ‘pymbar’ package)
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+Delta\_u ( np.array( n\_mbar\_states x n\_thermo\_states ) - Enthalpy differences for the thermodynamic states in ‘mbar’
+
+\item {} 
+dDelta\_u ( np.array( n\_mbar\_states x n\_thermo\_states ) - Uncertainty in the enthalpy differences for the thermodynamic states in ‘mbar’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
+
+\section{Tools to evaluate thermodynamic properties with ‘pymbar’}
+\label{\detokenize{thermo:tools-to-evaluate-thermodynamic-properties-with-pymbar}}
+Shown below are other ‘pymbar’-based tools/functions that aid evaluation of thermodynamic properties within the ‘foldamers’ package.
+
+\phantomsection\label{\detokenize{thermo:module-parameters.reweight}}\index{parameters.reweight (module)@\spxentry{parameters.reweight}\spxextra{module}}\index{get\_temperature\_list() (in module parameters.reweight)@\spxentry{get\_temperature\_list()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_temperature_list}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_temperature\_list}}}{\emph{min\_temp}, \emph{max\_temp}, \emph{num\_replicas}}{}
+Given the parameters to define a temperature range as input, this function uses logarithmic spacing to generate a list of intermediate temperatures.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{min\_temp}} (\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}) \textendash{} The minimum temperature in the temperature list.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{max\_temp}} \textendash{} The maximum temperature in the temperature list.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{num\_replicas}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of temperatures in the list.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+temperature\_list ( List( float * simtk.unit.temperature ) ) - List of temperatures
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_intermediate\_temperatures() (in module parameters.reweight)@\spxentry{get\_intermediate\_temperatures()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_intermediate_temperatures}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_intermediate\_temperatures}}}{\emph{T\_from\_file}, \emph{NumIntermediates}}{}
+Given a list of temperatures and a number of intermediate states as input, this function calculates the values for temperatures intermediate between those in this list, as the mean between values in the list.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{T\_from\_file}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.temperature}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of temperatures
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{NumIntermediates}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of states to insert between existing states in ‘T\_from\_file’
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+Temp\_k ( List( float * simtk.unit.temperature ) ) - A new list of temperatures that includes the inserted intermediates.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{calc\_temperature\_spacing() (in module parameters.reweight)@\spxentry{calc\_temperature\_spacing()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.calc_temperature_spacing}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{calc\_temperature\_spacing}}}{\emph{min\_temp}, \emph{max\_temp}, \emph{num\_replicas}, \emph{replica\_index}}{}
+Given the parameters to define a temperature range as input, as well as the current temperature index, this function uses logarithmic scaling to calculate the temperature spacing.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{min\_temp}} \textendash{} The minimum temperature in the temperature list.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{max\_temp}} \textendash{} The maximum temperature in the temperature list.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{num\_replicas}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of temperatures in the list.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The index for the current temperature of interest.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+delta ( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The spacing to use when assigning the next temperature value.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_decorrelated\_samples() (in module parameters.reweight)@\spxentry{get\_decorrelated\_samples()}\spxextra{in module parameters.reweight}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:parameters.reweight.get_decorrelated_samples}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.reweight.}}\sphinxbfcode{\sphinxupquote{get\_decorrelated\_samples}}}{\emph{replica\_positions}, \emph{replica\_energies}, \emph{temperature\_list}}{}
+Given a set of replica exchange trajectories, energies, and associated temperatures, this function returns decorrelated samples, as obtained from pymbar with timeseries.subsampleCorrelatedData.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_positions}} \textendash{} Positions array for the replica exchange data for which we will write PDB files
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_energies}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of dimension num\_replicas X simulation\_steps, which gives the energies for all replicas at all simulation steps
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{temperature\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.temperature}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of temperatures for the simulation data.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+configurations ( List( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ( np.array( {[}n\_decorrelated\_samples,cgmodel.num\_beads,3{]} ), simtk.unit ) ) - A list of decorrelated samples
+
+\item {} 
+energies ( List( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - The energies for the decorrelated samples (configurations)
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
+
+\section{Calculating the heat capacity with pymbar}
+\label{\detokenize{thermo:calculating-the-heat-capacity-with-pymbar}}
+Shown below is the primary function used to evaluate the heat capacity with pymbar:
+
+\phantomsection\label{\detokenize{thermo:module-thermo.calc}}\index{thermo.calc (module)@\spxentry{thermo.calc}\spxextra{module}}\index{get\_heat\_capacity() (in module thermo.calc)@\spxentry{get\_heat\_capacity()}\spxextra{in module thermo.calc}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:thermo.calc.get_heat_capacity}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{thermo.calc.}}\sphinxbfcode{\sphinxupquote{get\_heat\_capacity}}}{\emph{replica\_energies}, \emph{temperature\_list}, \emph{num\_intermediate\_states=None}}{}
+Given a set of trajectories, a temperature list, and a number of intermediate states to insert for the temperature list, this function calculates and plots the heat capacity profile.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_energies}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of dimension num\_replicas X simulation\_steps, which gives the energies for all replicas at all simulation steps
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{temperature\_list}} \textendash{} List of temperatures for which to perform replica exchange simulations, default = None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{num\_intermediate\_states}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of states to insert between existing states in ‘temperature\_list’
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+C\_v ( List( float ) ) - The heat capacity values for all (including inserted intermediates) states
+
+\item {} 
+dC\_v ( List( float ) ) - The uncertainty in the heat capacity values for intermediate states
+
+\item {} 
+new\_temp\_list ( List( float * unit.simtk.temperature ) ) - The temperature list corresponding to the heat capacity values in ‘C\_v’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+Shown below are functions/tools that can be used in order to calculate the heat capacity with pymbar.
+
+\phantomsection\label{\detokenize{thermo:module-thermo.calc}}\index{thermo.calc (module)@\spxentry{thermo.calc}\spxextra{module}}\index{calculate\_heat\_capacity() (in module thermo.calc)@\spxentry{calculate\_heat\_capacity()}\spxextra{in module thermo.calc}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:thermo.calc.calculate_heat_capacity}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{thermo.calc.}}\sphinxbfcode{\sphinxupquote{calculate\_heat\_capacity}}}{\emph{E\_expect}, \emph{E2\_expect}, \emph{dE\_expect}, \emph{DeltaE\_expect}, \emph{dDeltaE\_expect}, \emph{df\_ij}, \emph{ddf\_ij}, \emph{Temp\_k}, \emph{originalK}, \emph{numIntermediates}, \emph{ntypes=3}, \emph{dertype='temperature'}}{}
+Given numerous pieces of thermodynamic data this function calculates the heat capacity by following the \sphinxhref{https://github.com/choderalab/pymbar/tree/master/examples/heat-capacity}{‘pymbar’ example} .
+
+\end{fulllineitems}
+
+\index{plot\_heat\_capacity() (in module thermo.calc)@\spxentry{plot\_heat\_capacity()}\spxextra{in module thermo.calc}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{thermo:thermo.calc.plot_heat_capacity}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{thermo.calc.}}\sphinxbfcode{\sphinxupquote{plot\_heat\_capacity}}}{\emph{C\_v}, \emph{dC\_v}, \emph{temperature\_list}, \emph{file\_name='heat\_capacity.png'}}{}
+Given an array of temperature-dependent heat capacity values and the uncertainties in their estimates, this function plots the heat capacity curve.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{C\_v}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} The heat capacity data to plot.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{dC\_v}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} The uncertainties in the heat capacity data
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{file\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The name/path of the file where plotting output will be written, default = “heat\_capacity.png”
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
 
 
 \chapter{Ensemble building tools}
@@ -119,31 +1159,351 @@ The foldamers package allows the user to apply K-means clustering tools from MSM
 \phantomsection\label{\detokenize{ensembles:module-ensembles.cluster}}\index{ensembles.cluster (module)@\spxentry{ensembles.cluster}\spxextra{module}}\index{concatenate\_trajectories() (in module ensembles.cluster)@\spxentry{concatenate\_trajectories()}\spxextra{in module ensembles.cluster}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{ensembles:ensembles.cluster.concatenate_trajectories}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.cluster.}}\sphinxbfcode{\sphinxupquote{concatenate\_trajectories}}}{\emph{pdb\_file\_list}, \emph{combined\_pdb\_file=None}}{}
+\phantomsection\label{\detokenize{ensembles:ensembles.cluster.concatenate_trajectories}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.cluster.}}\sphinxbfcode{\sphinxupquote{concatenate\_trajectories}}}{\emph{pdb\_file\_list}, \emph{combined\_pdb\_file='combined.pdb'}}{}
+Given a list of PDB files, this function reads their coordinates, concatenates them, and saves the combined coordinates to a new file (useful for clustering with MSMBuilder).
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{pdb\_file\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of PDB files to read and concatenate
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{combined\_pdb\_file}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The name of file/path in which to save a combined version of the PDB files, default = “combined.pdb”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+combined\_pdb\_file ( str ) - The name/path for a file within which the concatenated coordinates will be written.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{align\_structures() (in module ensembles.cluster)@\spxentry{align\_structures()}\spxextra{in module ensembles.cluster}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{ensembles:ensembles.cluster.align_structures}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.cluster.}}\sphinxbfcode{\sphinxupquote{align\_structures}}}{\emph{reference\_traj}, \emph{target\_traj}}{}
+Given a reference trajectory, this function performs a structural alignment for a second input trajectory, with respect to the reference.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{reference\_traj}} (\sphinxhref{http://mdtraj.org/1.6.2/api/generated/mdtraj.Trajectory.html}{MDTraj() trajectory}) \textendash{} The trajectory to use as a reference for alignment.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{target\_traj}} \textendash{} The trajectory to align with the reference.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+aligned\_target\_traj ( \sphinxhref{http://mdtraj.org/1.6.2/api/generated/mdtraj.Trajectory.html}{MDTraj() trajectory} ) - The coordinates for the aligned trajectory.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_cluster\_centroid\_positions() (in module ensembles.cluster)@\spxentry{get\_cluster\_centroid\_positions()}\spxextra{in module ensembles.cluster}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{ensembles:ensembles.cluster.get_cluster_centroid_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.cluster.}}\sphinxbfcode{\sphinxupquote{get\_cluster\_centroid\_positions}}}{\emph{pdb\_file}, \emph{cgmodel}, \emph{n\_clusters=None}}{}
+Given a PDB file and coarse grained model as input, this function performs K-means clustering on the poses in the PDB file, and returns a list of the coordinates for the “centroid” pose of each cluster.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{pdb\_file}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The path/name of a file from which to read trajectory data
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} A CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{n\_clusters}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of “bins” within which to cluster the poses from the input trajectory.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+centroid\_positions ( List ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) ) - A list of the poses corresponding to the centroids of all trajectory clusters.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
+
+\newpage
 
 
 \section{Native structure-based ensemble generation tools}
 \label{\detokenize{ensembles:native-structure-based-ensemble-generation-tools}}
 The foldamers package allows the user to build “native” and “nonnative” structural ensembles, and to evaluate their energetic differences with the Z-score.  These tools require identification of a “native” structure.
 
+\phantomsection\label{\detokenize{ensembles:module-ensembles.ens_build}}\index{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}}\index{get\_ensembles() (in module ensembles.ens\_build)@\spxentry{get\_ensembles()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensembles}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensembles}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{ensemble\_size=None}}{}
+Given a native structure as input, this function builds both native and nonnative ensembles.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ( np.array( {[}cgmodel.num\_beads,3{]} ), simtk.unit )) \textendash{} The positions for the model’s native structure
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_size}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of poses to generate for the nonnative ensemble, default = None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+nonnative\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the nonnative ensemble
+
+\item {} 
+nonnative\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for all members of the nonnative ensemble
+
+\item {} 
+native\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the native ensemble
+
+\item {} 
+native\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for the native ensemble
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_native\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_native\_ensemble()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_native_ensemble}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_native\_ensemble}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{ensemble\_size=10}, \emph{native\_fraction\_cutoff=0.9}, \emph{rmsd\_cutoff=10.0}, \emph{ensemble\_build\_method='mbar'}}{}
+Given a native structure as input, this function builds a “native” ensemble of structures.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} \textendash{} The positions for the model’s native structure
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_size}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of poses to generate for the nonnative ensemble, default = 10
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_fraction\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The fraction of native contacts above which a pose will be considered “native”, default = 0.9
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{rmsd\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The distance beyond which non-bonded interactions will be ignored, default = 10.0 x bond\_length
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_build\_method}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The method that will be used to generate a nonnative ensemble.  Valid options include “mbar” and “native\_contacts”.  If the “mbar” approach is chosen, decorrelated replica exchange simulation data is used to generate the nonnative ensemble.  If the “native\_contacts” approach is chosen, individual NVT simulations are used to generate the nonnative ensemble, default = “mbar”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the ensemble.
+
+\item {} 
+ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies that were stored in the PDB files for the ensemble, if any.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_nonnative\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_nonnative\_ensemble()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_nonnative_ensemble}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_nonnative\_ensemble}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{ensemble\_size=100}, \emph{native\_fraction\_cutoff=0.75}, \emph{rmsd\_cutoff=10.0}, \emph{ensemble\_build\_method='mbar'}}{}
+Given a native structure as input, this function builds a “nonnative” ensemble of structures.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} \textendash{} The positions for the model’s native structure
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_size}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of poses to generate for the nonnative ensemble, default = 100
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_fraction\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The fraction of native contacts below which a pose will be considered “nonnative”, default = 0.75
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{rmsd\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The distance beyond which non-bonded interactions will be ignored, default = 10.0 x bond\_length
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_build\_method}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The method that will be used to generate a nonnative ensemble.  Valid options include “mbar” and “native\_contacts”.  If the “mbar” approach is chosen, decorrelated replica exchange simulation data is used to generate the nonnative ensemble.  If the “native\_contacts” approach is chosen, individual NVT simulations are used to generate the nonnative ensemble, default = “mbar”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the ensemble.
+
+\item {} 
+ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies that were stored in the PDB files for the ensemble, if any.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{z\_score() (in module ensembles.ens\_build)@\spxentry{z\_score()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.z_score}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{z\_score}}}{\emph{nonnative\_ensemble\_energies}, \emph{native\_ensemble\_energies}}{}
+Given a set of nonnative and native ensemble energies, this function computes the Z-score (for a set of model parameters).
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{nonnative\_ensemble\_energies}} \textendash{} A list of the energies for all members of the nonnative ensemble
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_ensemble\_energies}} \textendash{} A list of the energies for the native ensemble
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+z\_score ( float ) - The Z-score for the input ensembles.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
 
 \section{Energy-based ensemble generation tools}
 \label{\detokenize{ensembles:energy-based-ensemble-generation-tools}}
 The foldamers package allows the user to build structural ensembles that exhibit similar energies.  Shown below are tools that enable energy-based ensemble generation.
+
+\phantomsection\label{\detokenize{ensembles:module-ensembles.ens_build}}\index{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}}\index{get\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_ensemble()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensemble}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensemble}}}{\emph{cgmodel}, \emph{ensemble\_size=100}, \emph{high\_energy=False}, \emph{low\_energy=False}}{}
+Given a coarse grained model, this function generates an ensemble of high energy configurations and, by default, saves this ensemble to the foldamers/ensembles database for future reference/use, if a high-energy ensemble with these settings does not already exist.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{integer}}) \textendash{} Number of structures to generate for this ensemble, default = 100
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the ensemble.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{test\_energy() (in module ensembles.ens\_build)@\spxentry{test\_energy()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.test_energy}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{test\_energy}}}{\emph{energy}}{}
+Given an energy, this function determines if that energy is too large to be “physical”.  This function is used to determine if the user-defined input parameters for a coarse grained model give a reasonable potential function.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{energy}} \textendash{} The energy to test.
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+pass\_energy\_test ( Logical ) - A variable indicating if the energy passed (“True”) or failed (“False”) a “sanity” test for the model’s energy.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{improve\_ensemble() (in module ensembles.ens\_build)@\spxentry{improve\_ensemble()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.improve_ensemble}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{improve\_ensemble}}}{\emph{energy}, \emph{positions}, \emph{ensemble}, \emph{ensemble\_energies}, \emph{unchanged\_iterations}}{}
+Given an energy and positions for a single pose, as well as the same data for a reference ensemble, this function “improves” the quality of the ensemble by identifying poses with the lowest potential energy.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{energy}} \textendash{} The energy for a pose.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} \textendash{} Positions for coarse grained particles in the model, default = None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{positions}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{float*simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ (}}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} A group of similar poses.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_energies}} \textendash{} A list of energies for a conformational ensemble.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{unchanged\_iterations}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The number of iterations for which the ensemble has gone unchanged.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the ensemble.
+
+\item {} 
+ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies that were stored in the PDB files for the ensemble, if any.
+
+\item {} 
+unchanged\_iterations ( int ) - The number of iterations for which the ensemble has gone unchanged.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
 
 
 \section{Writing and reading ensemble data from the ‘foldamers’ database}
@@ -156,38 +1516,555 @@ For example, the directory name for a model with 20 monomers, all of which conta
 
 The following functions are used to read and write ensemble data to the foldamers database (located in ‘foldamers/ensembles’).
 
+\phantomsection\label{\detokenize{ensembles:module-ensembles.ens_build}}\index{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}}\index{get\_ensemble\_directory() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_directory()}\spxextra{in module ensembles.ens\_build}}
 
-\chapter{Parameter analysis tools for coarse grained modeling}
-\label{\detokenize{parameters:parameter-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{parameters::doc}}
-The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse grained model.  In particular, the package contains tools to analyze quantities that reflect secondary structure, including: 1) the fraction of native contacts, 2) the orientational ordering parameter ‘P2’, and 3) using kHelios, helical order parameters such as the pitch.
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensemble_directory}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensemble\_directory}}}{\emph{cgmodel}, \emph{ensemble\_type=None}}{}
+Given a CGModel() class object, this function uses its attributes to assign an ensemble directory name.
+
+For example, the directory name for a model with 20 monomers, all of which contain one backbone bead and one sidechain bead, and whose bond lengths are all 7.5 Angstroms, would be: “foldamers/ensembles/20\_1\_1\_0\_7.5\_7.5\_7.5”.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates the type of ensemble for which we will assign a directory name.  default = None.  Valid options include: “native” and “nonnative”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble\_directory ( str ) - The path/name for the ensemble directory.
+
+\end{itemize}
 
 
-\section{How to}
-\label{\detokenize{parameters:how-to}}
-Shown below are functions/tools used in order to calculate
-the heat capacity with pymbar.
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{write\_ensemble\_pdb() (in module ensembles.ens\_build)@\spxentry{write\_ensemble\_pdb()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.write_ensemble_pdb}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{write\_ensemble\_pdb}}}{\emph{cgmodel}, \emph{ensemble\_directory=None}}{}
+Given a CGModel() class object that contains positions, this function writes a PDB file for the coarse grained model, using those positions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_directory}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Path to a folder containing PDB files, default = None
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+If no ‘ensemble\_directory’ is provided, the
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{get\_pdb\_list() (in module ensembles.ens\_build)@\spxentry{get\_pdb\_list()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_pdb_list}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_pdb\_list}}}{\emph{ensemble\_directory}}{}
+Given an ‘ensemble\_directory’, this function retrieves a list of the PDB files within it.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_directory}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Path to a folder containing PDB files
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+pdb\_list ( List(str) ) - A list of the PDB files in the provided ‘ensemble\_directory’.
+
+\end{itemize}
 
 
-\chapter{Thermodynamic analysis tools for coarse grained modeling}
-\label{\detokenize{thermo:thermodynamic-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{thermo::doc}}
-This page details the functions and classes in src/thermo
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_ensemble\_data() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_data()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensemble_data}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensemble\_data}}}{\emph{cgmodel}, \emph{ensemble\_directory}}{}
+Given a CGModel() class object and an ‘ensemble\_directory’, this function reads the PDB files within that directory, as well as any energy data those files contain.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble\_directory}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} The path/name of the directory where PDB files for this ensemble are stored
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the ensemble.
+
+\item {} 
+ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies that were stored in the PDB files for the ensemble, if any.
+
+\end{itemize}
 
 
-\section{Tools to calculate the heat capacity with pymbar}
-\label{\detokenize{thermo:tools-to-calculate-the-heat-capacity-with-pymbar}}
-Shown below are functions/tools used in order to calculate
-the heat capacity with pymbar.
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+When energies are written to a PDB file, only the sigma and epsilon values for the model are written to the file with the positions.  Unless the user is confident about the model parameters that were used to generate the energies in the PDB files, it is probably best to re-calculate their energies.  This can be done with the ‘cg\_openmm’ package.  More specifically, one can compute an updated energy for individual ensemble members, with the current coarse grained model parameters, with ‘get\_mm\_energy’, a function in ‘cg\_openmm/cg\_openmm/simulation/tools.py’.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
 
 
 \chapter{Utilities for the ‘foldamers’ package}
 \label{\detokenize{utilities:utilities-for-the-foldamers-package}}\label{\detokenize{utilities::doc}}
-This page details the functions and classes in src/util.
+The ‘foldamers’ package contains a number of utilities for reading and writing data, as well as random structure generation.
 
 
-\section{Input/Output options (src/utilities/iotools.py)}
-\label{\detokenize{utilities:input-output-options-src-utilities-iotools-py}}
-Shown below is a detailed description of the input/output
-options for the foldamers package.
+\section{Random structure generation in ‘foldamers’}
+\label{\detokenize{utilities:random-structure-generation-in-foldamers}}
+Random structures are often needed as a starting point for simulation of a new coarse grained model.  Shown below are the main tools that allows the user to build a random structure:
+
+\phantomsection\label{\detokenize{utilities:module-utilities.util}}\index{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}}\index{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.random_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{random\_positions}}}{\emph{cgmodel}, \emph{max\_attempts=1000}, \emph{use\_library=False}, \emph{high\_energy=False}, \emph{low\_energy=False}, \emph{generate\_library=False}}{}
+Assign random positions for all beads in a coarse-grained polymer.
+
+cgmodel: CGModel() class object.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{max\_attempts}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The maximum number of attempts to generate random positions a coarse grained model with the current parameters, default = 1000
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{use\_library}} \textendash{} A logical variable determining if a new random structure will be generated, or if an ensemble will be read from the ‘foldamers’ database, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{use\_library}} \textendash{} Logical
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{generate\_library}} \textendash{} If set to ‘True’, this function will save the poses that are generated to the ‘foldamers’ ensemble database.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of coarse grained model positions.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.get_structure_from_library}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_structure\_from\_library}}}{\emph{cgmodel}, \emph{high\_energy=False}, \emph{low\_energy=False}}{}
+Given a coarse grained model class object, this function retrieves
+a set of positions for the model from the ‘foldamers’ ensemble library, in:
+‘foldamers/ensembles/\$\{backbone\_length\}\_\$\{sidechain\_length\}\_\$\{sidechain\_positions\}’
+If this coarse grained model does not have an ensemble library, an 
+error message will be returned and positions at random with ‘random\_positions()’.
+
+cgmodel: CGModel() class object.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{high\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of high-energy structures, default = False
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{low\_energy}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} If set to ‘True’, this function will generate an ensemble of low-energy structures, default = False
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of coarse grained model positions.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
+Shown below are other tools that support the task of random structure generation:
+
+\phantomsection\label{\detokenize{utilities:module-utilities.util}}\index{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}}\index{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.assign_position}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position}}}{\emph{positions}, \emph{bond\_length}, \emph{distance\_cutoff}, \emph{parent\_index}, \emph{bead\_index}}{}~\begin{quote}
+
+Assign random position for a bead
+\begin{quote}\begin{description}
+\item[{param positions}] \leavevmode
+Positions for the particles in a coarse grained model.
+
+\item[{type positions}] \leavevmode
+np.array( float * unit.angstrom ( num\_particles x 3 ) )
+
+\item[{param bond\_length}] \leavevmode
+The distance to step when placing new particles.
+
+\item[{type bond\_length}] \leavevmode
+\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+
+\item[{param distance\_cutoff}] \leavevmode
+The distance below which particles will be considered to have “collisions”.
+
+\item[{type distance\_cutoff}] \leavevmode
+\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+
+\item[{param parent\_bead\_index}] \leavevmode
+The index of the particle from which we will bond a new particle, when assigning pos
+
+\end{description}\end{quote}
+\end{quote}
+\begin{description}
+\item[{itions.}] \leavevmode\begin{quote}\begin{description}
+\item[{type parent\_bead\_index}] \leavevmode
+int
+
+\item[{param bead\_index}] \leavevmode
+The index of the particle for which the function will assign positions.
+
+\item[{type bead\_index}] \leavevmode
+int
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of positions for the updated model, including the particle that was just added.
+
+\item {} 
+success ( Logical ) - Indicates whether or not a particle was placed successfully.
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.assign_position_lattice_style}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{assign\_position\_lattice\_style}}}{\emph{cgmodel}, \emph{positions}, \emph{distance\_cutoff}, \emph{parent\_bead\_index}, \emph{bead\_index}}{}
+Assign random position for a particle
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance\_cutoff}} \textendash{} The distance below which particles will be considered to have “collisions”.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{parent\_bead\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The index of the particle from which we will bond a new particle, when assigning positions.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bead\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} The index of the particle for which the function will assign positions.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+test\_positions ( np.array( float * unit.angstrom ( num\_particles x 3 ) ) ) - A set of positions for the updated model, including the particle that was just added.
+
+\item {} 
+success ( Logical ) - Indicates whether or not a particle was placed successfully.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.attempt_lattice_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_lattice\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}, \emph{move\_direction\_list}}{}
+Given a set of cartesian coordinates this function positions a new particle a distance of ‘bond\_length’ away in a random direction.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{parent\_coordinates}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{length = 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for a single particle, away from which we will place a new particle a distance of ‘bond\_length’ away.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} \textendash{} Bond length for all beads that are bonded.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{move\_direction\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of cartesian directions (denoted by integers) that tracks the directions in which a particle placement has been attempted.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+trial\_coordinates ( np.array( float * unit.angstrom ( length = 3 ) ) ) - The coordinates for a new, trial particle.
+
+\item {} 
+move\_direction\_list ( List(int) ) - A list of cartesian directions (denoted by integers) that tracks the directions in which a particle placement has been attempted.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.attempt_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{attempt\_move}}}{\emph{parent\_coordinates}, \emph{bond\_length}}{}~\begin{quote}
+
+Given a set of cartesian coordinates, assign a new particle
+a distance of ‘bond\_length’ away in a random direction.
+\begin{quote}\begin{description}
+\item[{param parent\_coordinates}] \leavevmode
+Positions for a single particle, away from which we will place a new particle a distance of ‘bond\_length’ away.
+
+\item[{type parent\_coordinates}] \leavevmode
+np.array( float * unit.angstrom ( length = 3 ) )
+
+\item[{param bond\_length}] \leavevmode
+Bond length for all beads that are bonded.
+
+\item[{type bond\_length}] \leavevmode
+\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}
+
+\item[{returns}] \leavevmode\begin{itemize}
+\item {} 
+trial\_coordinates ( np.array( float * unit.angstrom ( length = 3 ) ) ) - The coordinates for a new, trial
+
+\end{itemize}
+
+\end{description}\end{quote}
+\end{quote}
+
+particle.
+
+\end{fulllineitems}
+
+\index{collisions() (in module utilities.util)@\spxentry{collisions()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.collisions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{collisions}}}{\emph{positions}, \emph{distance\_list}, \emph{distance\_cutoff}}{}
+Determine if there are any collisions between non-bonded
+particles, where a “collision” is defined as a distance shorter than ‘distance\_cutoff’.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance\_list}} \textendash{} A list of distances.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance\_cutoff}} \textendash{} The distance below which particles will be considered to have “collisions”.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+collision (Logical) - A variable indicating whether or not the model contains particle collisions.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{distance() (in module utilities.util)@\spxentry{distance()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.distance}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distance}}}{\emph{positions\_1}, \emph{positions\_2}}{}
+Calculate the distance between two particles.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions\_1}} \textendash{} Positions for a particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions\_2}} \textendash{} Positions for a particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The distance between the provided particles.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{distance\_matrix() (in module utilities.util)@\spxentry{distance\_matrix()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.distance_matrix}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distance\_matrix}}}{\emph{positions}}{}
+Construct a matrix of the distances between an input array of particles.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for an array of particles.
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance\_matrix (np.array(num\_particles x num\_particles)) - Matrix containing the distances between all beads.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{distances() (in module utilities.util)@\spxentry{distances()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.distances}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{distances}}}{\emph{interaction\_list}, \emph{positions}}{}
+Calculate the distances between all non-bonded particles in a model, given a list of particle interactions and particle positions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{interaction\_list}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{{[} }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ {]} }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} A list of non-bonded particle interactions
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+distance\_list ( List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - A list of distances for the non-bonded interactions in the coarse grained model.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{first\_bead() (in module utilities.util)@\spxentry{first\_bead()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.first_bead}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{first\_bead}}}{\emph{positions}}{}
+Determine if the provided ‘positions’ contain any particles (are the coordinates non-zero).
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for all beads in the coarse-grained model.
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+first\_bead (Logical) - Variable stating if the positions are all non-zero.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_move() (in module utilities.util)@\spxentry{get\_move()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.get_move}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{get\_move}}}{\emph{trial\_coordinates}, \emph{move\_direction}, \emph{distance}, \emph{bond\_length}, \emph{finish\_bond=False}}{}
+Used to build random structures.  Given a set of input coordinates, this function attempts to add a new particle.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{trial\_coordinates}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{length = 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for a particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{move\_direction}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Cartesian direction in which we will attempt a particle placement, where: x=0, y=1, z=2.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{distance}} \textendash{} Current distance between the trial coordinates for the particle this function is positioning and the particle that it is branched from (bonded to).
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} \textendash{} The distance to step before placing a new particle.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{finish\_bond}} \textendash{} Logical variable determining how we will update the coordinates for this particle, default = False.  If set to “True”, the “move” length will be the difference between “distance” and “bond\_length”.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+trial\_coordinates (np.array( float * unit.angstrom (length=3) )) - Updated positions for the particle.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{random\_sign() (in module utilities.util)@\spxentry{random\_sign()}\spxextra{in module utilities.util}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:utilities.util.random_sign}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.util.}}\sphinxbfcode{\sphinxupquote{random\_sign}}}{\emph{number}}{}
+Returns the provided ‘number’ with a random sign.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{number}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The number to add a random sign (positive or negative) to
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+number (float) - The provided number with a random sign added
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\newpage
+
+
+\section{Reading and writing to output within the ‘foldamers’ package}
+\label{\detokenize{utilities:reading-and-writing-to-output-within-the-foldamers-package}}
+Shown below are ‘foldamers’ tools for writing data and structures to output files.
 
 \phantomsection\label{\detokenize{utilities:module-utilities.iotools}}\index{utilities.iotools (module)@\spxentry{utilities.iotools}\spxextra{module}}\index{write\_bonds() (in module utilities.iotools)@\spxentry{write\_bonds()}\spxextra{in module utilities.iotools}}
 
@@ -229,8 +2106,86 @@ energy: Energy to write to the PDB file, default = None
 
 
 
-\section{Utilities and random functions (src/utilities/util.py)}
-\label{\detokenize{utilities:utilities-and-random-functions-src-utilities-util-py}}
+\chapter{Parameter analysis tools for coarse grained modeling}
+\label{\detokenize{parameters:parameter-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{parameters::doc}}
+The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse grained model.  In particular, the package contains tools to analyze quantities that reflect secondary structure, including: 1) the fraction of native contacts, 2) the orientational ordering parameter ‘P2’, and 3) using kHelios, helical order parameters such as the pitch.
+
+\phantomsection\label{\detokenize{parameters:module-parameters.secondary_structure}}\index{parameters.secondary\_structure (module)@\spxentry{parameters.secondary\_structure}\spxextra{module}}\index{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.fraction_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{fraction\_native\_contacts}}}{\emph{cgmodel}, \emph{positions}, \emph{native\_structure}, \emph{cutoff\_distance=None}}{}
+\end{fulllineitems}
+
+\index{get\_helical\_data() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.get_helical_data}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{get\_helical\_data}}}{\emph{cgmodel}}{}
+\end{fulllineitems}
+
+\index{get\_helical\_parameters() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_parameters()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.get_helical_parameters}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{get\_helical\_parameters}}}{\emph{cgmodel}}{}
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{parameters:module-parameters.optimize}}\index{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}}\index{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.calculate_C_v_fitness}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{calculate\_C\_v\_fitness}}}{\emph{C\_v}, \emph{T\_list}}{}
+\end{fulllineitems}
+
+\index{get\_fwhm\_symmetry() (in module parameters.optimize)@\spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.get_fwhm_symmetry}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{get\_fwhm\_symmetry}}}{\emph{C\_v}, \emph{T\_list}}{}
+\end{fulllineitems}
+
+\index{get\_num\_maxima() (in module parameters.optimize)@\spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.get_num_maxima}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{get\_num\_maxima}}}{\emph{C\_v}}{}
+\end{fulllineitems}
+
+\index{optimize\_heat\_capacity() (in module parameters.optimize)@\spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.optimize_heat_capacity}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{optimize\_heat\_capacity}}}{\emph{cgmodel}}{}
+\end{fulllineitems}
+
+\index{optimize\_lj() (in module parameters.optimize)@\spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.optimize_lj}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{optimize\_lj}}}{\emph{cgmodel}, \emph{base\_epsilon=0.0}, \emph{sigma\_attempts=3}, \emph{epsilon\_attempts=3}}{}
+Optimize the Lennard-Jones interaction potential parameters (sigma and epsilon, for all interaction types) in the model defined by a cgmodel() class object, using a combination of replica exchange simulations and re-weighting techniques.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class.}}) \textendash{} CGModel() class object, default = None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sigma\_attempts}} \textendash{} 
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+cgmodel: CGModel() class object.
+
+\end{fulllineitems}
+
+\index{optimize\_model\_parameter() (in module parameters.optimize)@\spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.optimize_model_parameter}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{optimize\_model\_parameter}}}{\emph{optimization\_target}}{}
+\end{fulllineitems}
+
+\index{optimize\_parameter() (in module parameters.optimize)@\spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.optimize.optimize_parameter}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.optimize.}}\sphinxbfcode{\sphinxupquote{optimize\_parameter}}}{\emph{cgmodel}, \emph{optimization\_parameter}, \emph{optimization\_range\_min}, \emph{optimization\_range\_max}, \emph{steps=None}}{}
+\end{fulllineitems}
+
+
 
 \chapter{Indices and tables}
 \label{\detokenize{index:indices-and-tables}}\begin{itemize}
@@ -249,11 +2204,24 @@ energy: Energy to write to the PDB file, default = None
 \renewcommand{\indexname}{Python Module Index}
 \begin{sphinxtheindex}
 \let\bigletter\sphinxstyleindexlettergroup
+\bigletter{c}
+\item\relax\sphinxstyleindexentry{cg\_model.cgmodel}\sphinxstyleindexpageref{cg_model:\detokenize{module-cg_model.cgmodel}}
+\indexspace
 \bigletter{e}
 \item\relax\sphinxstyleindexentry{ensembles.cluster}\sphinxstyleindexpageref{ensembles:\detokenize{module-ensembles.cluster}}
+\item\relax\sphinxstyleindexentry{ensembles.ens\_build}\sphinxstyleindexpageref{ensembles:\detokenize{module-ensembles.ens_build}}
+\indexspace
+\bigletter{p}
+\item\relax\sphinxstyleindexentry{parameters.optimize}\sphinxstyleindexpageref{parameters:\detokenize{module-parameters.optimize}}
+\item\relax\sphinxstyleindexentry{parameters.reweight}\sphinxstyleindexpageref{thermo:\detokenize{module-parameters.reweight}}
+\item\relax\sphinxstyleindexentry{parameters.secondary\_structure}\sphinxstyleindexpageref{parameters:\detokenize{module-parameters.secondary_structure}}
+\indexspace
+\bigletter{t}
+\item\relax\sphinxstyleindexentry{thermo.calc}\sphinxstyleindexpageref{thermo:\detokenize{module-thermo.calc}}
 \indexspace
 \bigletter{u}
 \item\relax\sphinxstyleindexentry{utilities.iotools}\sphinxstyleindexpageref{utilities:\detokenize{module-utilities.iotools}}
+\item\relax\sphinxstyleindexentry{utilities.util}\sphinxstyleindexpageref{utilities:\detokenize{module-utilities.util}}
 \end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}

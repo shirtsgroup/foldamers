@@ -12,10 +12,10 @@ This documentation is generated automatically using Sphinx, which reads all docs
    :maxdepth: 2
 
    cg_model.rst
-   ensembles.rst
-   parameters.rst
    thermo.rst
+   ensembles.rst
    utilities.rst
+   parameters.rst
 
 Indices and tables
 ==================
