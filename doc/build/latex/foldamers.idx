@@ -81,11 +81,12 @@
 \indexentry{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
 \indexentry{get\_helical\_data() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
 \indexentry{get\_helical\_parameters() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_parameters()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
-\indexentry{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}|hyperpage}{36}
-\indexentry{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}|hyperpage}{36}
-\indexentry{get\_fwhm\_symmetry() (in module parameters.optimize)@\spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}|hyperpage}{36}
-\indexentry{get\_num\_maxima() (in module parameters.optimize)@\spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}|hyperpage}{36}
-\indexentry{optimize\_heat\_capacity() (in module parameters.optimize)@\spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}|hyperpage}{36}
-\indexentry{optimize\_lj() (in module parameters.optimize)@\spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}|hyperpage}{36}
-\indexentry{optimize\_model\_parameter() (in module parameters.optimize)@\spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{optimize\_parameter() (in module parameters.optimize)@\spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{orient\_along\_z\_axis() (in module parameters.secondary\_structure)@\spxentry{orient\_along\_z\_axis()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{37}
+\indexentry{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}|hyperpage}{37}
+\indexentry{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{get\_fwhm\_symmetry() (in module parameters.optimize)@\spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{get\_num\_maxima() (in module parameters.optimize)@\spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{optimize\_heat\_capacity() (in module parameters.optimize)@\spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{optimize\_lj() (in module parameters.optimize)@\spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}|hyperpage}{37}
+\indexentry{optimize\_model\_parameter() (in module parameters.optimize)@\spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{38}
+\indexentry{optimize\_parameter() (in module parameters.optimize)@\spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{38}

@@ -71,7 +71,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 11, 2019}
+\date{Sep 13, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -2114,6 +2114,33 @@ The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse 
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{parameters:parameters.secondary_structure.fraction_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{fraction\_native\_contacts}}}{\emph{cgmodel}, \emph{positions}, \emph{native\_structure}, \emph{cutoff\_distance=None}}{}
+Given a coarse grained model, positions for that model, and positions for the native structure, this function calculates the fraction of native contacts for the model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the native structure.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cutoff\_distance}} (\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}) \textendash{} The maximum distance for two nonbonded particles that are defined as “native”,default=None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+Q ( float ) - The fraction of native contacts for the model with the current structure.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{get\_helical\_data() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}}
@@ -2126,6 +2153,61 @@ The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse 
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{parameters:parameters.secondary_structure.get_helical_parameters}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{get\_helical\_parameters}}}{\emph{cgmodel}}{}
+Given a coarse grained model as input, this function uses the \sphinxhref{https://pubs.acs.org/doi/10.1021/acs.jcim.6b00721}{kHelios software package} to analyze the helical properties of the model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+pitch ( float ) - The distance between monomers in adjacent turns of a helix
+
+\item {} 
+radius ( float ) - The radius of the helix
+
+\item {} 
+monomers\_per\_turn ( float ) - The number of monomrs per turn of the helix
+
+\item {} 
+residual ( float ) - The average distance of all backbone particles from a circle projected onto the x-y plane.  Used to determine the accuracy of the helical axis, as fit to the input data.  Units are in Angstroms.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+This function requires a pre-installed version of \sphinxhref{https://pubs.acs.org/doi/10.1021/acs.jcim.6b00721}{kHelios} .  Because kHelios is formatted to accept input job scripts, this function writes and executes a job script for kHelios.  In order to function properly, the user must redefine the ‘helios\_path’ variable for their system.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{orient\_along\_z\_axis() (in module parameters.secondary\_structure)@\spxentry{orient\_along\_z\_axis()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.orient_along_z_axis}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{orient\_along\_z\_axis}}}{\emph{cgmodel}, \emph{plot\_projections=False}}{}
+Given a coarse grained model as input, this function orients the model along the z-axis.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{plot\_projections}} \textendash{} Variable indicating whether or not to plot intermediate projections/operations during identification of a helical axis.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+cgmodel ( class ) - CGModel() class object, with positions oriented so that the helical axis is along the z-axis
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \phantomsection\label{\detokenize{parameters:module-parameters.optimize}}\index{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}}\index{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}}

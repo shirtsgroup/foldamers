@@ -21,7 +21,7 @@
   \item \spxentry{calc\_temperature\_spacing()}\spxextra{in module parameters.reweight}, 
 		\hyperpage{15}
   \item \spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}, 
-		\hyperpage{36}
+		\hyperpage{37}
   \item \spxentry{calculate\_heat\_capacity()}\spxextra{in module thermo.calc}, \hyperpage{17}
   \item \spxentry{cg\_model.cgmodel}\spxextra{module}, \hyperpage{2}, \hyperpage{4}
   \item \spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}, \hyperpage{4}
@@ -81,7 +81,7 @@
 		\hyperpage{8}
   \item \spxentry{get\_free\_energy\_differences()}\spxextra{in module parameters.reweight}, 
 		\hyperpage{14}
-  \item \spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}, \hyperpage{36}
+  \item \spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}, \hyperpage{37}
   \item \spxentry{get\_heat\_capacity()}\spxextra{in module thermo.calc}, \hyperpage{17}
   \item \spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}, 
 		\hyperpage{36}
@@ -100,7 +100,7 @@
   \item \spxentry{get\_nonnative\_ensemble()}\spxextra{in module ensembles.ens\_build}, 
 		\hyperpage{22}
   \item \spxentry{get\_num\_beads()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
-  \item \spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}, \hyperpage{36}
+  \item \spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}, \hyperpage{37}
   \item \spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}, 
 		\hyperpage{9}
   \item \spxentry{get\_particle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}, \hyperpage{9}
@@ -123,15 +123,17 @@
   \indexspace
   \bigletter O
   \item \spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}, 
-		\hyperpage{36}
-  \item \spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}, \hyperpage{36}
-  \item \spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}, 
 		\hyperpage{37}
-  \item \spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}, \hyperpage{37}
+  \item \spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}, \hyperpage{37}
+  \item \spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}, 
+		\hyperpage{38}
+  \item \spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}, \hyperpage{38}
+  \item \spxentry{orient\_along\_z\_axis()}\spxextra{in module parameters.secondary\_structure}, 
+		\hyperpage{37}
 
   \indexspace
   \bigletter P
-  \item \spxentry{parameters.optimize}\spxextra{module}, \hyperpage{36}
+  \item \spxentry{parameters.optimize}\spxextra{module}, \hyperpage{37}
   \item \spxentry{parameters.reweight}\spxextra{module}, \hyperpage{12}, \hyperpage{14, 15}
   \item \spxentry{parameters.secondary\_structure}\spxextra{module}, \hyperpage{36}
   \item \spxentry{plot\_heat\_capacity()}\spxextra{in module thermo.calc}, \hyperpage{17}
