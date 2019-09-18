@@ -21,7 +21,7 @@ Native structure-based ensemble generation tools
 The foldamers package allows the user to build "native" and "nonnative" structural ensembles, and to evaluate their energetic differences with the Z-score.  These tools require identification of a "native" structure.
 
 .. automodule:: ensembles.ens_build
-    :members: get_ensembles, get_native_ensemble, get_nonnative_ensemble, z_score
+    :members: get_ensembles, get_ensembles_from_replica_positions, get_native_ensemble, get_nonnative_ensemble, z_score
 
 .. raw:: latex
 

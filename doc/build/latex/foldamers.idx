@@ -46,47 +46,49 @@
 \indexentry{get\_cluster\_centroid\_positions() (in module ensembles.cluster)@\spxentry{get\_cluster\_centroid\_positions()}\spxextra{in module ensembles.cluster}|hyperpage}{20}
 \indexentry{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}|hyperpage}{21}
 \indexentry{get\_ensembles() (in module ensembles.ens\_build)@\spxentry{get\_ensembles()}\spxextra{in module ensembles.ens\_build}|hyperpage}{21}
-\indexentry{get\_native\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_native\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{21}
-\indexentry{get\_nonnative\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_nonnative\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{22}
-\indexentry{z\_score() (in module ensembles.ens\_build)@\spxentry{z\_score()}\spxextra{in module ensembles.ens\_build}|hyperpage}{23}
-\indexentry{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}|hyperpage}{24}
-\indexentry{get\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{24}
-\indexentry{test\_energy() (in module ensembles.ens\_build)@\spxentry{test\_energy()}\spxextra{in module ensembles.ens\_build}|hyperpage}{24}
-\indexentry{improve\_ensemble() (in module ensembles.ens\_build)@\spxentry{improve\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{24}
-\indexentry{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}|hyperpage}{26}
-\indexentry{get\_ensemble\_directory() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_directory()}\spxextra{in module ensembles.ens\_build}|hyperpage}{26}
-\indexentry{write\_ensemble\_pdb() (in module ensembles.ens\_build)@\spxentry{write\_ensemble\_pdb()}\spxextra{in module ensembles.ens\_build}|hyperpage}{26}
-\indexentry{get\_pdb\_list() (in module ensembles.ens\_build)@\spxentry{get\_pdb\_list()}\spxextra{in module ensembles.ens\_build}|hyperpage}{27}
-\indexentry{get\_ensemble\_data() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_data()}\spxextra{in module ensembles.ens\_build}|hyperpage}{27}
-\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{28}
-\indexentry{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}|hyperpage}{28}
-\indexentry{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}|hyperpage}{29}
-\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{30}
-\indexentry{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}|hyperpage}{30}
-\indexentry{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}|hyperpage}{30}
-\indexentry{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}|hyperpage}{31}
-\indexentry{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}|hyperpage}{31}
-\indexentry{collisions() (in module utilities.util)@\spxentry{collisions()}\spxextra{in module utilities.util}|hyperpage}{32}
-\indexentry{distance() (in module utilities.util)@\spxentry{distance()}\spxextra{in module utilities.util}|hyperpage}{32}
-\indexentry{distance\_matrix() (in module utilities.util)@\spxentry{distance\_matrix()}\spxextra{in module utilities.util}|hyperpage}{32}
-\indexentry{distances() (in module utilities.util)@\spxentry{distances()}\spxextra{in module utilities.util}|hyperpage}{33}
-\indexentry{first\_bead() (in module utilities.util)@\spxentry{first\_bead()}\spxextra{in module utilities.util}|hyperpage}{33}
-\indexentry{get\_move() (in module utilities.util)@\spxentry{get\_move()}\spxextra{in module utilities.util}|hyperpage}{33}
-\indexentry{random\_sign() (in module utilities.util)@\spxentry{random\_sign()}\spxextra{in module utilities.util}|hyperpage}{34}
-\indexentry{utilities.iotools (module)@\spxentry{utilities.iotools}\spxextra{module}|hyperpage}{35}
-\indexentry{write\_bonds() (in module utilities.iotools)@\spxentry{write\_bonds()}\spxextra{in module utilities.iotools}|hyperpage}{35}
-\indexentry{write\_cg\_pdb() (in module utilities.iotools)@\spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}|hyperpage}{35}
-\indexentry{write\_pdbfile\_without\_topology() (in module utilities.iotools)@\spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}|hyperpage}{35}
-\indexentry{parameters.secondary\_structure (module)@\spxentry{parameters.secondary\_structure}\spxextra{module}|hyperpage}{36}
-\indexentry{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
-\indexentry{get\_helical\_data() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
-\indexentry{get\_helical\_parameters() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_parameters()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{36}
-\indexentry{orient\_along\_z\_axis() (in module parameters.secondary\_structure)@\spxentry{orient\_along\_z\_axis()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{37}
-\indexentry{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}|hyperpage}{37}
-\indexentry{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{get\_fwhm\_symmetry() (in module parameters.optimize)@\spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{get\_num\_maxima() (in module parameters.optimize)@\spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{optimize\_heat\_capacity() (in module parameters.optimize)@\spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{optimize\_lj() (in module parameters.optimize)@\spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}|hyperpage}{37}
-\indexentry{optimize\_model\_parameter() (in module parameters.optimize)@\spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{38}
-\indexentry{optimize\_parameter() (in module parameters.optimize)@\spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{38}
+\indexentry{get\_ensembles\_from\_replica\_positions() (in module ensembles.ens\_build)@\spxentry{get\_ensembles\_from\_replica\_positions()}\spxextra{in module ensembles.ens\_build}|hyperpage}{21}
+\indexentry{get\_native\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_native\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{22}
+\indexentry{get\_nonnative\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_nonnative\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{23}
+\indexentry{z\_score() (in module ensembles.ens\_build)@\spxentry{z\_score()}\spxextra{in module ensembles.ens\_build}|hyperpage}{24}
+\indexentry{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}|hyperpage}{25}
+\indexentry{get\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{25}
+\indexentry{test\_energy() (in module ensembles.ens\_build)@\spxentry{test\_energy()}\spxextra{in module ensembles.ens\_build}|hyperpage}{25}
+\indexentry{improve\_ensemble() (in module ensembles.ens\_build)@\spxentry{improve\_ensemble()}\spxextra{in module ensembles.ens\_build}|hyperpage}{25}
+\indexentry{ensembles.ens\_build (module)@\spxentry{ensembles.ens\_build}\spxextra{module}|hyperpage}{27}
+\indexentry{get\_ensemble\_directory() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_directory()}\spxextra{in module ensembles.ens\_build}|hyperpage}{27}
+\indexentry{write\_ensemble\_pdb() (in module ensembles.ens\_build)@\spxentry{write\_ensemble\_pdb()}\spxextra{in module ensembles.ens\_build}|hyperpage}{27}
+\indexentry{get\_pdb\_list() (in module ensembles.ens\_build)@\spxentry{get\_pdb\_list()}\spxextra{in module ensembles.ens\_build}|hyperpage}{28}
+\indexentry{get\_ensemble\_data() (in module ensembles.ens\_build)@\spxentry{get\_ensemble\_data()}\spxextra{in module ensembles.ens\_build}|hyperpage}{28}
+\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{29}
+\indexentry{random\_positions() (in module utilities.util)@\spxentry{random\_positions()}\spxextra{in module utilities.util}|hyperpage}{29}
+\indexentry{get\_structure\_from\_library() (in module utilities.util)@\spxentry{get\_structure\_from\_library()}\spxextra{in module utilities.util}|hyperpage}{30}
+\indexentry{utilities.util (module)@\spxentry{utilities.util}\spxextra{module}|hyperpage}{31}
+\indexentry{assign\_position() (in module utilities.util)@\spxentry{assign\_position()}\spxextra{in module utilities.util}|hyperpage}{31}
+\indexentry{assign\_position\_lattice\_style() (in module utilities.util)@\spxentry{assign\_position\_lattice\_style()}\spxextra{in module utilities.util}|hyperpage}{31}
+\indexentry{attempt\_lattice\_move() (in module utilities.util)@\spxentry{attempt\_lattice\_move()}\spxextra{in module utilities.util}|hyperpage}{32}
+\indexentry{attempt\_move() (in module utilities.util)@\spxentry{attempt\_move()}\spxextra{in module utilities.util}|hyperpage}{32}
+\indexentry{collisions() (in module utilities.util)@\spxentry{collisions()}\spxextra{in module utilities.util}|hyperpage}{33}
+\indexentry{distance() (in module utilities.util)@\spxentry{distance()}\spxextra{in module utilities.util}|hyperpage}{33}
+\indexentry{distance\_matrix() (in module utilities.util)@\spxentry{distance\_matrix()}\spxextra{in module utilities.util}|hyperpage}{33}
+\indexentry{distances() (in module utilities.util)@\spxentry{distances()}\spxextra{in module utilities.util}|hyperpage}{34}
+\indexentry{first\_bead() (in module utilities.util)@\spxentry{first\_bead()}\spxextra{in module utilities.util}|hyperpage}{34}
+\indexentry{get\_move() (in module utilities.util)@\spxentry{get\_move()}\spxextra{in module utilities.util}|hyperpage}{34}
+\indexentry{random\_sign() (in module utilities.util)@\spxentry{random\_sign()}\spxextra{in module utilities.util}|hyperpage}{35}
+\indexentry{utilities.iotools (module)@\spxentry{utilities.iotools}\spxextra{module}|hyperpage}{36}
+\indexentry{write\_bonds() (in module utilities.iotools)@\spxentry{write\_bonds()}\spxextra{in module utilities.iotools}|hyperpage}{36}
+\indexentry{write\_cg\_pdb() (in module utilities.iotools)@\spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}|hyperpage}{36}
+\indexentry{write\_pdbfile\_without\_topology() (in module utilities.iotools)@\spxentry{write\_pdbfile\_without\_topology()}\spxextra{in module utilities.iotools}|hyperpage}{36}
+\indexentry{parameters.secondary\_structure (module)@\spxentry{parameters.secondary\_structure}\spxextra{module}|hyperpage}{37}
+\indexentry{calculate\_p2() (in module parameters.secondary\_structure)@\spxentry{calculate\_p2()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{37}
+\indexentry{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{37}
+\indexentry{get\_helical\_data() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_data()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{38}
+\indexentry{get\_helical\_parameters() (in module parameters.secondary\_structure)@\spxentry{get\_helical\_parameters()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{38}
+\indexentry{orient\_along\_z\_axis() (in module parameters.secondary\_structure)@\spxentry{orient\_along\_z\_axis()}\spxextra{in module parameters.secondary\_structure}|hyperpage}{38}
+\indexentry{parameters.optimize (module)@\spxentry{parameters.optimize}\spxextra{module}|hyperpage}{39}
+\indexentry{calculate\_C\_v\_fitness() (in module parameters.optimize)@\spxentry{calculate\_C\_v\_fitness()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{get\_fwhm\_symmetry() (in module parameters.optimize)@\spxentry{get\_fwhm\_symmetry()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{get\_num\_maxima() (in module parameters.optimize)@\spxentry{get\_num\_maxima()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{optimize\_heat\_capacity() (in module parameters.optimize)@\spxentry{optimize\_heat\_capacity()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{optimize\_lj() (in module parameters.optimize)@\spxentry{optimize\_lj()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{optimize\_model\_parameter() (in module parameters.optimize)@\spxentry{optimize\_model\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{39}
+\indexentry{optimize\_parameter() (in module parameters.optimize)@\spxentry{optimize\_parameter()}\spxextra{in module parameters.optimize}|hyperpage}{39}

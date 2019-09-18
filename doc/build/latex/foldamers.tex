@@ -71,7 +71,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 13, 2019}
+\date{Sep 16, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1287,6 +1287,42 @@ native\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development
 
 \end{fulllineitems}
 
+\index{get\_ensembles\_from\_replica\_positions() (in module ensembles.ens\_build)@\spxentry{get\_ensembles\_from\_replica\_positions()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensembles_from_replica_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensembles\_from\_replica\_positions}}}{\emph{cgmodel}, \emph{replica\_positions}, \emph{replica\_energies}, \emph{temperature\_list}, \emph{native\_fraction\_cutoff=0.95}, \emph{nonnative\_fraction\_cutoff=0.9}, \emph{native\_ensemble\_size=10}, \emph{nonnative\_ensemble\_size=100}, \emph{decorrelate=True}, \emph{native\_contact\_cutoff\_distance=None}}{}
+Given a coarse grained model and replica positions, this function: 1) decorrelates the samples, 2) clusters the samples with MSMBuilder, and 3) generates native and nonnative ensembles based upon the RMSD positions of decorrelated samples.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_replicas x num\_steps x np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{float*simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ (}}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} 
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+nonnative\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the nonnative ensemble
+
+\item {} 
+nonnative\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for all members of the nonnative ensemble
+
+\item {} 
+native\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the native ensemble
+
+\item {} 
+native\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for the native ensemble
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
 \index{get\_native\_ensemble() (in module ensembles.ens\_build)@\spxentry{get\_native\_ensemble()}\spxextra{in module ensembles.ens\_build}}
 
 \begin{fulllineitems}
@@ -2110,7 +2146,32 @@ energy: Energy to write to the PDB file, default = None
 \label{\detokenize{parameters:parameter-analysis-tools-for-coarse-grained-modeling}}\label{\detokenize{parameters::doc}}
 The ‘foldamers’ package allows wide-ranging parameter analyses for a coarse grained model.  In particular, the package contains tools to analyze quantities that reflect secondary structure, including: 1) the fraction of native contacts, 2) the orientational ordering parameter ‘P2’, and 3) using kHelios, helical order parameters such as the pitch.
 
-\phantomsection\label{\detokenize{parameters:module-parameters.secondary_structure}}\index{parameters.secondary\_structure (module)@\spxentry{parameters.secondary\_structure}\spxextra{module}}\index{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
+\phantomsection\label{\detokenize{parameters:module-parameters.secondary_structure}}\index{parameters.secondary\_structure (module)@\spxentry{parameters.secondary\_structure}\spxextra{module}}\index{calculate\_p2() (in module parameters.secondary\_structure)@\spxentry{calculate\_p2()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.calculate_p2}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{calculate\_p2}}}{\emph{cgmodel}}{}
+Given a coarse grained model containing positions, this function returns the \sphinxhref{http://cmt.dur.ac.uk/sjc/thesis\_dlc/node19.html}{‘P2’} orientational ordering parameter value for the current pose.
+
+\begin{sphinxadmonition}{warning}{Warning:}
+By default, ‘P2’ is evaluated using the positions for only the backbone particles.
+\end{sphinxadmonition}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+p2 ( float ) - The value for the ‘P2’ orientational ordering parameter.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{parameters:parameters.secondary_structure.fraction_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{fraction\_native\_contacts}}}{\emph{cgmodel}, \emph{positions}, \emph{native\_structure}, \emph{cutoff\_distance=None}}{}
