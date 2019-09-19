@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.22)  18 SEP 2019 12:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.22)  19 SEP 2019 10:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1764,280 +1764,306 @@ Overfull \hbox (4.26665pt too wide) in paragraph at lines 1371--1371
 
 [23]
 Underfull \hbox (badness 10000) in paragraph at lines 1413--1413
+[]\T1/ptm/m/it/12 replica_positions\T1/ptm/m/n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1413--1413
+\T1/ptm/m/it/12 replica_energies\T1/ptm/m/n/12 , \T1/ptm/m/it/12 tem-per-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1418--1419
+\T1/pcr/m/sl/12 energy for simulation_steps ) for num_replicas
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1421--1422
+[]\T1/pcr/b/n/12 replica_positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( ( 
+float *
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1421--1422
+\T1/pcr/m/sl/12 simtk.unit.positions for num_beads ) for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1440--1440
 []\T1/ptm/m/it/12 nonnative_ensemble_energies\T1/ptm/m/n/12 , \T1/ptm/m/it/12 n
 a-
  []
 
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 1448--1448
+[24] [25]
+Underfull \hbox (badness 10000) in paragraph at lines 1475--1475
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-sem-ble_size=100\T
 1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1502--1502
+Underfull \hbox (badness 10000) in paragraph at lines 1529--1529
 []\T1/ptm/m/it/12 energy\T1/ptm/m/n/12 , \T1/ptm/m/it/12 po-si-tions\T1/ptm/m/n
 /12 , \T1/ptm/m/it/12 en-sem-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1502--1502
+Underfull \hbox (badness 10000) in paragraph at lines 1529--1529
 \T1/ptm/m/it/12 ble\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-sem-ble_energies\T1/ptm/
 m/n/12 , \T1/ptm/m/it/12 un-
  []
 
-[25]
-Underfull \hbox (badness 10000) in paragraph at lines 1513--1514
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 1540--1541
 []\T1/pcr/b/n/12 ensemble \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 List(positions(np.arr
 ay(float*simtk.
  []
 
-[26]
-Underfull \hbox (badness 10000) in paragraph at lines 1545--1545
+[27]
+Underfull \hbox (badness 10000) in paragraph at lines 1572--1572
 |[][]\T1/phv/b/n/17.28 Writing and read-ing en-sem-ble data from the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1558--1558
+Underfull \hbox (badness 10000) in paragraph at lines 1585--1585
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-sem-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1587--1587
+Underfull \hbox (badness 10000) in paragraph at lines 1614--1614
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-sem-
  []
 
-[27] [28]
+[28] [29]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1676--1676
+Underfull \hbox (badness 10000) in paragraph at lines 1703--1703
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 max_attempts=1000\T1/
 ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1676--1676
+Underfull \hbox (badness 10000) in paragraph at lines 1703--1703
 \T1/ptm/m/it/12 use_library=False\T1/ptm/m/n/12 , \T1/ptm/m/it/12 high_energy=F
 alse\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1676--1676
+Underfull \hbox (badness 10000) in paragraph at lines 1703--1703
 \T1/ptm/m/it/12 low_energy=False\T1/ptm/m/n/12 , \T1/ptm/m/it/12 gen-er-
  []
 
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 1702.
+less on input line 1729.
 
-[29
+[30
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 1717--1717
+Underfull \hbox (badness 10000) in paragraph at lines 1744--1744
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1717--1717
+Underfull \hbox (badness 10000) in paragraph at lines 1744--1744
 \T1/ptm/m/it/12 high_energy=False\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1718--1723
+Underfull \hbox (badness 10000) in paragraph at lines 1745--1750
 \T1/ptm/m/n/12 Given a coarse grained model class ob-ject, this func-tion re-tr
 ieves a set
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1718--1723
+Underfull \hbox (badness 10000) in paragraph at lines 1745--1750
 \T1/ptm/m/n/12 of po-si-tions for the model from the `foldamers' en-sem-ble li-
 brary, in:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1718--1723
+Underfull \hbox (badness 10000) in paragraph at lines 1745--1750
 \T1/ptm/m/n/12 `foldamers/ensembles/${backbone_length}_${sidechain_length}_${si
 dechain_positions}'
  []
 
-[30]
-Underfull \hbox (badness 10000) in paragraph at lines 1811--1811
+[31]
+Underfull \hbox (badness 10000) in paragraph at lines 1838--1838
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 po-si-tions\T1/ptm/m/
 n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1811--1811
+Underfull \hbox (badness 10000) in paragraph at lines 1838--1838
 \T1/ptm/m/it/12 dis-tance_cutoff\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1811--1811
+Underfull \hbox (badness 10000) in paragraph at lines 1838--1838
 \T1/ptm/m/it/12 par-ent_bead_index\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1819--1820
+Underfull \hbox (badness 10000) in paragraph at lines 1846--1847
 []\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
 it.angstrom (
  []
 
-[31]
-Underfull \hbox (badness 10000) in paragraph at lines 1850--1850
+[32]
+Underfull \hbox (badness 10000) in paragraph at lines 1877--1877
 []\T1/ptm/m/it/12 parent_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 bond_lengt
 h\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1855--1856
+Underfull \hbox (badness 10000) in paragraph at lines 1882--1883
 []\T1/pcr/b/n/12 parent_coordinates \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( f
 loat * unit.
  []
 
-[32]
-Underfull \hbox (badness 10000) in paragraph at lines 1922--1923
-[]\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
-it.angstrom (
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1977--1979
-[]\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
-it.angstrom (
- []
-
 [33]
-Underfull \hbox (badness 10000) in paragraph at lines 2003--2004
+Underfull \hbox (badness 10000) in paragraph at lines 1949--1950
 []\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
 it.angstrom (
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2025--2027
+Underfull \hbox (badness 10000) in paragraph at lines 2004--2006
+[]\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
+it.angstrom (
+ []
+
+[34]
+Underfull \hbox (badness 10000) in paragraph at lines 2030--2031
+[]\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
+it.angstrom (
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2052--2054
 []\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
 it ( shape =
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2043--2043
+Underfull \hbox (badness 10000) in paragraph at lines 2070--2070
 []\T1/ptm/m/it/12 trial_coordinates\T1/ptm/m/n/12 , \T1/ptm/m/it/12 move_direct
 ion\T1/ptm/m/n/12 , \T1/ptm/m/it/12 dis-tance\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2048--2049
+Underfull \hbox (badness 10000) in paragraph at lines 2075--2076
 []\T1/pcr/b/n/12 trial_coordinates \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( fl
 oat * unit.
  []
 
-[34] [35]
-Underfull \hbox (badness 10000) in paragraph at lines 2132--2132
+[35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 2159--2159
 []\T1/ptm/m/it/12 CGModel\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2132--2132
+Underfull \hbox (badness 10000) in paragraph at lines 2159--2159
 \T1/ptm/m/it/12 file-name\T1/ptm/m/n/12 , \T1/ptm/m/it/12 en-
  []
 
-[36]
+[37]
 Chapter 5.
 
-Overfull \hbox (6.47519pt too wide) in paragraph at lines 2177--2177
+Overfull \hbox (6.47519pt too wide) in paragraph at lines 2204--2204
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2177--2177
+Underfull \hbox (badness 10000) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 po-si-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2177--2177
+Underfull \hbox (badness 10000) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 tions\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2177--2177
+Underfull \hbox (badness 10000) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 na-
  []
 
 
-Overfull \hbox (32.03435pt too wide) in paragraph at lines 2177--2177
+Overfull \hbox (32.03435pt too wide) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 tive_structure\T1/ptm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2177--2177
+Underfull \hbox (badness 10000) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 cut-
  []
 
 
-Overfull \hbox (61.90265pt too wide) in paragraph at lines 2177--2177
+Overfull \hbox (61.90265pt too wide) in paragraph at lines 2204--2204
 \T1/ptm/m/it/12 off_distance=None\T1/pcr/m/n/12 ) 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2185--2186
+Underfull \hbox (badness 10000) in paragraph at lines 2212--2213
 []\T1/pcr/b/n/12 positions \T1/ptm/m/n/12 (\T1/pcr/m/sl/12 np.array( float * un
 it.angstrom (
  []
 
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 2186.
+less on input line 2213.
 
-[37
+[38
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 2250--2250
+Underfull \hbox (badness 10000) in paragraph at lines 2277--2277
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 ,
  []
 
 
-Overfull \hbox (46.0142pt too wide) in paragraph at lines 2250--2250
+Overfull \hbox (46.0142pt too wide) in paragraph at lines 2277--2277
 \T1/ptm/m/it/12 plot_projections=False\T1/pcr/m/n/12 ) 
  []
 
-[38]
-Underfull \hbox (badness 10000) in paragraph at lines 2301--2301
+[39]
+Underfull \hbox (badness 10000) in paragraph at lines 2336--2336
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 base_epsilon=0.0\T1/p
 tm/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2328--2328
+Underfull \hbox (badness 10000) in paragraph at lines 2363--2363
 []\T1/ptm/m/it/12 cgmodel\T1/ptm/m/n/12 , \T1/ptm/m/it/12 op-ti-miza-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2328--2328
+Underfull \hbox (badness 10000) in paragraph at lines 2363--2363
 \T1/ptm/m/it/12 tion_parameter\T1/ptm/m/n/12 , \T1/ptm/m/it/12 op-ti-miza-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2328--2328
+Underfull \hbox (badness 10000) in paragraph at lines 2363--2363
 \T1/ptm/m/it/12 tion_range_min\T1/ptm/m/n/12 , \T1/ptm/m/it/12 op-ti-miza-
  []
 
-[39]
+[40]
 Chapter 6.
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 2348.
+less on input line 2383.
 
-[40
+[41
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 2360--2361
+Underfull \hbox (badness 10000) in paragraph at lines 2395--2396
 []\T1/pcr/m/n/12 parameters.secondary_structure\T1/ptm/m/n/12 ,
  []
 
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 2368.
+less on input line 2403.
 
-[41
+[42
 
 
 
@@ -2124,7 +2150,7 @@ Overfull \hbox (0.5224pt too wide) in paragraph at lines 66--68
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
 less on input line 68.
 
-[42
+[43
 
 
 
@@ -2183,127 +2209,127 @@ Underfull \hbox (badness 10000) in paragraph at lines 97--98
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--102
+Underfull \hbox (badness 10000) in paragraph at lines 102--104
 []\T1/pcr/m/n/12 get_nonbonded_exclusion_list()
  []
 
 
-Overfull \hbox (0.5224pt too wide) in paragraph at lines 102--104
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 104--106
 []\T1/pcr/m/n/12 get_nonbonded_interaction_list()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--107
+Underfull \hbox (badness 10000) in paragraph at lines 108--109
 []\T1/pcr/m/n/12 get_num_beads()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--110
+Underfull \hbox (badness 10000) in paragraph at lines 110--112
 []\T1/pcr/m/n/12 get_particle_charge()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 110--111
+Underfull \hbox (badness 10000) in paragraph at lines 112--113
 []\T1/pcr/m/n/12 get_particle_list()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
 []\T1/pcr/m/n/12 get_particle_mass()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 []\T1/pcr/m/n/12 get_particle_name()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--114
+Underfull \hbox (badness 10000) in paragraph at lines 115--116
 []\T1/pcr/m/n/12 get_particle_type()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 114--115
+Underfull \hbox (badness 10000) in paragraph at lines 116--117
 []\T1/pcr/m/n/12 get_pdb_list() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule en-s
 em-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--118
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
 []\T1/pcr/m/n/12 get_structure_from_library() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 i
 n
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--119
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
 []\T1/pcr/m/n/12 get_temperature_list() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-
 ule
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--121
+Underfull \hbox (badness 10000) in paragraph at lines 121--123
 []\T1/pcr/m/n/12 get_torsion_force_constant()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--122
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
 []\T1/pcr/m/n/12 get_torsion_list()
  []
 
-[43]
-Underfull \hbox (badness 10000) in paragraph at lines 131--132
+[44]
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
 []\T1/pcr/m/n/12 optimize_lj() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule pa-ra
 m-e-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 142--143
+Underfull \hbox (badness 10000) in paragraph at lines 144--145
 []\T1/pcr/m/n/12 parameters.secondary_structure
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 []\T1/pcr/m/n/12 plot_heat_capacity() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ul
 e
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 152--153
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
 []\T1/pcr/m/n/12 test_energy() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule en-se
 m-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--164
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
 []\T1/pcr/m/n/12 write_cg_pdb() \T1/ptm/m/n/12 (\T1/ptm/m/it/12 in mod-ule util
 -i-
  []
 
 
-Overfull \hbox (0.5224pt too wide) in paragraph at lines 165--167
+Overfull \hbox (0.5224pt too wide) in paragraph at lines 172--174
 []\T1/pcr/m/n/12 write_pdbfile_without_topology()
  []
 
-[44])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2372.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2372.
+[45])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2407.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2407.
  (./foldamers.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2372.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2372.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2407.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2407.
 
 Package rerunfilecheck Info: File `foldamers.out' has not changed.
-(rerunfilecheck)             Checksum: E87FFA8FA5DC446D992693773CE900EB;5906.
+(rerunfilecheck)             Checksum: E806D92F5279B0C7768AC1C822316E7B;5907.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2372.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2407.
  ) 
 Here is how much of TeX's memory you used:
- 13944 strings out of 492982
- 196201 string characters out of 6134896
- 329810 words of memory out of 5000000
- 17019 multiletter control sequences out of 15000+600000
+ 13949 strings out of 492982
+ 196344 string characters out of 6134896
+ 329964 words of memory out of 5000000
+ 17021 multiletter control sequences out of 15000+600000
  51424 words of font info for 85 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
  37i,12n,45p,1514b,661s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2318,10 +2344,10 @@ xlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on foldamers.pdf (46 pages, 215594 bytes).
+Output written on foldamers.pdf (47 pages, 217707 bytes).
 PDF statistics:
- 700 PDF objects out of 1000 (max. 8388607)
- 629 compressed objects within 7 object streams
- 162 named destinations out of 1000 (max. 500000)
+ 710 PDF objects out of 1000 (max. 8388607)
+ 638 compressed objects within 7 object streams
+ 165 named destinations out of 1000 (max. 500000)
  181 words of extra memory for PDF output out of 10000 (max. 10000000)
 

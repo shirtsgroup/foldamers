@@ -71,7 +71,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 18, 2019}
+\date{Sep 19, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1407,6 +1407,33 @@ ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-pyt
 
 \end{fulllineitems}
 
+\index{get\_native\_structure() (in module ensembles.ens\_build)@\spxentry{get\_native\_structure()}\spxextra{in module ensembles.ens\_build}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_native_structure}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_native\_structure}}}{\emph{replica\_positions}, \emph{replica\_energies}, \emph{temperature\_list}}{}
+Given replica exchange run positions and energies, this function identifies the “native” structure, calculated as the structure with the lowest reduced potential energy.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_energies}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of dimension num\_replicas X simulation\_steps, which gives the energies for all replicas at all simulation steps
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.positions for num\_beads}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of positions for all output frames for all replicas
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+native\_structure ( np.array( float * simtk.unit.positions for num\_beads ) ) - The predicted native structure
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
 \index{z\_score() (in module ensembles.ens\_build)@\spxentry{z\_score()}\spxextra{in module ensembles.ens\_build}}
 
 \begin{fulllineitems}
@@ -2268,6 +2295,14 @@ cgmodel ( class ) - CGModel() class object, with positions oriented so that the 
 
 
 \end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{show\_helical\_fit() (in module parameters.secondary\_structure)@\spxentry{show\_helical\_fit()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.show_helical_fit}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{show\_helical\_fit}}}{\emph{cgmodel}}{}
+Given a coarse grained model containing positions, this function performs a helical fit for the backbone particles with \sphinxhref{https://pubs.acs.org/doi/10.1021/acs.jcim.6b00721}{kHelios} , and uses ‘matplotlib’ to display attributes of the helical fit.
 
 \end{fulllineitems}
 

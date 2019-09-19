@@ -10,12 +10,12 @@
 \contentsline {chapter}{\numberline {3}Ensemble building tools}{19}{chapter.3}
 \contentsline {section}{\numberline {3.1}Using MSMBuilder to generate conformational ensembles}{19}{section.3.1}
 \contentsline {section}{\numberline {3.2}Native structure-based ensemble generation tools}{21}{section.3.2}
-\contentsline {section}{\numberline {3.3}Energy-based ensemble generation tools}{25}{section.3.3}
-\contentsline {section}{\numberline {3.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{27}{section.3.4}
-\contentsline {chapter}{\numberline {4}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{29}{chapter.4}
-\contentsline {section}{\numberline {4.1}Random structure generation in \IeC {\textquoteleft }foldamers\IeC {\textquoteright }}{29}{section.4.1}
-\contentsline {section}{\numberline {4.2}Reading and writing to output within the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{36}{section.4.2}
-\contentsline {chapter}{\numberline {5}Parameter analysis tools for coarse grained modeling}{37}{chapter.5}
-\contentsline {chapter}{\numberline {6}Indices and tables}{40}{chapter.6}
-\contentsline {chapter}{Python Module Index}{41}{section*.97}
-\contentsline {chapter}{Index}{42}{section*.98}
+\contentsline {section}{\numberline {3.3}Energy-based ensemble generation tools}{26}{section.3.3}
+\contentsline {section}{\numberline {3.4}Writing and reading ensemble data from the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } database}{28}{section.3.4}
+\contentsline {chapter}{\numberline {4}Utilities for the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{30}{chapter.4}
+\contentsline {section}{\numberline {4.1}Random structure generation in \IeC {\textquoteleft }foldamers\IeC {\textquoteright }}{30}{section.4.1}
+\contentsline {section}{\numberline {4.2}Reading and writing to output within the \IeC {\textquoteleft }foldamers\IeC {\textquoteright } package}{37}{section.4.2}
+\contentsline {chapter}{\numberline {5}Parameter analysis tools for coarse grained modeling}{38}{chapter.5}
+\contentsline {chapter}{\numberline {6}Indices and tables}{41}{chapter.6}
+\contentsline {chapter}{Python Module Index}{42}{section*.99}
+\contentsline {chapter}{Index}{43}{section*.100}
