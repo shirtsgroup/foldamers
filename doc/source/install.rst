@@ -21,7 +21,9 @@ The following is a list of software dependencies for the foldamers package, with
 4) `pymbar <https://github.com/choderalab/pymbar>`_ (version 3.0.3)
 5) `MDTraj <http://mdtraj.org/1.9.3/>`_ (version 1.9.3)
 6) `MSMBuilder <http://msmbuilder.org/3.8.0/>`_ (version 3.8)
-7) `kHelios <https://pubs.acs.org/doi/abs/10.1021/acs.jcim.6b00721>`_
+7) `scikit-learn <https://scikit-learn.org/stable/>`_ (version 0.18.1)
+8) `sklearn-genetic <https://github.com/manuel-calzolari/sklearn-genetic>`_ (version 0.2)
+9) `kHelios <https://pubs.acs.org/doi/abs/10.1021/acs.jcim.6b00721>`_
 
 Recommended installation steps
 ------------------------------
@@ -32,6 +34,28 @@ We direct users that have not installed `Anaconda <https://www.anaconda.com/>`_ 
 
 The following installation steps are recommended for users that have already installed `Anaconda <https://www.anaconda.com/>`_ on their system:
 
-1) Create an Anaconda environment for Python version 3.6 (the most stable Python version for ):
+1) Install 'sklearn-genetic' (used for genetic algorithm optimization of model parameters)::
+
+	pip install sklearn-genetic
+
+2) Create an Anaconda environment for Python version 3.6 (the most stable Python version for 'foldamers')::
+
+	conda create -n foldamers python=3.6 mdtraj=1.9.3 openmm=7.3.1 pymbar=3.0.3 msmbuilder=3.8 scikit-learn=0.18.1 yank=0.21.2
+
+3) Activate this new environment::
+
+	conda activate foldamers
+
+4) Clone and install a fresh copy of 'cg_openmm'::
+
+	git clone https://github.com/shirtsgroup/cg_openmm.git
+	cd cg_openmm
+	python setup.py install
+
+5) Clone and install a fresh copy of 'foldamers' to your system::
+
+	git clone https://github.com/shirtsgroup/foldamers.git
+	cd foldamers
+	python setup.py install
 
 
