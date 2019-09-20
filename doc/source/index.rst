@@ -11,6 +11,7 @@ This documentation is generated automatically using Sphinx, which reads all docs
 .. toctree::
    :maxdepth: 2
 
+   install.rst
    cg_model.rst
    thermo.rst
    ensembles.rst
