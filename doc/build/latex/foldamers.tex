@@ -109,22 +109,11 @@ The following is a list of software dependencies for the foldamers package, with
 \item {} 
 \sphinxhref{https://github.com/shirtsgroup/cg\_openmm}{cg\_openmm} (version 0.0)
 
-\end{enumerate}
-\begin{description}
-\item[{\sphinxstylestrong{Dependencies for the ‘cg\_openmm’ software package:}}] \leavevmode\begin{enumerate}
-\def\theenumi{\arabic{enumi}}
-\def\labelenumi{\theenumi )}
-\makeatletter\def\p@enumii{\p@enumi \theenumi )}\makeatother
-\setcounter{enumi}{1}
-\item {} 
-\sphinxhref{http://openmm.org/}{OpenMM} (version 7.3.1)
-
-\item {} 
-\sphinxhref{http://getyank.org/latest/}{Yank} (version 0.24.1)
+\sphinxstylestrong{Dependencies for the ‘cg\_openmm’ software package:}
+2) \sphinxhref{http://openmm.org/}{OpenMM} (version 7.3.1)
+3) \sphinxhref{http://getyank.org/latest/}{Yank} (version 0.24.1)
 
 \end{enumerate}
-
-\end{description}
 \begin{enumerate}
 \def\theenumi{\arabic{enumi}}
 \def\labelenumi{\theenumi )}
@@ -209,16 +198,703 @@ Clone and install a fresh copy of ‘foldamers’ to your system:
 The foldamers package uses “CGModel()” objects to define and store information about the properties of coarse grained models.
 
 
-\section{‘basic\_cgmodel’: a simple function to build coarse grained homopolymers}
-\label{\detokenize{cg_model:basic-cgmodel-a-simple-function-to-build-coarse-grained-homopolymers}}
-Shown below is the ‘basic\_cgmodel’ function, which requires a minimal set of input arguments to build a coarse grained holopolymer model.
+\section{Using the ‘CGModel()’ class to build coarse grained heteropolymers}
+\label{\detokenize{cg_model:using-the-cgmodel-class-to-build-coarse-grained-heteropolymers}}
+Shown below is a detailed description of the ‘CGModel()’ class object, as well as some of examples demonstrating how to use its functions and attributes.
+
+\phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{CGModel (class in cg\_model.cgmodel)@\spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=12, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=None, sigmas=None, epsilons=None, bond\_lengths=None, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, equil\_bond\_angles=None, equil\_torsion\_angles=None, charges=None, constrain\_bonds=True, include\_bond\_forces=False, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, exclusions=True, check\_energy\_conservation=True, use\_structure\_library=False, heteropolymer=False, monomer\_types=None, sequence=None, random\_positions=False, system=None, topology=None}}{}
+Build a coarse grained model class object.
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mf}{7.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{angstrom}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}lengths} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}sc\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}bond\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}length}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{constrain\PYGZus{}bonds} \PYG{o}{=} \PYG{k+kc}{False}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{n}{bond\PYGZus{}lengths}\PYG{o}{=}\PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,}\PYG{n}{constrain\PYGZus{}bonds}\PYG{o}{=}\PYG{n}{constrain\PYGZus{}bonds}\PYG{p}{)}
+\end{sphinxVerbatim}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{foldamers}\PYG{n+nn}{.}\PYG{n+nn}{cg\PYGZus{}model}\PYG{n+nn}{.}\PYG{n+nn}{cgmodel} \PYG{k}{import} \PYG{n}{CGModel}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{backbone\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}positions}\PYG{o}{=}\PYG{l+m+mi}{0}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mf}{7.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{angstrom}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigma} \PYG{o}{=} \PYG{l+m+mf}{2.0} \PYG{o}{*} \PYG{n}{bond\PYGZus{}length}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilon} \PYG{o}{=} \PYG{l+m+mf}{0.2} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{kilocalorie\PYGZus{}per\PYGZus{}mole}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigmas} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}sigma}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigma}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}sigma}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigma}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilons} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}bb\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bb\PYGZus{}sc\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sc\PYGZus{}sc\PYGZus{}eps}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilon}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{A} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{monomer\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{A}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{backbone\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{backbone\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}positions}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{num\PYGZus{}beads}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{num\PYGZus{}beads}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bond\PYGZus{}lengths}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{epsilons}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilons}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sigmas}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigmas}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{B} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{monomer\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{B}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{backbone\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{backbone\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}length}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sidechain\PYGZus{}positions}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{num\PYGZus{}beads}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{num\PYGZus{}beads}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{bond\PYGZus{}lengths}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{bond\PYGZus{}lengths}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{epsilons}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{epsilons}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{sigmas}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{sigmas}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{monomer\PYGZus{}types} \PYG{o}{=} \PYG{p}{[}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sequence} \PYG{o}{=} \PYG{p}{[}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{CGModel}\PYG{p}{(}\PYG{n}{heteropolymer}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,}\PYG{n}{monomer\PYGZus{}types}\PYG{o}{=}\PYG{n}{monomer\PYGZus{}types}\PYG{p}{,}\PYG{n}{sequence}\PYG{o}{=}\PYG{n}{sequence}\PYG{p}{)}
+\end{sphinxVerbatim}
+\index{get\_all\_particle\_masses() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_all\_particle\_masses()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_all_particle_masses}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_all\_particle\_masses}}}{}{}
+Returns a list of all unique particle masses
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+list\_of\_masses ( List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - List of unique particle masses
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_angle\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+Determines the correct bond angle force constant for a bond angle between three particles, given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_3\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the third particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_angle\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond angle force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_angle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_angle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_angle_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_angle\_list}}}{}{}
+Construct a list of bond angles, which can be used to build bond angle potentials for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_angles ( List( List( int, int, int ) ) ) - A list of indices for all of the bond angles in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_force\_constant}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}
+Determines the correct bond force constant for two particles, given their indices
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_length() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}}{}
+Determines the correct bond length for two particles, given their indices.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_length ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond length for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_length\_from\_names() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_length\_from\_names()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_length_from_names}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_length\_from\_names}}}{\emph{particle\_1\_name}, \emph{particle\_2\_name}}{}
+Determines the correct bond length for two particles, given their symbols.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name for the second particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_length ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned bond length for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_bond\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_bond\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_bond_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_bond\_list}}}{}{}
+Construct a bond list for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+bond\_list ( List( List( int, int ) ) ) - A list of the bonds in the coarse grained model.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_epsilon() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_epsilon()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_epsilon}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_epsilon}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}
+Returns the Lennard-Jones potential epsilon value for a particle, given its index within the coarse grained model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates a particle as “backbone” or “sidechain”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+epsilon ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned Lennard-Jones epsilon value for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_equil\_bond\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_bond\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_bond_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_bond\_angle}}}{\emph{particle\_1\_index}, \emph{particle\_2\_index}, \emph{particle\_3\_index}}{}
+Determines the correct equilibrium bond angle between three particles, given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_1\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the first particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_2\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the second particle
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_3\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index for the third particle
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+equil\_bond\_angle (float) - The assigned equilibrium bond angle for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_equil\_torsion\_angle() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_equil\_torsion\_angle()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_equil_torsion_angle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_equil\_torsion\_angle}}}{\emph{torsion}}{}
+Determines the correct equilibrium angle for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+equil\_torsion\_angle (float) - The assigned equilibrium torsion angle for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_monomer\_types() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_monomer\_types()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_monomer_types}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_monomer\_types}}}{}{}
+Get a list of ‘monomer\_types’ for all unique monomers.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+monomer\_types ( List( dict( ‘monomer\_name’: str, ‘backbone\_length’: int, ‘sidechain\_length’: int, ‘sidechain\_positions’: List( int ), ‘num\_beads’: int, ‘bond\_lengths’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘epsilons’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ), ‘sigmas’: List( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) ) ) - A list of unique monomer types in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_nonbonded\_exclusion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_exclusion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_exclusion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_exclusion\_list}}}{}{}
+Get a list of the nonbonded interaction exclusions, which are assigned if two particles are separated by less than three bonds
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+exclusion\_list ( List( List( int, int ) ) ) - A list of the nonbonded particle interaction exclusions for the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_nonbonded\_interaction\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_interaction\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_interaction_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_interaction\_list}}}{}{}
+Construct a nonbonded interaction list for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+interaction\_list ( List( List( int, int ) ) ) - A list of the nonbonded interactions (which don’t violate exclusion rules) in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_num\_beads() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_num\_beads()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_num_beads}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_num\_beads}}}{}{}
+Calculate the number of beads in a coarse grained model class object
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+num\_beads (int) - The total number of beads in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_charge() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_charge()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_charge}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_charge}}}{\emph{particle\_index}}{}
+Returns the charge for a particle, given its index within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_charge ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The charge for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_list}}}{}{}
+Get a list of particles, where the indices correspond to those in the system/topology.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_list ( List( str ) ) - A list of unique particles in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_mass() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_mass()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_mass}}}{\emph{particle\_index}}{}
+Get the mass for a particle, given its index within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_mass ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The mass for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_name() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_name()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_name}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_name}}}{\emph{particle\_index}}{}
+Returns the name of a particle, given its index within the model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_name ( str ) - The name of the particle
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_particle\_type() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_particle\_type()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_particle_type}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_particle\_type}}}{\emph{particle\_index}, \emph{particle\_name=None}}{}
+Indicates if a particle is a backbone bead or a sidechain bead
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_name}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Name of the particle that we would like to “type”.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+particle\_type (str) - ‘backbone’ or ‘sidechain’
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_sigma() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_sigma()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_sigma}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_sigma}}}{\emph{particle\_index}, \emph{particle\_type=None}}{}
+Returns the Lennard-Jones potential sigma value for a particle, given its index within the coarse grained model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_index}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Index of the particle for which we would like to determine the type
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{particle\_type}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Designates a particle as “backbone” or “sidechain”
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+sigma ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned Lennard-Jones sigma value for the provided particle index
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_torsion\_force\_constant() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_force\_constant()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_force_constant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_force\_constant}}}{\emph{torsion}}{}
+Determines the correct torsion force constant for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+torsion\_force\_constant ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The assigned torsion force constant for the provided particles
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_torsion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_list}}}{}{}
+Construct a list of particle indices from which to define torsions for the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
 
 \newpage
 
 
-\section{Using the ‘CGModel()’ class to build coarse grained heteropolymers}
-\label{\detokenize{cg_model:using-the-cgmodel-class-to-build-coarse-grained-heteropolymers}}
-Shown below is a detailed description of the ‘CGModel()’ class object, as well as some of examples demonstrating how to use its functions and attributes.
+\section{‘basic\_cgmodel’: a simple function to build coarse grained homopolymers}
+\label{\detokenize{cg_model:basic-cgmodel-a-simple-function-to-build-coarse-grained-homopolymers}}
+Shown below is the ‘basic\_cgmodel’ function, which requires a minimal set of input arguments to build a coarse grained holopolymer model.
+
+\phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{basic\_cgmodel() (in module cg\_model.cgmodel)@\spxentry{basic\_cgmodel()}\spxextra{in module cg\_model.cgmodel}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.basic_cgmodel}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{basic\_cgmodel}}}{\emph{polymer\_length=12, backbone\_length=1, sidechain\_length=1, sidechain\_positions={[}0{]}, mass=Quantity(value=100.0, unit=dalton), bond\_length=Quantity(value=0.75, unit=nanometer), sigma=Quantity(value=1.85, unit=nanometer), epsilon=Quantity(value=0.5, unit=kilocalorie/mole), positions=None}}{}~\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{polymer\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of monomer units, default = 8
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{backbone\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of beads in the backbone for individual monomers within a coarse grained model, default = 1
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_length}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}) \textendash{} Number of beads in the sidechain for individual monomers within a coarse grained model, default = 1
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sidechain\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} Designates the indices of backbone beads upon which we will place sidechains, default = {[}0{]} (add a sidechain to the first backbone bead in each monomer)
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{mass}} \textendash{} Mass for all coarse grained beads, default = 100.0 * unit.amu
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{bond\_length}} \textendash{} Defines the length for all bond types, default = 7.5 * unit.angstrom
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{sigma}} \textendash{} Lennard-Jones equilibrium interaction distance (by default, calculated for particles that are separated by 3 or more bonds), default = 18.5 * bond\_length (for all interaction types)
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{epsilon}} \textendash{} Lennard-Jones equilibrium interaction energy (by default, calculated for particles that are separated by 3 or more bonds), default = 0.5 * unit.kilocalorie\_per\_mole
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{positions}} \textendash{} Positions for coarse grained particles in the model, default = None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+cgmodel (class) - CGModel() class object
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+this function has significant limitations, in comparison with building a coarse grained model with the CGModel() class.  In particular, this function makes it more difficult to build heteropolymers, and is best-suited for the simulation of homopolymers.
+\end{sphinxadmonition}
+\begin{quote}\begin{description}
+\item[{Example}] \leavevmode
+\end{description}\end{quote}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{simtk} \PYG{k}{import} \PYG{n}{unit}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{polymer\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{20}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{backbone\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sidechain\PYGZus{}positions} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{mass} \PYG{o}{=} \PYG{l+m+mf}{100.0} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{amu}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{bond\PYGZus{}length}\PYG{o}{=}\PYG{l+m+mf}{0.75} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{nanometer}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sigma}\PYG{o}{=}\PYG{l+m+mf}{1.85}\PYG{o}{*}\PYG{n}{unit}\PYG{o}{.}\PYG{n}{nanometer}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{epsilon}\PYG{o}{=}\PYG{l+m+mf}{0.5} \PYG{o}{*} \PYG{n}{unit}\PYG{o}{.}\PYG{n}{kilocalorie\PYGZus{}per\PYGZus{}mole}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cgmodel} \PYG{o}{=} \PYG{n}{basic\PYGZus{}cgmodel}\PYG{p}{(}\PYG{n}{polymer\PYGZus{}length}\PYG{o}{=}\PYG{n}{polymer\PYGZus{}length}\PYG{p}{,}\PYG{n}{backbone\PYGZus{}length}\PYG{o}{=}\PYG{n}{backbone\PYGZus{}length}\PYG{p}{,}\PYG{n}{sidechain\PYGZus{}length}\PYG{o}{=}\PYG{n}{sidechain\PYGZus{}length}\PYG{p}{,}\PYG{n}{sidechain\PYGZus{}positions}\PYG{o}{=}\PYG{n}{sidechain\PYGZus{}positions}\PYG{p}{,}\PYG{n}{mass}\PYG{o}{=}\PYG{n}{mass}\PYG{p}{,}\PYG{n}{bond\PYGZus{}length}\PYG{o}{=}\PYG{n}{bond\PYGZus{}length}\PYG{p}{,}\PYG{n}{sigma}\PYG{o}{=}\PYG{n}{sigma}\PYG{p}{,}\PYG{n}{epsilon}\PYG{o}{=}\PYG{n}{epsilon}\PYG{p}{)} 
+\end{sphinxVerbatim}
+
+\end{fulllineitems}
+
 
 
 \chapter{Thermodynamic analysis tools for coarse grained modeling}
@@ -1561,22 +2237,17 @@ Shown below are ‘foldamers’ tools for writing data and structures to output 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.iotools.write_bonds}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.iotools.}}\sphinxbfcode{\sphinxupquote{write\_bonds}}}{\emph{CGModel}, \emph{pdb\_object}}{}
 Writes the bonds from an input CGModel class object to the file object ‘pdb\_object’, using PDB ‘CONECT’ syntax.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
-CGModel: Coarse grained model class object
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{pdb\_object}} (\sphinxstyleliteralemphasis{\sphinxupquote{file}}) \textendash{} File object to which we will write the bond list
 
-pdb\_object: File object to which we will write the bond list
+\end{itemize}
 
-\end{fulllineitems}
-
-\index{write\_cg\_pdb() (in module utilities.iotools)@\spxentry{write\_cg\_pdb()}\spxextra{in module utilities.iotools}}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:utilities.iotools.write_cg_pdb}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.iotools.}}\sphinxbfcode{\sphinxupquote{write\_cg\_pdb}}}{\emph{cgmodel}, \emph{file\_name}}{}
-Writes the positions from an input CGModel class object to the file ‘filename’.  Used to test the compatibility of coarse grained model parameters with the OpenMM PDBFile() functions, which are needed to write coordinates to a PDB file during MD simulations.
-
-CGModel: Coarse grained model class object
-
-filename: Path to the file where we will write PDB coordinates.
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1585,12 +2256,20 @@ filename: Path to the file where we will write PDB coordinates.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{utilities:utilities.iotools.write_pdbfile_without_topology}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{utilities.iotools.}}\sphinxbfcode{\sphinxupquote{write\_pdbfile\_without\_topology}}}{\emph{CGModel}, \emph{filename}, \emph{energy=None}}{}
 Writes the positions from an input CGModel class object to the file ‘filename’.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
 
-CGModel: Coarse grained model class object
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{filename}} (\sphinxhref{https://docs.python.org/3/library/stdtypes.html\#str}{\sphinxstyleliteralemphasis{\sphinxupquote{str}}}) \textendash{} Path to the file where we will write PDB coordinates.
 
-filename: Path to the file where we will write PDB coordinates.
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{energy}} \textendash{} Energy to write to the PDB file, default = None
 
-energy: Energy to write to the PDB file, default = None
+\end{itemize}
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -1792,23 +2471,12 @@ cgmodel: CGModel() class object.
 
 
 
-\chapter{Indices and tables}
-\label{\detokenize{index:indices-and-tables}}\begin{itemize}
-\item {} 
-\DUrole{xref,std,std-ref}{genindex}
-
-\item {} 
-\DUrole{xref,std,std-ref}{modindex}
-
-\item {} 
-\DUrole{xref,std,std-ref}{search}
-
-\end{itemize}
-
-
 \renewcommand{\indexname}{Python Module Index}
 \begin{sphinxtheindex}
 \let\bigletter\sphinxstyleindexlettergroup
+\bigletter{c}
+\item\relax\sphinxstyleindexentry{cg\_model.cgmodel}\sphinxstyleindexpageref{cg_model:\detokenize{module-cg_model.cgmodel}}
+\indexspace
 \bigletter{e}
 \item\relax\sphinxstyleindexentry{ensembles.cluster}\sphinxstyleindexpageref{ensembles:\detokenize{module-ensembles.cluster}}
 \item\relax\sphinxstyleindexentry{ensembles.ens\_build}\sphinxstyleindexpageref{ensembles:\detokenize{module-ensembles.ens_build}}

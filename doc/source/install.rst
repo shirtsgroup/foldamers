@@ -14,7 +14,7 @@ The following is a list of software dependencies for the foldamers package, with
 
 1) `cg_openmm <https://github.com/shirtsgroup/cg_openmm>`_ (version 0.0)
 
-**Dependencies for the 'cg_openmm' software package:**
+   **Dependencies for the 'cg_openmm' software package:**
    2) `OpenMM <http://openmm.org/>`_ (version 7.3.1)
    3) `Yank <http://getyank.org/latest/>`_ (version 0.24.1)
 

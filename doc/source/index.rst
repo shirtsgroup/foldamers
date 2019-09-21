@@ -18,9 +18,3 @@ This documentation is generated automatically using Sphinx, which reads all docs
    utilities.rst
    parameters.rst
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

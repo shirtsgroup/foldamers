@@ -26,7 +26,7 @@ Shown below are other tools that support the task of random structure generation
     \newpage
 
 Reading and writing to output within the 'foldamers' package
---------------------------------------------------------
+------------------------------------------------------------
 
 Shown below are 'foldamers' tools for writing data and structures to output files.
 
