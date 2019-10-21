@@ -1,2 +1,2 @@
-numpy=1.12.1
-simtk=4.0
+numpy==1.12.1
+simtk==4.0
