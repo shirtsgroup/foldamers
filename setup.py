@@ -11,11 +11,12 @@ from setuptools import setup, Command
 # Package meta-data.
 NAME = 'foldamers'
 DESCRIPTION = 'Package containing tools to model secondary structure formation in heteropolymers.'
+long_description = 'This software provides molecular modeling tools to evaluate secondary structure and thermodynamic properties of coarse-grained heteropolymers.'
 URL = 'https://github.com/shirtsgroup/foldamers'
 EMAIL = 'michael.shirts@colorado.edu'
 AUTHOR = 'Shirts research group'
 REQUIRES_PYTHON = '>=3.6.8'
-VERSION = 0.0
+VERSION = 1.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -89,7 +90,7 @@ setup(
     name=NAME,
     version=about['__version__'],
     description=DESCRIPTION,
-#    long_description=long_description,
+    long_description=long_description,
     long_description_content_type='text/markdown',
     author=AUTHOR,
     author_email=EMAIL,
