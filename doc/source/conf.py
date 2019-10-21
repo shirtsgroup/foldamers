@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../foldamers'))
 # -- Project information -----------------------------------------------------
 
 project = 'foldamers'
-copyright = '2019, Shirts research group'
+copyright = '2019, Garrett A. Meek, Michael R. Shirts'
 author = "Garrett A. Meek\\\Theodore L. Fobe\\\Connor M. Vogel\\\ \\\Research group of Professor Michael R. Shirts\\\ \\\Dept. of Chemical and Biological Engineering\\\University of Colorado Boulder"
 
 # The short X.Y version
@@ -82,7 +82,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

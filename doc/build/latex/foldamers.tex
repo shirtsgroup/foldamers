@@ -71,7 +71,7 @@
 
 
 \title{foldamers Documentation}
-\date{Sep 21, 2019}
+\date{Oct 21, 2019}
 \release{0.0}
 \author{Garrett A. Meek\\Theodore L. Fobe\\Connor M. Vogel\\ \\Research group of Professor Michael R. Shirts\\ \\Dept. of Chemical and Biological Engineering\\University of Colorado Boulder}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -205,7 +205,7 @@ Shown below is a detailed description of the ‘CGModel()’ class object, as we
 \phantomsection\label{\detokenize{cg_model:module-cg_model.cgmodel}}\index{cg\_model.cgmodel (module)@\spxentry{cg\_model.cgmodel}\spxextra{module}}\index{CGModel (class in cg\_model.cgmodel)@\spxentry{CGModel}\spxextra{class in cg\_model.cgmodel}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=12, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=None, sigmas=None, epsilons=None, bond\_lengths=None, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, equil\_bond\_angles=None, equil\_torsion\_angles=None, charges=None, constrain\_bonds=True, include\_bond\_forces=False, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, exclusions=True, check\_energy\_conservation=True, use\_structure\_library=False, heteropolymer=False, monomer\_types=None, sequence=None, random\_positions=False, system=None, topology=None}}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{cg\_model.cgmodel.}}\sphinxbfcode{\sphinxupquote{CGModel}}}{\emph{positions=None, polymer\_length=12, backbone\_lengths={[}1{]}, sidechain\_lengths={[}1{]}, sidechain\_positions={[}0{]}, masses=None, sigmas=None, epsilons=None, bond\_lengths=None, bond\_force\_constants=None, bond\_angle\_force\_constants=None, torsion\_force\_constants=None, torsion\_periodicities=None, equil\_bond\_angles=None, equil\_torsion\_angles=None, charges=None, constrain\_bonds=True, include\_bond\_forces=False, include\_nonbonded\_forces=True, include\_bond\_angle\_forces=True, include\_torsion\_forces=True, exclusions=True, rosetta\_scoring=False, check\_energy\_conservation=True, use\_structure\_library=False, heteropolymer=False, monomer\_types=None, sequence=None, random\_positions=False, system=None, topology=None, simulation=None}}{}
 Build a coarse grained model class object.
 \begin{quote}\begin{description}
 \item[{Example}] \leavevmode
@@ -548,7 +548,7 @@ monomer\_types ( List( dict( ‘monomer\_name’: str, ‘backbone\_length’: i
 \index{get\_nonbonded\_exclusion\_list() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_nonbonded\_exclusion\_list()}\spxextra{cg\_model.cgmodel.CGModel method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_exclusion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_exclusion\_list}}}{}{}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_nonbonded_exclusion_list}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_nonbonded\_exclusion\_list}}}{\emph{rosetta\_scoring=False}}{}
 Get a list of the nonbonded interaction exclusions, which are assigned if two particles are separated by less than three bonds
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
@@ -810,6 +810,33 @@ Construct a list of particle indices from which to define torsions for the coars
 \begin{itemize}
 \item {} 
 torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse grained model
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_torsion\_periodicity() (cg\_model.cgmodel.CGModel method)@\spxentry{get\_torsion\_periodicity()}\spxextra{cg\_model.cgmodel.CGModel method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{cg_model:cg_model.cgmodel.CGModel.get_torsion_periodicity}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_torsion\_periodicity}}}{\emph{torsion}}{}
+Determines the correct periodicity for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{CGModel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{torsion}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxhref{https://docs.python.org/3/library/functions.html\#int}{\sphinxstyleliteralemphasis{\sphinxupquote{int}}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} A list of the indices for the particles in a torsion
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+torsion\_periodicity ( int ) - The periodicity for the input torsion
 
 \end{itemize}
 
@@ -1159,7 +1186,7 @@ Given a set of replica exchange trajectories, energies, and associated temperatu
 \item[{Returns}] \leavevmode
 \begin{itemize}
 \item {} 
-configurations ( List( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ( np.array( {[}n\_decorrelated\_samples,cgmodel.num\_beads,3{]} ), simtk.unit ) ) - A list of decorrelated samples
+configurations ( List( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} (n\_decorrelated\_samples,cgmodel.num\_beads,3), simtk.unit ) ) - A list of decorrelated samples
 
 \item {} 
 energies ( List( \sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) ) - The energies for the decorrelated samples (configurations)
@@ -1393,7 +1420,7 @@ native\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development
 \index{get\_ensembles\_from\_replica\_positions() (in module ensembles.ens\_build)@\spxentry{get\_ensembles\_from\_replica\_positions()}\spxextra{in module ensembles.ens\_build}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensembles_from_replica_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensembles\_from\_replica\_positions}}}{\emph{cgmodel}, \emph{replica\_positions}, \emph{replica\_energies}, \emph{temperature\_list}, \emph{native\_fraction\_cutoff=0.95}, \emph{nonnative\_fraction\_cutoff=0.9}, \emph{native\_ensemble\_size=10}, \emph{nonnative\_ensemble\_size=100}, \emph{decorrelate=True}, \emph{native\_contact\_cutoff\_distance=None}}{}
+\phantomsection\label{\detokenize{ensembles:ensembles.ens_build.get_ensembles_from_replica_positions}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ensembles.ens\_build.}}\sphinxbfcode{\sphinxupquote{get\_ensembles\_from\_replica\_positions}}}{\emph{cgmodel}, \emph{replica\_positions}, \emph{replica\_energies}, \emph{temperature\_list}, \emph{native\_fraction\_cutoff=0.95}, \emph{nonnative\_fraction\_cutoff=0.9}, \emph{native\_ensemble\_size=10}, \emph{nonnative\_ensemble\_size=100}, \emph{decorrelate=True}, \emph{native\_structure\_contact\_distance\_cutoff=None}, \emph{optimize\_Q=False}}{}
 Given a coarse grained model and replica positions, this function: 1) decorrelates the samples, 2) clusters the samples with MSMBuilder, and 3) generates native and nonnative ensembles based upon the RMSD positions of decorrelated samples.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
@@ -1403,21 +1430,48 @@ Given a coarse grained model and replica positions, this function: 1) decorrelat
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{replica\_positions}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_replicas x num\_steps x np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{float*simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ (}}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} 
 
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{replica\_energies}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * simtk.unit.energy for simulation\_steps}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{for num\_replicas}}\sphinxstyleliteralemphasis{\sphinxupquote{ )}}) \textendash{} List of dimension num\_replicas X simulation\_steps, which gives the energies for all replicas at all simulation steps
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{temperature\_list}} (List( \sphinxhref{https://simtk.org/}{SIMTK} \sphinxhref{http://docs.openmm.org/7.1.0/api-python/generated/simtk.unit.unit.Unit.html}{Unit()} * number\_replicas )) \textendash{} List of temperatures that will be used to define different replicas (thermodynamics states), default = None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_fraction\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The fraction of native contacts above which a pose is considered ‘native’
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{nonnative\_fraction\_cutoff}} (\sphinxhref{https://docs.python.org/3/library/functions.html\#float}{\sphinxstyleliteralemphasis{\sphinxupquote{float}}}) \textendash{} The fraction of native contacts above which a pose is considered ‘native’
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_ensemble\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{index}}) \textendash{} The number of poses to generate for a native ensemble
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{nonnative\_ensemble\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{index}}) \textendash{} The number of poses to generate for a nonnative ensemble
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{decorrelate}} (\sphinxstyleliteralemphasis{\sphinxupquote{Logical}}) \textendash{} Determines whether or not to subsample the replica exchange trajectories using pymbar, default = True
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure\_contact\_distance\_cutoff}} \textendash{} The distance below which two nonbonded, interacting particles that are defined as “native contact”,default=None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{optimize\_Q}} \textendash{} Determines whether or not to call a procedure that optimizes parameters which influence determination of native contacts
+
 \end{itemize}
 
 \item[{Returns}] \leavevmode
 \begin{itemize}
 \item {} 
-nonnative\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the nonnative ensemble
-
-\item {} 
-nonnative\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for all members of the nonnative ensemble
-
-\item {} 
 native\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the native ensemble
 
 \item {} 
 native\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for the native ensemble
+
+\item {} 
+nonnative\_ensemble (List(positions(np.array(float*simtk.unit (shape = num\_beads x 3))))) - A list of the positions for all members in the nonnative ensemble
+
+\item {} 
+nonnative\_ensemble\_energies ( List(\sphinxhref{http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} )) - A list of the energies for all members of the nonnative ensemble
 
 \end{itemize}
 
@@ -2307,7 +2361,7 @@ p2 ( float ) - The value for the ‘P2’ orientational ordering parameter.
 \index{fraction\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{fraction\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.fraction_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{fraction\_native\_contacts}}}{\emph{cgmodel}, \emph{positions}, \emph{native\_structure}, \emph{cutoff\_distance=None}}{}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.fraction_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{fraction\_native\_contacts}}}{\emph{cgmodel}, \emph{positions}, \emph{native\_structure}, \emph{native\_structure\_contact\_distance\_cutoff=None}, \emph{native\_contact\_cutoff\_ratio=None}}{}
 Given a coarse grained model, positions for that model, and positions for the native structure, this function calculates the fraction of native contacts for the model.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
@@ -2321,14 +2375,17 @@ Given a coarse grained model, positions for that model, and positions for the na
 \sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the native structure.
 
 \item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{cutoff\_distance}} (\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}) \textendash{} The maximum distance for two nonbonded particles that are defined as “native”,default=None
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure\_contact\_distance\_cutoff}} (\sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()}) \textendash{} The distance below which two nonbonded, interacting particles that are defined as “native contact”,default=None
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_contact\_cutoff\_ratio}} \textendash{} The distance below which two nonbonded, interacting particles in a non-native pose are assigned as a “native contact”, as a ratio of the distance for that contact in the native structure, default=None
 
 \end{itemize}
 
 \item[{Returns}] \leavevmode
 \begin{itemize}
 \item {} 
-Q ( float ) - The fraction of native contacts for the model with the current structure.
+Q ( float ) - The fraction of native contacts for the comparison pose.
 
 \end{itemize}
 
@@ -2374,6 +2431,96 @@ residual ( float ) - The average distance of all backbone particles from a circl
 \begin{sphinxadmonition}{warning}{Warning:}
 This function requires a pre-installed version of \sphinxhref{https://pubs.acs.org/doi/10.1021/acs.jcim.6b00721}{kHelios} .  Because kHelios is formatted to accept input job scripts, this function writes and executes a job script for kHelios.  In order to function properly, the user must redefine the ‘helios\_path’ variable for their system.
 \end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{get\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{get\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.get_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{get\_native\_contacts}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{native\_contact\_distance\_cutoff}}{}
+Given a coarse grained model, positions for that model, and positions for the native structure, this function calculates the fraction of native contacts for the model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_contact\_distance\_cutoff}} \textendash{} The maximum distance for two nonbonded particles that are defined as “native”,default=None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+native\_contact\_list - A list of the nonbonded interactions whose inter-particle distances are less than the ‘native\_contact\_cutoff\_distance’.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_number\_native\_contacts() (in module parameters.secondary\_structure)@\spxentry{get\_number\_native\_contacts()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.get_number_native_contacts}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{get\_number\_native\_contacts}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{native\_contact\_distance\_cutoff}}{}
+Given a coarse grained model, positions for that model, and positions for the native structure, this function calculates the fraction of native contacts for the model.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the particles in a coarse grained model.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_contact\_cutoff\_distance}} \textendash{} The maximum distance for two nonbonded particles that are defined as “native”,default=None
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+contacts - The number of nonbonded interactions that are considered ‘native’.
+
+\end{itemize}
+
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{optimize\_Q() (in module parameters.secondary\_structure)@\spxentry{optimize\_Q()}\spxextra{in module parameters.secondary\_structure}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{parameters:parameters.secondary_structure.optimize_Q}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{parameters.secondary\_structure.}}\sphinxbfcode{\sphinxupquote{optimize\_Q}}}{\emph{cgmodel}, \emph{native\_structure}, \emph{ensemble}}{}
+Given a coarse grained model and a native structure as input
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{cgmodel}} (\sphinxstyleliteralemphasis{\sphinxupquote{class}}) \textendash{} CGModel() class object
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{native\_structure}} (\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{( }}\sphinxstyleliteralemphasis{\sphinxupquote{float * unit.angstrom}}\sphinxstyleliteralemphasis{\sphinxupquote{ ( }}\sphinxstyleliteralemphasis{\sphinxupquote{num\_particles x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{ ) }}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} Positions for the native structure.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{ensemble}} (\sphinxstyleliteralemphasis{\sphinxupquote{List}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{positions}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{np.array}}\sphinxstyleliteralemphasis{\sphinxupquote{(}}\sphinxstyleliteralemphasis{\sphinxupquote{float*simtk.unit}}\sphinxstyleliteralemphasis{\sphinxupquote{ (}}\sphinxstyleliteralemphasis{\sphinxupquote{shape = num\_beads x 3}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}\sphinxstyleliteralemphasis{\sphinxupquote{)}}) \textendash{} A list of poses that will be used to optimize the cutoff distance for defining native contacts
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\begin{itemize}
+\item {} 
+native\_structure\_contact\_distance\_cutoff ( \sphinxhref{https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html}{Quantity()} ) - The ideal distance below which two nonbonded, interacting particles should be defined as a “native contact”
+
+\end{itemize}
+
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
