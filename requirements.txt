@@ -2,4 +2,3 @@ numpy
 scipy
 simtk.unit
 cg_openmm
-mpl_toolkits
