@@ -3,5 +3,4 @@ scipy
 simtk.unit
 cg_openmm
 mdtraj
-msmbuilder
 foldamers
