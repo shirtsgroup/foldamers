@@ -16,7 +16,7 @@ URL = 'https://github.com/shirtsgroup/foldamers'
 EMAIL = 'michael.shirts@colorado.edu'
 AUTHOR = 'Shirts research group'
 REQUIRES_PYTHON = '>=3.6.8'
-VERSION = 1.11
+VERSION = 1.12
 
 # What packages are required for this module to be executed?
 REQUIRED = [
