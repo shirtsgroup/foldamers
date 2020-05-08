@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 e_unfolded_mean = 0 # unfolded mean energy 
 e_unfolded_sigma = 3 # unfolded standard deviation energy
-n_unfolded = 1000 # ratio of number of unfolded states to folded states. We keep number of folded states at 1
-e_folded = -15 # energy of the unfolded state
+n_unfolded = 10000 # ratio of number of unfolded states to folded states. We keep number of folded states at 1
+e_folded = -50 # energy of the unfolded state
 Tmax = 10 # temperature max to plot; T in units of kBT
 Zscore = (e_folded - e_unfolded_mean)/(e_unfolded_sigma) # Z-score for this folded state
 

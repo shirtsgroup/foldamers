@@ -1,3 +1,4 @@
+ 
 import os
 from statistics import mean
 import numpy as np
@@ -16,7 +17,7 @@ scan_sc_bb_bb_sc_torsions = True
 calculate_dQ = True
 calculate_free_energies = True
 evaluate_heat_capacity = True
-output_directory = 'output'
+output_directory = 'cutoff_0.6'
 if not os.path.exists(output_directory):
   os.mkdir(output_directory)
 # Number of grid points to scan (around initial angle definition)
@@ -58,14 +59,14 @@ epsilon = 0.05 * unit.kilocalorie_per_mole
 epsilons = {'bb_eps': epsilon,'sc_eps': epsilon}
 
 # Bond angle definitions
-bond_angle_force_constant = 0.0001 * unit.kilocalorie_per_mole / unit.radian / unit.radian
+bond_angle_force_constant = 0.01 * unit.kilocalorie_per_mole / unit.radian / unit.radian
 bond_angle_force_constants = {'bb_bb_bb_angle_k': bond_angle_force_constant,'bb_bb_sc_angle_k': bond_angle_force_constant}
 bb_bb_bb_equil_bond_angle = 120.0 * (3.14/180.0) # OpenMM expects angle definitions in units of radians
 bb_bb_sc_equil_bond_angle = 120.0 * (3.14/180.0)
 equil_bond_angles = {'bb_bb_bb_angle_0': bb_bb_bb_equil_bond_angle,'bb_bb_sc_angle_0': bb_bb_sc_equil_bond_angle}
 
 # Torsion angle definitions (Used to establish a scanning range below)
-torsion_force_constant = 0.01 * unit.kilocalorie_per_mole / unit.radian / unit.radian
+torsion_force_constant = 0.0005 * unit.kilocalorie_per_mole / unit.radian / unit.radian
 if scan_sc_bb_bb_sc_torsions == True:
   torsion_force_constants = {'bb_bb_bb_bb_torsion_k': torsion_force_constant,'sc_bb_bb_sc_torsion_k': torsion_force_constant}
   bb_bb_bb_bb_equil_torsion_angle = 78.0 * (3.14/180.0) # OpenMM defaults to units of radians for angle definitions
@@ -101,7 +102,7 @@ if not os.path.exists(output_directory):
 run_simulation(cgmodel,output_directory,test_simulation_time,simulation_time_step,temperature,print_frequency)
 
 # Reset the output directory
-output_directory = 'output'
+output_directory = 'cutoff_0.6'
 if not os.path.exists(output_directory):
   os.mkdir(output_directory)
 
@@ -115,8 +116,8 @@ else:
 if calculate_dQ:
  # Set parameters for evaluating native contacts
  native_structure_contact_distance_cutoff = 1.00 * cgmodel.get_sigma(0) # This distance cutoff determines which nonbonded interactions are considered 'native' contacts
- native_fraction_cutoff = 0.95 # The threshold fraction of native contacts above which a pose is considered 'native'
- nonnative_fraction_cutoff = 0.95 # The threshold fraction of native contacts below which a pose is considered 'nonnative'
+ native_fraction_cutoff = 0.90 # The threshold fraction of native contacts above which a pose is considered 'native'
+ nonnative_fraction_cutoff = 0.90 # The threshold fraction of native contacts below which a pose is considered 'nonnative'
  native_ensemble_size = 10
  nonnative_ensemble_size = 10
  decorrelate=True
@@ -176,8 +177,8 @@ for sc_bb_bb_sc_equil_torsion_angle in sc_bb_bb_sc_equil_torsion_angles:
 
   if calculate_dQ:
    native_structure_contact_distance_cutoff = 1.15 * cgmodel.get_sigma(0) # This distance cutoff determines which nonbonded interactions are considered 'native' contacts
-   native_fraction_cutoff = 0.95 # The threshold fraction of native contacts above which a pose is considered 'native'
-   nonnative_fraction_cutoff = 0.95 # The threshold fraction of native contacts below which a pose is considered 'nonnative'
+   native_fraction_cutoff = 0.90 # The threshold fraction of native contacts above which a pose is considered 'native'
+   nonnative_fraction_cutoff = 0.90 # The threshold fraction of native contacts below which a pose is considered 'nonnative'
    native_ensemble_size = 10
    nonnative_ensemble_size = 100
    decorrelate=True
@@ -265,6 +266,7 @@ if scan_sc_bb_bb_sc_torsions == True:
   x=np.unique(bb_bb_bb_bb_equil_torsion_angles*(180.0/3.14))
   y=np.unique(sc_bb_bb_sc_equil_torsion_angles*(180.0/3.14))
   X,Y = np.meshgrid(x,y)
+  dQ_list=np.array(dQ_list)
   Z=dQ_list.reshape(len(x),len(y))
 
   pyplot.xlabel(r"$ \alpha_{0}^{BB-BB-BB-BB} $ ( Degrees )")
