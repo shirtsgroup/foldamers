@@ -67,7 +67,7 @@ def get_number_native_contacts(cgmodel, native_structure, native_contact_distanc
 
     return contacts
 
-def expectations_fraction_contacts(list_native_contacts, native_pdb, distance_cutoff, temperature_list, output_directory="output", output_data="output.nc", num_intermediate_states=0):
+def fraction_contacts_expectation(list_native_contacts, distance_cutoff, temperature_list, output_directory="output", output_data="output.nc", num_intermediate_states=0):
 
     max_native_contacts = len(list_native_contacts)
 
