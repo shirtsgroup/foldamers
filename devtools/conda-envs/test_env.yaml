@@ -24,4 +24,5 @@ dependencies:
   # Pip-only installs
   - pip:
     - codecov
+    - git+https://github.com/shirtsgroup/cg_openmm
 
