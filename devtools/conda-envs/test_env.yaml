@@ -4,7 +4,6 @@ channels:
   - omnia
   - defaults
 dependencies:
-  - itertools
   - matplotlib-base
   - mdtraj=1.9.4
   - mpi4py=3.0.3
