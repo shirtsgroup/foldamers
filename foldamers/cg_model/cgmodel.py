@@ -7,101 +7,11 @@ from cg_openmm.utilities.iotools import *
 from itertools import chain, combinations, product
 import pickle
 
-def basic_cgmodel(
-    polymer_length=12,
-    backbone_length=1,
-    sidechain_length=1,
-    sidechain_positions=[0],
-    mass=72 * unit.amu,
-    bond_length=0.47 * unit.nanometer,
-    sigma=0.47 * unit.nanometer,
-    epsilon=3.5 * unit.kilojoule_per_mole,
-    positions=None,
-):
-
-    r"""
-        :param polymer_length: Number of monomer units, default = 8
-        :type polymer_length: int
-
-        :param backbone_length: Number of beads in the backbone for individual monomers within a coarse grained model, default = 1
-        :type backbone_length: int
-
-        :param sidechain_length: Number of beads in the sidechain for individual monomers within a coarse grained model, default = 1
-        :type sidechain_length: int
-
-        :param sidechain_positions: Designates the indices of backbone beads upon which we will place sidechains, default = [0] (add a sidechain to the first backbone bead in each monomer)
-        :type sidechain_positions: List( int )
-
-        :param mass: Mass for all coarse grained beads, default = 72.0 * unit.amu
-        :type mass: `Quantity() <http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_
-
-        :param bond_length: Defines the length for all bond types, default = 0.47 * unit.angstrom
-        :type bond_length: `Quantity() <http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_
-             
-        :param sigma: Lennard-Jones equilibrium interaction distance (by default, calculated for particles that are separated by 3 or more bonds), default = 0.47 * bond_length (for all interaction types)
-        :type sigma: `Quantity() <http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_
-
-        :param epsilon: Lennard-Jones equilibrium interaction energy (by default, calculated for particles that are separated by 3 or more bonds), default = 3.5 * unit.kilojoule_per_mole
-        :type espilon: `Quantity() <http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_
-
-        :param positions: Positions for coarse grained particles in the model, default = None
-        :type positions: `Quantity() <http://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ( np.array( [cgmodel.num_beads,3] ), simtk.unit )
-
-        :returns: 
-          - cgmodel (class) - CGModel() class object
-
-        .. warning:: this function has significant limitations, in comparison with building a coarse grained model with the CGModel() class.  In particular, this function makes it more difficult to build heteropolymers, and is best-suited for the simulation of homopolymers.
-
-        :Example:
-
-        >>> from simtk import unit
-        >>> polymer_length = 20
-        >>> backbone_length = 1
-        >>> sidechain_length = 1
-        >>> sidechain_positions = [0]
-        >>> mass = self.default_mass
-        >>> bond_length=self.default_length
-        >>> sigma=self.default_length
-        >>> epsilon=self.default_epsilon
-        >>> cgmodel = basic_cgmodel(polymer_length=polymer_length,backbone_length=backbone_length,sidechain_length=sidechain_length,sidechain_positions=sidechain_positions,mass=mass,bond_length=bond_length,sigma=sigma,epsilon=epsilon) 
-
-        """
-    backbone_lengths = [backbone_length]  # Number of backbone beads in unique monomer types
-    sidechain_lengths = [sidechain_length]  # Number of sidechain beads in unique monomer types
-    masses = {"backbone_bead_masses": mass, "sidechain_bead_masses": mass}  # List of bead masses
-    sigmas = {
-        "bb_bb_sigma": sigma,
-        "bb_sc_sigma": sigma,
-        "sc_sc_sigma": sigma,
-    }  # Lennard-Jones interaction distances.  List of unique interaction types
-    bond_lengths = {
-        "bb_bb_bond_length": bond_length,
-        "bb_sc_bond_length": bond_length,
-        "sc_sc_bond_length": bond_length,
-    }  # bond length
-    epsilons = {
-        "bb_bb_eps": epsilon,
-        "bb_sc_eps": epsilon,
-        "sc_sc_eps": epsilon,
-    }  # Lennard-Jones interaction strength.  List of unique interaction types
-    cgmodel = CGModel(
-        positions=positions,
-        polymer_length=polymer_length,
-        backbone_lengths=backbone_lengths,
-        sidechain_lengths=sidechain_lengths,
-        sidechain_positions=sidechain_positions,
-        masses=masses,
-        sigmas=sigmas,
-        epsilons=epsilons,
-        bond_lengths=bond_lengths,
-    )
-    return cgmodel
-
 
 class CGModel(object):
     """
 
-        Build a coarse grained model class object.
+        Build a coarse-grained model class object.
 
         :Example:
 
@@ -133,62 +43,22 @@ class CGModel(object):
         >>> B = {'monomer_name': "B", 'backbone_length': backbone_length, 'sidechain_length': sidechain_length, 'sidechain_positions': sidechain_positions, 'num_beads': num_beads, 'bond_lengths': bond_lengths, 'epsilons': epsilons, 'sigmas': sigmas}
         >>> monomer_types = [A,B]
         >>> sequence = [A,A,A,B,A,A,A,B,A,A,A,B]
-        >>> cgmodel = CGModel(heteropolymer=True,monomer_types=monomer_types,sequence=sequence)
+        >>> cgmodel = CGModel(monomer_types=monomer_types,sequence=sequence)
 
         """
-
-    _BUILT_IN_REGIONS = (
-        "polymer_length",
-        "backbone_lengths",
-        "sidechain_lengths",
-        "sidechain_positions",
-        "masses",
-        "sigmas",
-        "epsilons",
-        "bond_lengths",
-        "bond_force_constants",
-        "bond_angle_force_constants",
-        "torsion_force_constants",
-        "equil_torsion_angles",
-        "equil_bond_angles",
-        "charges",
-        "num_beads",
-        "positions",
-        "system",
-        "topology",
-        "simulation",
-        "constrain_bonds",
-        "bond_list",
-        "nonbonded_interaction_list",
-        "nonbonded_exclusion_list",
-        "bond_angle_list",
-        "torsion_list",
-        "include_bond_forces",
-        "include_nonbonded_forces",
-        "include_bond_angle_forces",
-        "include_torsion_forces",
-        "use_structure_library",
-        "check_energy_conservation",
-    )
 
     def __init__(
         self,
         positions=None,
-        polymer_length=12,
-        backbone_lengths=[1],
-        sidechain_lengths=[1],
-        sidechain_positions=[0],
-        masses=None,
-        sigmas=None,
-        epsilons=None,
-        bond_lengths=None,
-        bond_force_constants=None,
-        bond_angle_force_constants=None,
-        torsion_force_constants=None,
-        torsion_periodicities=None,
-        equil_bond_angles=None,
-        equil_torsion_angles=None,
-        charges=None,
+        charges={},
+        masses={},
+        bond_lengths={},
+        bond_force_constants={},
+        bond_angle_force_constants={},
+        torsion_force_constants={},
+        torsion_periodicities={},
+        equil_bond_angles={},
+        equil_torsion_angles={},
         constrain_bonds=True,
         include_bond_forces=False,
         include_nonbonded_forces=True,
@@ -198,34 +68,21 @@ class CGModel(object):
         rosetta_functional_form=False,
         check_energy_conservation=True,
         use_structure_library=False,
-        heteropolymer=False,
-        monomer_types=None,
-        sequence=None,
         random_positions=False,
         system=None,
         topology=None,
         simulation=None,
+        monomer_types=None,
+        sequence=None,
     ):
 
         """
-          Initialize definitions for all of the properties of a coarse grained model
+          Initialize definitions for all of the properties of a coarse-grained model
 
           ..warning:: A large number of default definitions are applied when constructing the CGModel object, in an effort to make intiation of the class easier.  Please review these defaults (listed below) carefully before using this class.
 
-          :param positions: Positions for the particles in the coarse grained model, default = None
+          :param positions: Positions for the particles in the coarse-grained model, default = None
           :type positions: `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ( np.array( [cgmodel.num_beads,3] ), simtk.unit )
-
-          :param polymer_length: Number of monomer units, default = 12
-          :type polymer_length: integer
-
-          :param backbone_lengths: List of the number of beads in the backbone for unique monomer types within the coarse grained model, default = [1]
-          :type backbone_lengths: List( int )
-
-          :param sidechain_lengths: List of the number of beads in the sidechain for unique monomer types within the coarse grained model, default = [1]
-          :type sidechain_lengths: List( int )
-
-          :param sidechain_positions: List of the indices of backbone beads upon which we will place sidechains, default = [0] (add a sidechain to the first backbone bead in each monomer)
-          :type sidechain_positions: List( integer )
 
           :param masses: Masses of all particle types, default = None
           :type masses: dict( 'backbone_bead_masses': `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ , 'sidechain_bead_masses': `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ )
@@ -257,13 +114,10 @@ class CGModel(object):
           :param charges: Charges for all particles, default = None
           :type charges: dict( 'backbone_bead_charges': `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ,'sidechain_bead_charges': `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ )
 
-          :param num_beads: Total number of particles in the coarse grained model, default = None (The total number of particles in a length=12 1-1 coarse-grained model)
-          :type num_beads: int
-
           :param system: OpenMM System() object, which stores the forces for the coarse grained model, default = None
           :type system: `System() <https://simtk.org/api_docs/openmm/api4_1/python/classsimtk_1_1openmm_1_1openmm_1_1System.html>`_
 
-          :param topology: OpenMM Topology() object, which stores bonds, angles, and other structural attributes of the coarse grained model, default = None
+          :param topology: OpenMM Topology() object, which stores bonds, angles, and other structural attributes of the coarse-grained model, default = None
           :type topology: `Topology() <https://simtk.org/api_docs/openmm/api4_1/python/classsimtk_1_1openmm_1_1app_1_1topology_1_1Topology.html>`_
 
           :param constrain_bonds: Logical variable determining whether bond constraints are applied during a simulation of the energy for the system, default = True
@@ -281,22 +135,29 @@ class CGModel(object):
           :param include_torsion_forces: Include contributions from torsions when calculating the potential energy, default = True
           :type include_torsion_forces: Logical
 
-          :param check_energy_conservation: Flag designating whether or not to perform a test OpenMM simulation with this coarse grained model.
+          :param check_energy_conservation: Flag designating whether or not to perform a test OpenMM simulation with this coarse-grained model.
           :type check_energy_conservation: Logical
 
-          :param use_structure_library: Flag designating whether or not to use a structure from the foldamers ensemble as the initial positions for the particles in the coarse grained model, default = False
+          :param use_structure_library: Flag designating whether or not to use a structure from the foldamers ensemble as the initial positions for the particles in the coarse-grained model, default = False
           :type use_structure_library: Logical
 
-          :param heteropolymer: Flag designating whether or not to build the coarse grained model from multiple monomer types, default = False
-          :type heteropolymer: Logical
-
-          :param monomer_types: A list of dictionary objects containing the properties for unique monomer types (used to construct a heteropolymeric coarse grained model, default = None
+          :param monomer_types: A list of dictionary objects containing the properties for unique monomer types (used to construct a heteropolymeric coarse-grained model, default = None
           :type monomer_types: List( dict( 'monomer_name': str, 'backbone_length': int, 'sidechain_length': int, 'sidechain_positions': List( int ), 'num_beads': int, 'bond_lengths': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'epsilons': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'sigmas': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ) ) )
+
+          :param backbone_lengths: List of the number of beads in the backbone for unique monomer types within the coarse grained model, default = 1
+          :type backbone_lengths: int
+
+          :param sidechain_lengths: List of the number of beads in the sidechain for unique monomer types within the coarse grained model, default = 1
+          :type sidechain_lengths: int
+
+          :param sidechain_positions: List of the indices of backbone beads upon which we will place sidechains, default = [0] (add a sidechain to the first backbone bead in each monomer)
+          :type sidechain_positions: List( integer )
+
 
           :param sequence: The sequence from which to build a heteropolymer.  Defined using a list of 'monomer_types', each of which contains the properties for that monomer, default = None (Homopolymer)
           :type sequence: List( dict( 'monomer_name': str, 'backbone_length': int, 'sidechain_length': int, 'sidechain_positions': List( int ), 'num_beads': int, 'bond_lengths': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'epsilons': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'sigmas': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ) ) )
 
-          :param random_positions: Flag designating whether or not to generate a set of random coordinates for the coarse grained model, default = None
+          :param random_positions: Flag designating whether or not to generate a set of random coordinates for the coarse-grained model, default = None
 
 
           """
@@ -311,41 +172,14 @@ class CGModel(object):
         )  # from martini 3.0
         self.default_torsion_k = 0.0 * unit.kilojoule_per_mole
         self.default_angle_k = (
-            10.0 * unit.kilojoule_per_mole / unit.radian / unit.radian
+            0.0 * unit.kilojoule_per_mole / unit.radian / unit.radian
         )  # from martini 3.0
         self.default_charge = 0.0 * unit.elementary_charge
         self.default_periodicity = 1
 
-        if bond_force_constants == None:
-            bond_force_constants = {}
-        if bond_angle_force_constants == None:
-            bond_angle_force_constants = {}
-        if torsion_force_constants == None:
-            torsion_force_constants = {}
-        if torsion_periodicities == None:
-            torsion_periodicities = {}
-        if equil_bond_angles == None:
-            equil_bond_angles = {}
-        if equil_torsion_angles == None:
-            equil_torsion_angles = {}
-        if charges == None:
-            charges = {}
-        if masses == None:
-            masses = {}
-        if sigmas == None:
-            sigmas = {}
-        if epsilons == None:
-            epsilons = {}
-        if bond_lengths == None:
-            bond_lengths = {
-                "bb_bb_bond_length": self.default_bond_length,
-                "bb_sc_bond_length": self.default_bond_length,
-                "sc_sc_bond_length": self.default_bond_length,
-            }
-
         """
-          Initialize user-defined input.
-          """
+        Initialize user-defined input.
+        """
 
         # Assign forces based upon input flags
         self.rosetta_functional_form = rosetta_functional_form
@@ -356,29 +190,10 @@ class CGModel(object):
         self.exclusions = exclusions
         self.include_torsion_forces = include_torsion_forces
         self.check_energy_conservation = check_energy_conservation
-
-        # issue some warnings
-        if len(backbone_lengths) == 0 or len(sidechain_lengths) == 0:
-            print("Error:must have backbone and sidechain length lists at least 1")
-            exit()
-        elif len(backbone_lengths) == 1 and backbone_lengths[0] == 1 and len(sidechain_lengths) == 1 and sidechain_lengths[0]==0:
-            print("Error:Cannot use backbone_lengths = [1] and sidechain_lengths = [0] to create a unbranched polymer")
-            print("Error:Instead use backbone_lengths = [n] and sidechain_lengths = [0], with n>1")
-            exit()            
-            # Initialize the monomer types
-        if monomer_types == None:
-            self.backbone_lengths = backbone_lengths
-            self.sidechain_lengths = sidechain_lengths
-            self.sidechain_positions = sidechain_positions
-            self.bond_lengths = bond_lengths
-            self.sigmas = sigmas
-            self.epsilons = epsilons
-            self.monomer_types = self.get_monomer_types()
-        else:
-            self.monomer_types = monomer_types
+        self.monomer_types = monomer_types
 
         # Build a polymer with these model settings
-        self.build_polymer(polymer_length, heteropolymer, sequence)
+        self.build_polymer(sequence)
 
         # Assign particle properties
         self.masses = masses
@@ -410,13 +225,14 @@ class CGModel(object):
                 self.topology = build_topology(self, use_pdbfile=True)
         else:
             self.topology = topology
+
         # Define OpenMM system
         if system == None:
             self.system = build_system(self, rosetta_functional_form=rosetta_functional_form)
         else:
             self.system = system
 
-    def export(self,filename):
+    def export(self, filename):
         """
         export to a pickle file.
 
@@ -424,31 +240,17 @@ class CGModel(object):
         :type CGModel: str
         """
 
-        pickle_out = open(filename,"wb")
+        pickle_out = open(filename, "wb")
         pickle.dump(self, pickle_out)
         pickle_out.close()
 
-    def build_polymer(self, polymer_length, heteropolymer, sequence):
+    def build_polymer(self, sequence):
         """
           Used to build a polymer, or reset the properties for a polymer after parameters such as the polymer_length or sequence have been modified.
           """
-        self.polymer_length = polymer_length
-        self.heteropolymer = heteropolymer
-
-        if self.heteropolymer:
-            if sequence == None:
-                print("ERROR: The 'heteropolymer'=True flag was selected, but no")
-                print("'sequence' was provided.  Please rerun with an input 'sequence'.")
-                exit()
-            else:
-                self.sequence = sequence
-        else:
-            sequence = []
-            monomer_type = self.monomer_types[0]
-            for monomer in range(self.polymer_length):
-                sequence.append(monomer_type)
-
+        self.polymer_length = len(sequence)
         self.sequence = sequence
+        self.process_monomer_types()
         self.num_beads = self.get_num_beads()
         self.particle_list = self.get_particle_list()
 
@@ -469,63 +271,92 @@ class CGModel(object):
 
         self.nonbonded_interaction_list = self.get_nonbonded_interaction_list()
 
-        return
-
-    def get_monomer_types(self):
+    def process_monomer_types(self):
         """
-          Get a list of 'monomer_types' for all unique monomers.
+          Clean up a list of 'monomer_types' for all unique monomers.
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
-          :returns: 
-             - monomer_types ( List( dict( 'monomer_name': str, 'backbone_length': int, 'sidechain_length': int, 'sidechain_positions': List( int ), 'num_beads': int, 'bond_lengths': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'epsilons': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ), 'sigmas': List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ) ) ) ) - A list of unique monomer types in the coarse grained model
-
           """
-        monomer_name_modifier = ["A", "B", "C", "D", "E", "F", "G", "H"]
-        monomer_types = []
-        monomer_type_index = 0
-        for backbone_length, sidechain_length in zip(
-            self.backbone_lengths, self.sidechain_lengths
-        ):
-            num_beads = backbone_length
-            for sidechain_position in self.sidechain_positions:
-                num_beads = num_beads + sidechain_length
-            monomer_name = str("CG" + str(backbone_length) + str(sidechain_length))
-            if monomer_name in monomer_types:
-                modifier_index = 0
-                while monomer_name in monomer_types:
-                    monomer_name = str(
-                        "CG" + str(backbone_length) + str(sidechain_length) + str(modifier_index)
+
+        for monomer in self.monomer_types:
+            if monomer["monomer_name"] is None:
+                print("Error: monomers must have names!")
+                exit()  # figure out how to handle with exceptions.
+
+            mn = monomer["monomer_name"]
+            if "backbone_length" not in monomer:
+                print(f"Using default length 1 for backbone length monomer {mn}")
+                monomer["backbone_length"] = 1
+
+            if "sidechain_length" not in monomer:
+                print(f"Using default length 1 for sidechain length monomer {mn}")
+                monomer["sidechain_length"] = 1
+
+            if "sidechain_positions" not in monomer:
+                print(f"Using single sidechain at position [0] for monomer {mn}")
+                monomer["sidechain_positions"] = [0]
+
+            if type(monomer["sidechain_positions"]) is not list:
+                monomer["sidechain_positions"] = [monomer["sidechain_positions"]]
+
+            for position in monomer["sidechain_positions"]:
+                if position >= monomer["backbone_length"]:
+                    print(
+                        f"Error: side chain position {position} is too large for backbone length {monomer['backbone_length']}"
                     )
-                    modifier_index = modifier_index + 1
-            monomer_type = {
-                "monomer_name": monomer_name,
-                "backbone_length": backbone_length,
-                "sidechain_length": sidechain_length,
-                "sidechain_positions": sidechain_position,
-                "num_beads": num_beads,
-                "bond_lengths": self.bond_lengths,
-                "epsilons": self.epsilons,
-                "sigmas": self.sigmas,
-            }
-            monomer_types.append(monomer_type)
-        return monomer_types
+                    exit()
+            if "bond_lengths" not in monomer:
+                print(f"Using default bond length {self.default_length} at for monomer {mn}")
+                # could use some error checking if these are not all defined.
+                monomer["bond_lengths"] = {
+                    "bb_bb_bond_length": self.default_length,
+                    "bb_sc_bond_length": self.default_length,
+                    "sc_sc_bond_length": self.default_length,
+                }
+
+            if "epsilons" not in monomer:
+                print(f"Using default epsilon {self.default_energy_scale} for monomer {mn}")
+                # could use some error checking if these are not all defined.
+                monomer["epsilons"] = {
+                    "bb_eps": self.default_energyscale,
+                    "sc_eps": self.default_energyscale,
+                }
+
+            if "sigmas" not in monomer:
+                print(f"Using default sigmas {self.default_length} for monomer {mn}")
+                # could use some error checking if these are not all defined.
+                monomer["sigmas"] = {
+                    "bb_sigma": self.default_length,
+                    "sc_sigma": self.default_length,
+                }
+
+            num_beads = monomer["backbone_length"]
+            for sidechain_position in monomer["sidechain_positions"]:
+                num_beads = num_beads + monomer["sidechain_length"]
+            if num_beads not in monomer:
+                monomer["num_beads"] = num_beads
+            elif monomer["num_beads"] != num_beads:
+                print(
+                    f"Warning: calculated number of beads {num_beads} is not equal to stated {monomer['num_beads']}. Using calculated number of beads."
+                )
+                monomer["num_beads"] = num_beads
 
     def get_num_beads(self):
         """
-          Calculate the number of beads in a coarse grained model class object
+          Calculate the number of beads in a coarse-grained model class object
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
           :returns: 
-            - num_beads (int) - The total number of beads in the coarse grained model
+            - num_beads (int) - The total number of beads in the coarse-grained model
 
           """
         num_beads = 0
-        for monomer_type in self.sequence:
-            num_beads = num_beads + monomer_type["num_beads"]
+        for monomer in self.sequence:
+            num_beads = num_beads + monomer["num_beads"]
         return num_beads
 
     def get_particle_list(self):
@@ -536,36 +367,44 @@ class CGModel(object):
           :type CGModel: class
 
           :returns: 
-            - particle_list ( List( str ) ) - A list of unique particles in the coarse grained model
+            - particle_list ( List( str ) ) - A list of unique particles in the coarse-grained model
 
           """
+        cg_particle_index = 0
         particle_list = []
-        for monomer_type in self.sequence:
-            cg_particle_index = 1
-            for backbone_bead in range(monomer_type["backbone_length"]):
-                particle_symbol = str("X" + str(cg_particle_index))
-                particle_list.append(particle_symbol)
-                cg_particle_index = cg_particle_index + 1
-                if type(monomer_type["sidechain_positions"]) == int:
-                    sidechain_positions = [monomer_type["sidechain_positions"]]
-                else:
-                    sidechain_positions = monomer_type["sidechain_positions"]
-                if backbone_bead in sidechain_positions:
-                    for sidechain in range(monomer_type["sidechain_length"]):
-                        particle_symbol = str("A" + str(cg_particle_index))
-                        particle_list.append(particle_symbol)
-                        cg_particle_index = cg_particle_index + 1
+        for i, monomer in enumerate(self.sequence):
+            for backbone_bead in range(monomer["backbone_length"]):
+                particle = dict()
+                particle["type"] = "backbone"
+                # will need to come up with a better naming scheme than X
+                # X for backbones and A for monomers
+                particle["name"] = f"X{cg_particle_index}"
+                particle["index"] = cg_particle_index
+                particle["monomer"] = i
+                particle["monomer_type"] = monomer
+                particle_list.append(particle)
+                cg_particle_index += 1
+                if backbone_bead in monomer["sidechain_positions"]:
+                    for sidechain in range(monomer["sidechain_length"]):
+                        particle = dict()
+                        particle["type"] = "sidechain"
+                        particle["name"] = f"A{cg_particle_index}"
+                        particle["index"] = cg_particle_index
+                        particle["monomer"] = i
+                        particle["monomer_type"] = monomer
+                        particle_list.append(particle)
+                        cg_particle_index += 1
         return particle_list
 
     def get_bond_list(self):
         """
-          Construct a bond list for the coarse grained model
+          Construct a bond list for the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
           :returns: 
-             - bond_list ( List( List( int, int ) ) ) - A list of the bonds in the coarse grained model.
+             - bond_list ( List( List( int, int ) ) ) - A list of the bonds in the coarse-grained model.
 
           """
         bond_list = []
@@ -574,44 +413,36 @@ class CGModel(object):
             for monomer in range(len(self.sequence)):
                 monomer_type = self.sequence[monomer]
                 for backbone_bead in range(monomer_type["backbone_length"]):
-                    if (
-                        int(monomer) != 0
-                        and backbone_bead == 0
-                        and monomer_type["backbone_length"] - 1
-                        in [monomer_type["sidechain_positions"]]
-                    ) or (
-                        backbone_bead != 0
-                        and backbone_bead - 1 in [monomer_type["sidechain_positions"]]
-                    ):
+                    if (monomer != 0 and backbone_bead == 0): 
+                        parent_index = last_backbone_bead # first backbone bead is attached to the last backbone bead of previous monomer.
+                    elif (backbone_bead - 1) in monomer_type["sidechain_positions"]:
+                        # if the previous backbone bead has a sidechain
                         parent_index = bead_index - monomer_type["sidechain_length"] - 1
                     else:
-                        parent_index = bead_index - 1
-                    if bead_index != 0:
-                        if parent_index < bead_index:
-                            bond_list.append([parent_index, bead_index])
-                        else:
-                            bond_list.append([bead_index, parent_index])
-                    bead_index = bead_index + 1
-
-                    if int(backbone_bead) in [monomer_type["sidechain_positions"]]:
+                        parent_index = bead_index - 1  # otherwise, the parent of this bead is the previous bead.
+                    if bead_index != 0: # if it's the first bead, obviously don't count it.
+                        indices = [parent_index, bead_index]
+                        bond_list.append([min(indices),max(indices)])
+                    if backbone_bead == monomer_type["backbone_length"] - 1:
+                        last_backbone_bead = bead_index
+                    bead_index = bead_index + 1 # move on to next bead
+                    if backbone_bead in monomer_type["sidechain_positions"]:
                         for sidechain_bead in range(monomer_type["sidechain_length"]):
                             parent_index = bead_index - 1
-                            if parent_index < bead_index:
-                                bond_list.append([parent_index, bead_index])
-                            else:
-                                bond_list.append([bead_index, parent_index])
+                            indices = [parent_index, bead_index]
+                            bond_list.append([min(indices),max(indices)])
                             bead_index = bead_index + 1
         return bond_list
 
     def get_nonbonded_interaction_list(self):
         """
-          Construct a nonbonded interaction list for the coarse grained model
+          Construct a nonbonded interaction list for the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
           :returns: 
-             - interaction_list ( List( List( int, int ) ) ) - A list of the nonbonded interactions (which don't violate exclusion rules) in the coarse grained model
+             - interaction_list ( List( List( int, int ) ) ) - A list of the nonbonded interactions (which don't violate exclusion rules) in the coarse-grained model
 
           """
 
@@ -653,7 +484,7 @@ class CGModel(object):
           :type CGModel: class
 
           :returns: 
-             - exclusion_list ( List( List( int, int ) ) ) - A list of the nonbonded particle interaction exclusions for the coarse grained model
+             - exclusion_list ( List( List( int, int ) ) ) - A list of the nonbonded particle interaction exclusions for the coarse-grained model
 
           """
         bond_list = self.bond_list
@@ -667,34 +498,37 @@ class CGModel(object):
             bead_index = 0
             for monomer in self.sequence:
                 for beadi in range(monomer["num_beads"]):
-                    for beadj in range(beadi+1,monomer["num_beads"]):
-                        exclusion_list.append([bead_index+beadi,bead_index+beadj])
+                    for beadj in range(beadi + 1, monomer["num_beads"]):
+                        exclusion_list.append([bead_index + beadi, bead_index + beadj])
                 bead_index = bead_index + monomer["num_beads"]
 
         for bond in self.bond_list:
             if bond not in exclusion_list and bond.reverse() not in exclusion_list:
                 exclusion_list.append(bond)
         for angle in self.bond_angle_list:
-            angle_ends = [angle[0],angle[2]]
+            angle_ends = [angle[0], angle[2]]
             if angle_ends not in exclusion_list and angle_ends.reverse() not in exclusion_list:
                 exclusion_list.append(angle_ends)
         if rosetta_functional_form:
             for torsion in self.torsion_list:
-                torsion_ends = [torsion[0],torsion[3]]
-                if torsion_ends not in exclusion_list and torsion_ends.reverse() not in exclusion_list:
+                torsion_ends = [torsion[0], torsion[3]]
+                if (
+                    torsion_ends not in exclusion_list
+                    and torsion_ends.reverse() not in exclusion_list
+                ):
                     exclusion_list.append(torsion_ends)
 
         return exclusion_list
 
     def get_bond_angle_list(self):
         """
-          Construct a list of bond angles, which can be used to build bond angle potentials for the coarse grained model
+          Construct a list of bond angles, which can be used to build bond angle potentials for the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
           :returns: 
-             - bond_angles ( List( List( int, int, int ) ) ) - A list of indices for all of the bond angles in the coarse grained model
+             - bond_angles ( List( List( int, int, int ) ) ) - A list of indices for all of the bond angles in the coarse-grained model
 
           """
 
@@ -738,13 +572,13 @@ class CGModel(object):
 
     def get_torsion_list(self):
         """
-          Construct a list of particle indices from which to define torsions for the coarse grained model
+          Construct a list of particle indices from which to define torsions for the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
 
           :returns: 
-            - torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse grained model
+            - torsions ( List( List( int, int, int, int ) ) ) - A list of the particle indices for the torsions in the coarse-grained model
 
           """
 
@@ -862,10 +696,10 @@ class CGModel(object):
             - particle_name ( str ) - The name of the particle
 
           """
-        particle_name = self.particle_list[particle_index]
+        particle_name = self.particle_list[particle_index]["name"]
         return particle_name
 
-    def get_particle_type(self, particle_index, particle_name=None):
+    def get_particle_type(self, particle_index):
         """
           Indicates if a particle is a backbone bead or a sidechain bead
 
@@ -875,45 +709,38 @@ class CGModel(object):
           :param particle_index: Index of the particle for which we would like to determine the type
           :type particle_index: int
 
-          :param particle_name: Name of the particle that we would like to "type".
-          :type particle_name: str
-
           :returns: 
              - particle_type (str) - 'backbone' or 'sidechain'
 
           """
-        if particle_name == None:
-            particle_name = self.particle_list[particle_index]
-
-        particle_type = None
-
-        if "X" in particle_name:
+        if self.particle_list[particle_index]["type"] == "backbone":
             particle_type = "backbone"
-        if "A" in particle_name:
+        elif self.particle_list[particle_index]["type"] == "sidechain":
             particle_type = "sidechain"
-
-        if particle_type == None:
-            print(
-                "ERROR: The particle type definition could not be found for: " + str(particle_name)
-            )
-            print(
-                "By default, 'backbone' particles are expected to have the following naming conventions:"
-            )
-            print("'X'+int (ie: X1, X2, etc.)")
-            print("\n")
-            print("'sidechain' particles are expected to have the following naming conventions:")
-            print("'A'+int (ie: A1, A2, etc.)")
-            print("If you built your model using positions read from a PDB file,")
-            print(
-                "try renaming the particles in the PDB file to conform to these naming conventions."
-            )
-            exit()
+        else:
+            print(f"ERROR: The particle type definition could not be found for {particle_index}")
 
         return particle_type
 
+    def get_particle_monomer(self, particle_index):
+        """
+          Indicates which type of monomer a particle belongs to
+
+          :param CGModel: CGModel() class object
+          :type CGModel: class
+
+          :param particle_index: Index of the particle for which we would like to determine the monomer type
+          :type particle_index: int
+
+          :returns: 
+             - monomer_type (dict) : monomer type
+
+          """
+        return self.particle_list[particle_index]["monomer_type"]
+
     def get_particle_mass(self, particle_index):
         """
-          Get the mass for a particle, given its index within the coarse grained model
+          Get the mass for a particle, given its index within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -934,10 +761,10 @@ class CGModel(object):
                 particle_mass = self.masses["backbone_bead_masses"]
             except:
                 print("No particle mass definition found for particle type: backbone")
-                print("Applying a default definition: 'backbone_bead_masses'=100.0*unit.amu")
+                print(f"Applying a default definition: 'backbone_bead_masses'={self.default_mass}")
                 print("If you observe unusual behavior, it is most likely because")
                 print("this default definition is inappropriate for your model.")
-                particle_mass = 100.0 * unit.amu
+                particle_mass = self.default_mass
                 self.masses.update({"backbone_bead_masses": particle_mass})
 
         if particle_type == "sidechain":
@@ -945,16 +772,16 @@ class CGModel(object):
                 particle_mass = self.masses["sidechain_bead_masses"]
             except:
                 print("No particle mass definition found for particle type: sidechain")
-                print("Applying a default definition: 'sidechain_bead_masses'=100.0*unit.amu")
+                print("Applying a default definition: 'sidechain_bead_masses'={self.default_mass")
                 print("If you observe unusual behavior, it is most likely because")
                 print("this default definition is inappropriate for your model.")
-                particle_mass = 100.0 * unit.amu
+                particle_mass = self.default_mass
                 self.masses.update({"sidechain_bead_masses": particle_mass})
         return particle_mass
 
     def get_particle_charge(self, particle_index):
         """
-          Returns the charge for a particle, given its index within the coarse grained model
+          Returns the charge for a particle, given its index within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -967,8 +794,6 @@ class CGModel(object):
 
           """
         particle_type = self.get_particle_type(particle_index)
-
-        particle_charge = None
 
         if particle_type == "backbone":
             try:
@@ -988,19 +813,11 @@ class CGModel(object):
                 self.charges.update({"sidechain_bead_charges": self.default_charge})
                 particle_charge = self.charges["sidechain_bead_charges"]
 
-        if particle_charge == None:
-            print(
-                "ERROR: No charge definition could be found for particle_type: "
-                + str(particle_type)
-            )
-            print("This means that this particle type has not been defined for your model.")
-            exit()
-
         return particle_charge
 
-    def get_sigma(self, particle_index, particle_type=None):
+    def get_sigma(self, particle_index):
         """
-          Returns the Lennard-Jones potential sigma value for a particle, given its index within the coarse grained model.
+          Returns the Lennard-Jones potential sigma value for a particle, given its index within the coarse-grained model.
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -1016,8 +833,8 @@ class CGModel(object):
 
           """
 
-        if particle_type == None:
-            particle_type = self.get_particle_type(particle_index)
+        particle_type = self.get_particle_type(particle_index)
+        monomer_type = self.get_particle_monomer(particle_index)
 
         sigma = None
 
@@ -1026,10 +843,10 @@ class CGModel(object):
             sigma_type = abbrev[ptype] + "_sigma"
             if particle_type == ptype:
                 try:
-                    sigma = self.sigmas[sigma_type]
+                    sigma = monomer_type["sigmas"][sigma_type]
                 except:
                     print(
-                        f"No Lennard-Jones potential 'sigma' definition found for particle type: {sigma_type}"
+                        f"No Lennard-Jones potential 'sigma' definition found for particle type: {monomer_type['monomer_name']}:{sigma_type}"
                     )
                     print(
                         "Applying a definition based upon the default between particles of this type:"
@@ -1037,22 +854,14 @@ class CGModel(object):
                     print(f"{sigma_type} = {self.default_length}")
                     print("If you observe unusual behavior, it is most likely because")
                     print("this default definition is inappropriate for your model.")
-                    self.sigmas.update({sigma_type: self.default_length})
+                    monomer_type["sigmas"].update({sigma_type: self.default_length})
                     sigma = self.default_length
-
-        if sigma == None:
-            print(
-                "ERROR: No Lennard-Jones 'sigma' definition could be found for particle_type: "
-                + str(particle_type)
-            )
-            print("This means that this particle type has not been defined for your model.")
-            exit()
 
         return sigma
 
-    def get_epsilon(self, particle_index, particle_type=None):
+    def get_epsilon(self, particle_index):
         """
-          Returns the Lennard-Jones potential epsilon value for a particle, given its index within the coarse grained model.
+          Returns the Lennard-Jones potential epsilon value for a particle, given its index within the coarse-grained model.
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -1068,8 +877,8 @@ class CGModel(object):
 
 
           """
-        if particle_type == None:
-            particle_type = self.get_particle_type(particle_index)
+        particle_type = self.get_particle_type(particle_index)
+        monomer_type = self.get_particle_monomer(particle_index)
 
         epsilon = None
 
@@ -1078,10 +887,10 @@ class CGModel(object):
             epsilon_type = abbrev[ptype] + "_eps"
             if particle_type == ptype:
                 try:
-                    epsilon = self.epsilons[epsilon_type]
+                    epsilon = monomer_type["epsilons"][epsilon_type]
                 except:
                     print(
-                        f"No Lennard-Jones potential 'epsilon' definition found for particle type: {epsilon_type}"
+                        f"No Lennard-Jones potential 'epsilon' definition found for particle type: {monomer_type['monomer_name']}:{epsilon_type}"
                     )
                     print(
                         "Applying a definition based upon the default between particles of this type:"
@@ -1089,66 +898,10 @@ class CGModel(object):
                     print(f"{epsilon_type} = {self.default_energyscale}")
                     print("If you observe unusual behavior, it is most likely because")
                     print("this default definition is inappropriate for your model.")
-                    self.epsilons.update({epsilon_type: self.default_energyscale})
+                    monomer_type["epsilons"].update({epsilon_type: self.default_energyscale})
                     epsilon = self.default_energyscale
 
-        if epsilon == None:
-            print(
-                "ERROR: No Lennard-Jones 'epsilon' definition could be found for particle_type: "
-                + str(particle_type)
-            )
-            print("This means that this particle type has not been defined for your model.")
-            exit()
-
         return epsilon
-
-    def get_all_particle_masses(self):
-        """
-          Returns a list of all unique particle masses
-
-          :param CGModel: CGModel() class object
-          :type CGModel: class
-
-          :returns: 
-            - list_of_masses ( List( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ) ) - List of unique particle masses
-
-          """
-        list_of_masses = []
-        list_of_masses.append(self.masses["backbone_bead_masses"])
-        list_of_masses.append(self.masses["sidechain_bead_masses"])
-        return list_of_masses
-
-    def get_bond_length_from_names(self, particle_1_name, particle_2_name):
-        """
-          Determines the correct bond length for two particles, given their symbols.
-
-          :param CGModel: CGModel() class object
-          :type CGModel: class
-
-          :param particle_1_name: Name for the first particle
-          :type particle_1_name: str
-
-          :param particle_2_name: Name for the second particle
-          :type particle_2_name: str
-
-          :returns: 
-             - bond_length ( `Quantity() <https://docs.openmm.org/development/api-python/generated/simtk.unit.quantity.Quantity.html>`_ ) - The assigned bond length for the provided particles
-
-          """
-        if "B" in particle_1_name:
-            particle_1_type = "backbone"
-        else:
-            particle_1_type = "sidechain"
-        if particle_1_type == "backbone" and particle_2_type == "backbone":
-            bond_length = self.bond_lengths["bb_bb_bond_length"]
-
-        if particle_1_type == "backbone" and particle_2_type == "sidechain":
-            bond_length = self.bond_lengths["bb_sc_bond_length"]
-
-        if particle_1_type == "sidechain" and particle_2_type == "sidechain":
-            bond_length = self.bond_lengths["bb_bb_bond_length"]
-
-        return bond_length
 
     def get_bond_length(self, bond):
         """
@@ -1171,6 +924,9 @@ class CGModel(object):
         particle_1_type = self.get_particle_type(bond[0])
         particle_2_type = self.get_particle_type(bond[1])
 
+        # CONVENTION: the joining bond belongs to the first monomer.
+        monomer_type = self.particle_list[bond[0]]["monomer_type"]
+
         bond_length = None
 
         if particle_1_type == "backbone" and particle_2_type == "backbone":
@@ -1184,25 +940,17 @@ class CGModel(object):
         if particle_1_type == "sidechain" and particle_2_type == "sidechain":
             string_name = reverse_string_name = "sc_sc_bond_length"
         try:
-            bond_length = self.bond_lengths[string_name]
+            bond_length = monomer_type["bond_lengths"][string_name]
         except:
             try:
-                bond_length = self.bond_lengths[reverse_string_name]
+                bond_length = monomer_type["bond_lengths"][reverse_string_name]
             except:
                 print(
                     f"No bond length definition provided for '{string_name}', setting '{string_name}'={self.default_length}"
                 )
-                self.bond_lengths.update({string_name: self.default_length})
-                self.bond_lengths.update({reverse_string_name: self.default_length})
-                bond_length = self.bond_lengths[string_name]
-
-        # is this code reached?
-        if bond_length == None:
-            print("ERROR: No bond length definition was found for the following particle types:")
-            print(str(particle_1_type) + " " + str(particle_2_type))
-            print("This means that at least one of the particle types has not been defined.")
-            print("Check the names and definitions for the particle types in your model.")
-            exit()
+                monomer_type["bond_lengths"].update({string_name: self.default_length})
+                monomer_type["bond_lengths"].update({reverse_string_name: self.default_length})
+                bond_length = monomer_type["bond_lengths"][string_name]
 
         return bond_length
 
@@ -1253,20 +1001,11 @@ class CGModel(object):
                 self.bond_force_constants.update({reverse_string_name: self.default_bond_k})
                 bond_force_constant = self.bond_force_constants[string_name]
 
-        if bond_force_constant == None:
-            print(
-                "ERROR: No bond force constant definition was found for the following particle types:"
-            )
-            print(str(particle_1_type) + " " + str(particle_2_type))
-            print("This means that at least one of the particle types has not been defined.")
-            print("Check the names and definitions for the particle types in your model.")
-            exit()
-
         return bond_force_constant
 
     def get_equil_bond_angle(self, angle):
         """
-          Determines the correct equilibrium bond angle between three particles, given their indices within the coarse grained model
+          Determines the correct equilibrium bond angle between three particles, given their indices within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -1329,7 +1068,7 @@ class CGModel(object):
 
     def get_bond_angle_force_constant(self, angle):
         """
-          Determines the correct bond angle force constant for a bond angle between three particles, given their indices within the coarse grained model
+          Determines the correct bond angle force constant for a bond angle between three particles, given their indices within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -1392,7 +1131,7 @@ class CGModel(object):
 
     def get_torsion_periodicity(self, torsion):
         """         
-        Determines the correct periodicity for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+        Determines the correct periodicity for a torsion (bond angle involving four particles), given their indices within the coarse-grained model
 
         :param CGModel: CGModel() class object
         :type CGModel: class
@@ -1453,7 +1192,7 @@ class CGModel(object):
 
     def get_torsion_force_constant(self, torsion):
         """         
-          Determines the correct torsion force constant for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+          Determines the correct torsion force constant for a torsion (bond angle involving four particles), given their indices within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
@@ -1513,7 +1252,7 @@ class CGModel(object):
 
     def get_equil_torsion_angle(self, torsion):
         """         
-          Determines the correct equilibrium angle for a torsion (bond angle involving four particles), given their indices within the coarse grained model
+          Determines the correct equilibrium angle for a torsion (bond angle involving four particles), given their indices within the coarse-grained model
 
           :param CGModel: CGModel() class object
           :type CGModel: class
